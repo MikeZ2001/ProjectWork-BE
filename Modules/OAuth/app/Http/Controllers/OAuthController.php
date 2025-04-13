@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Modules\OAuth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
+use Modules\OAuth\Http\Requests\LoginRequest;
+use Modules\OAuth\Services\AuthenticationService;
+use App\Models\User;
 
-class AuthController extends Controller
+class OAuthController extends Controller
 {
+    public function __construct(private readonly AuthenticationService $authenticationService) {
+    }
+    
     /**
      * Register a new user
      *
@@ -27,11 +30,11 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+        
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -39,51 +42,27 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user', // Default role
         ]);
-
+        
         return response()->json([
             'message' => 'User registered successfully',
             'user' => $user
         ], 201);
     }
-
+    
     /**
-     * Login user and create token
+     * Handle an authentication attempt.
      *
-     * @param Request $request
+     * @param LoginRequest $request
+     *
      * @return JsonResponse
+     *
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $credentials = request(['email', 'password']);
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Invalid credentials'
-            ], 401);
-        }
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        $token->save();
-
-        return response()->json([
-            'token' => $tokenResult->accessToken,
-            'user' => $user,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString(),
-        ]);
+        $responseContent = $this->authenticationService->authenticate($request->getDTO());
+        return response()->json($responseContent);
     }
-
+    
     /**
      * Logout user (revoke the token)
      *
@@ -93,12 +72,12 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         $request->user()->token()->revoke();
-
+        
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
     }
-
+    
     /**
      * Get the authenticated user
      *
