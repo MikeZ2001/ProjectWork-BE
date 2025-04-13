@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Modules\OAuth\Http\Requests\LoginRequest;
 use Modules\OAuth\Services\AuthenticationService;
-use App\Models\User;
+use Modules\User\app\Models\User;
 
 class OAuthController extends Controller
 {

@@ -32,10 +32,12 @@ RUN chown -R dev:dev /var/www/html \
     && chmod -R 755 bootstrap/cache
 
 # Change current user to dev
-USER dev
+
 
 # Install Laravel dependencies
 RUN composer install --no-interaction --optimize-autoloader
+
+RUN composer dump-autoload --optimize
 
 # Expose port (only needed if using artisan serve, not FPM)
 EXPOSE 8000
