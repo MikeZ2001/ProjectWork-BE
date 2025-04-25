@@ -1,6 +1,8 @@
 <?php
-
-return [
+    
+    use Modules\User\app\Models\User;
+    
+    return [
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +64,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \Modules\User\app\Models\User::class,
+            'model' => User::class,
         ],
 
         // 'users' => [
