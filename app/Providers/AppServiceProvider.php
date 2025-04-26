@@ -21,8 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       // URL::forceScheme('https');
-        URL::forceRootUrl(request()->root(), 'api');
+        URL::forceScheme('https');
+        $rootUrl = request()->getSchemeAndHttpHost() . '/app/api';
+        
+        URL::forceRootUrl($rootUrl);
         JsonResource::withoutWrapping();
     }
 }

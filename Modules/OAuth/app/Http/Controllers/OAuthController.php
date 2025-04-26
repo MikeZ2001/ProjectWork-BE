@@ -60,7 +60,29 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
-        return response()->json($responseContent);
+        return response()->json($responseContent)
+            ->cookie(
+                'access_token',
+                $responseContent['access_token'],
+                60 * 24 * 7, // 7 days
+                '/',
+                null,
+                true, // secure (only HTTPS)
+                true, // HttpOnly
+                false,
+                'Strict'
+            )
+            ->cookie(
+            'refresh_token',
+            $responseContent['refresh_token'],
+            60 * 24 * 7, // 7 days
+            '/',
+            null,
+            true, // secure (only HTTPS)
+            true, // HttpOnly
+            false,
+            'Strict'
+        );
     }
     
     /**
