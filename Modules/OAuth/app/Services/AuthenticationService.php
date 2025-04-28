@@ -2,19 +2,24 @@
 
 namespace Modules\OAuth\Services;
 
-use App\Exceptions\AuthenticationFailedException;
 use App\Exceptions\ResourceNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 use Modules\OAuth\DataTransferObjects\AuthenticationDTO;
 use Modules\OAuth\Events\LoginSuccess;
+use Modules\OAuth\Exceptions\AuthenticationFailedException;
+use Modules\OAuth\Exceptions\LogoutException;
 use Symfony\Component\HttpFoundation\Response;
 
 readonly class AuthenticationService {
     
     public function __construct(
-        private ClientService $clientService
+        private ClientService $clientService,
+        private RefreshTokenRepository $refreshTokenRepository,
+        private TokenRepository $tokenRepository,
     ){
     }
     
@@ -44,6 +49,25 @@ readonly class AuthenticationService {
         $response = Route::dispatch($tokenRequest);
         LoginSuccess::dispatch($response);
         return $this->processOAuthTokenResponse($response);
+    }
+    
+    /**
+     * Revokes the access and refresh tokens to log out the user.
+     *
+     * @param string $accessTokenId
+     * @return void
+     * @throws LogoutException
+     */
+    public function logout(string $accessTokenId): void
+    {
+        $response = $this->tokenRepository->revokeAccessToken($accessTokenId);
+        if ($response !== 1) {
+            throw new LogoutException("Access token not revoked");
+        }
+        $response = $this->refreshTokenRepository->revokeRefreshTokensByAccessTokenId($accessTokenId);
+        if ($response !== 1) {
+            throw new LogoutException("Refresh token not revoked");
+        }
     }
     
     

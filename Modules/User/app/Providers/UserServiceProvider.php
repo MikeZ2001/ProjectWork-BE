@@ -31,7 +31,6 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
 
@@ -60,17 +59,5 @@ class UserServiceProvider extends ServiceProvider
     public function provides(): array
     {
         return [];
-    }
-
-    private function getPublishableViewPaths(): array
-    {
-        $paths = [];
-        foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
-            }
-        }
-
-        return $paths;
     }
 }

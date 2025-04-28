@@ -3,18 +3,18 @@
 namespace Modules\OAuth\Http\Requests;
 
 use App\Http\Requests\BaseFormRequest;
-use Modules\OAuth\DataTransferObjects\AuthenticationDTO;
+use Modules\OAuth\DataTransferObjects\UserDTO;
 
 /**
- * @method AuthenticationDTO getDTO()
+ * @method UserDTO getDTO()
  */
-class LoginRequest extends BaseFormRequest {
-    
+class UserRequest extends BaseFormRequest
+{
     protected function getDTOClassName(): string
     {
-        return AuthenticationDTO::class;
+        return UserDTO::class;
     }
-    
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,11 +23,13 @@ class LoginRequest extends BaseFormRequest {
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ];
     }
-    
+
     /**
      * Determine if the user is authorized to make this request.
      *

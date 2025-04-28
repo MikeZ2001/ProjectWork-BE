@@ -1,7 +1,8 @@
 <?php
     
-    namespace App\Exceptions;
+    namespace Modules\OAuth\Exceptions;
     
+    use App\Exceptions\BaseException;
     use Symfony\Component\HttpFoundation\Response;
     
     class AuthenticationFailedException extends BaseException

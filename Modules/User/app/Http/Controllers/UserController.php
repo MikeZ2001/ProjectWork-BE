@@ -3,57 +3,28 @@
 namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Modules\OAuth\Http\Requests\UserRequest;
+use Modules\User\app\Services\UserService;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-
-        return response()->json([]);
+    public function __construct(
+        private readonly UserService $userService
+    ) {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Register a new user
+     *
+     * @param  UserRequest  $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function register(UserRequest $request): JsonResponse
     {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-
-        return response()->json([]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-
-        return response()->json([]);
+        $this->userService->register($request->getDTO());
+        return response()->json([
+            'message' => 'User registered successfully',
+        ], 201);
     }
 }
