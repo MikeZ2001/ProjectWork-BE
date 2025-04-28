@@ -97,7 +97,8 @@ class OAuthController extends Controller
         
         return response()->json([
             'message' => 'Successfully logged out'
-        ]);
+        ])->withCookie(cookie()->forget('access_token'))
+            ->withCookie(cookie()->forget('refresh_token'));
     }
     
     /**
