@@ -6,6 +6,7 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Modules\OAuth\Exceptions\AuthenticationFailedException;
 use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
@@ -55,17 +56,22 @@ class OAuthController extends Controller
             'Strict'
         );
     }
-    
+
     /**
      * Logout user (revoke the token)
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse
      * @throws LogoutException
+     * @throws ResourceNotFoundException
      */
     public function logout(Request $request): JsonResponse
     {
-        $accessTokenId = $request->user()->token()->id;
+        $user = $request->user();
+        if (!$user) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
         
         return response()->json([

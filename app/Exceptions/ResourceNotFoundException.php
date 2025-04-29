@@ -7,8 +7,8 @@
     
     class ResourceNotFoundException extends BaseException
     {
-        public const string ERROR_IDENTIFIER = 'resource_not_found';
-        public const string ERROR_MESSAGE = 'Resource not found';
+        public const ERROR_IDENTIFIER = 'resource_not_found';
+        public const ERROR_MESSAGE = 'Resource not found';
         
         public function __construct(
             string $description = '',
