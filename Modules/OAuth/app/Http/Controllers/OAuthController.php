@@ -42,7 +42,7 @@ class OAuthController extends Controller
                 true, // secure (only HTTPS)
                 true, // HttpOnly
                 false,
-                'Strict'
+                'None'
             )
             ->cookie(
             'refresh_token',
@@ -53,7 +53,7 @@ class OAuthController extends Controller
             true, // secure (only HTTPS)
             true, // HttpOnly
             false,
-            'Strict'
+            'None'
         );
     }
 
