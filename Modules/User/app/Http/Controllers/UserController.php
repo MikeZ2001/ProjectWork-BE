@@ -2,6 +2,7 @@
 
 namespace Modules\User\app\Http\Controllers;
 
+use App\Exceptions\ResourceNotCreatedException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\OAuth\Http\Requests\UserRequest;
@@ -19,6 +20,7 @@ class UserController extends Controller
      *
      * @param  UserRequest  $request
      * @return JsonResponse
+     * @throws ResourceNotCreatedException
      */
     public function register(UserRequest $request): JsonResponse
     {

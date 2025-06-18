@@ -45,8 +45,8 @@ cd ProjectWork-Launcher
 ```
 
 The stack includes:
-- API: http://localhost:8000
-- Frontend: http://localhost:3000
+- API: https://localhost:8000
+- Frontend: https://localhost:3000
 - Database: localhost:3306
 
 ## Development
