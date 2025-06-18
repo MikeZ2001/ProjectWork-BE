@@ -20,7 +20,7 @@ class AuthCookieMiddleware
 
             $request->headers->set('Authorization', 'Bearer ' . $accessToken);
         } else {
-            throw new AuthenticationFailedException("Unauthorized");
+            throw new AuthenticationFailedException("Unauthorized: unable to set cookie");
         }
 
         return $next($request);

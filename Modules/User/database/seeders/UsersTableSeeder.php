@@ -4,7 +4,7 @@ namespace Modules\User\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Modules\User\app\Models\User;
+use Modules\User\Models\User;
 
 
 class UsersTableSeeder extends Seeder

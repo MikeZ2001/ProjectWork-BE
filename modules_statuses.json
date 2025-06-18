@@ -1,4 +1,5 @@
 {
     "OAuth": true,
-    "User": true
+    "User": true,
+    "Account": true
 }

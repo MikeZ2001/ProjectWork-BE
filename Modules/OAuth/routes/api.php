@@ -8,7 +8,7 @@ use Modules\OAuth\Http\Middleware\AuthCookieMiddleware;
 Route::post('login', [OAuthController::class, 'login']);
 
 // Protected routes
-Route::middleware('auth:api')->middleware(AuthCookieMiddleware::class)->group(function () {
+Route::middleware(['auth:api'])->middleware(AuthCookieMiddleware::class)->group(function () {
     // Auth routes
     Route::post('logout', [OAuthController::class, 'logout']);
     Route::get('user', [OAuthController::class, 'user']);

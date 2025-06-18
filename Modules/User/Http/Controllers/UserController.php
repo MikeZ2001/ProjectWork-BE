@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\User\app\Http\Controllers;
+namespace Modules\User\Http\Controllers;
 
 use App\Exceptions\ResourceNotCreatedException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\OAuth\Http\Requests\UserRequest;
-use Modules\User\app\Services\UserService;
+use Modules\User\Services\UserService;
 
 class UserController extends Controller
 {

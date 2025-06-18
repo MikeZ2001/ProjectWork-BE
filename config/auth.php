@@ -1,8 +1,8 @@
 <?php
-    
-    use Modules\User\app\Models\User;
-    
-    return [
+
+use Modules\User\Models\User;
+
+return [
 
     /*
     |--------------------------------------------------------------------------

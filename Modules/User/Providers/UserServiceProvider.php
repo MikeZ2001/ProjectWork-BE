@@ -2,11 +2,8 @@
 
 namespace Modules\User\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class UserServiceProvider extends ServiceProvider
 {

@@ -3,7 +3,7 @@
 namespace Modules\OAuth\DataTransferObjects;
 
 use App\DataTransferObjects\EntityDTO;
-use Modules\User\app\Models\User;
+use Modules\User\Models\User;
 
 /**
  * @method User hydrateModel(User $model)

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\User\app\Services;
+namespace Modules\User\Services;
 
 use App\Exceptions\ResourceNotCreatedException;
 use Exception;
 use Modules\OAuth\DataTransferObjects\UserDTO;
-use Modules\User\app\Models\User;
-use Modules\User\app\Repositories\UserRepository;
+use Modules\User\Models\User;
+use Modules\User\Repositories\UserRepository;
 
 readonly class UserService {
     public function __construct(
