@@ -19,6 +19,9 @@ readonly class AccountDTO extends EntityDTO
     ){
     }
 
+    /**
+     * @return Account
+     */
     public function toModel(): Account
     {
         /** @var Account */

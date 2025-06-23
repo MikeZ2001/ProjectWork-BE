@@ -30,9 +30,9 @@ abstract class EloquentRepository
      *
      * @return LengthAwarePaginator<Model>
      */
-    public function findAllAndPaginate(array $relationList = null): LengthAwarePaginator
+    public function findAllAndPaginate(array $relationList = null, int $perPage = 10): LengthAwarePaginator
     {
-        return $this->makeBuilder($relationList)->paginate();
+        return $this->makeBuilder($relationList)->paginate(perPage: $perPage);
     }
 
     /**
