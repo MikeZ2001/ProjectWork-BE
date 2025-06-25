@@ -26,7 +26,7 @@ class AccountController extends Controller
     public function index(Request $request): LengthAwarePaginator
     {
         $perPage = $request->input('per_page', 10);
-        return $this->accountService->findAllAndPaginate($perPage);
+        return $this->accountService->findAllAndPaginateForUser($perPage);
     }
 
     /**

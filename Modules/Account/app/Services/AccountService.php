@@ -20,9 +20,9 @@ class AccountService
     ) {
     }
 
-    public function findAllAndPaginate(int $perPage): LengthAwarePaginator
+    public function findAllAndPaginateForUser(int $perPage): LengthAwarePaginator
     {
-        return $this->accountRepository->findAllAndPaginate(perPage: $perPage);
+        return $this->accountRepository->findAllAndPaginateForUser(perPage: $perPage);
     }
 
     /**
