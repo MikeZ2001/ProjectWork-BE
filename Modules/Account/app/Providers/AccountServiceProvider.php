@@ -2,19 +2,16 @@
 
 namespace Modules\Account\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class AccountServiceProvider extends ServiceProvider
 {
     use PathNamespace;
 
-    protected string $name = 'Account';
+    protected string $moduleName = 'Account';
 
-    protected string $nameLower = 'account';
+    protected string $moduleNameLower = 'account';
 
     /**
      * Boot the application events.
@@ -23,7 +20,7 @@ class AccountServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
         $this->registerCommandSchedules();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
     }
 
     /**
