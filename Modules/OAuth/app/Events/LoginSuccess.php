@@ -9,7 +9,7 @@
     use Illuminate\Http\Response;
     use Illuminate\Queue\SerializesModels;
     use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-    
+
     class LoginSuccess
     {
         use Dispatchable;

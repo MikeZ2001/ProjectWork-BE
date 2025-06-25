@@ -7,14 +7,13 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Nwidart\Modules\Traits\PathNamespace;
 
-
 class OAuthServiceProvider extends ServiceProvider
 {
     use PathNamespace;
 
-    protected string $name = 'OAuth';
+    protected string $moduleName = 'OAuth';
 
-    protected string $nameLower = 'oauth';
+    protected string $moduleNameLower = 'oauth';
 
     /**
      * Boot the application events.
@@ -23,7 +22,7 @@ class OAuthServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
         $this->registerCommandSchedules();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
         
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));

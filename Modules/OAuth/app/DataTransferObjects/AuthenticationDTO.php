@@ -3,7 +3,7 @@
     namespace Modules\OAuth\DataTransferObjects;
     
     use App\DataTransferObjects\DTO;
-    
+
     readonly class AuthenticationDTO extends DTO
     {
         public function __construct(

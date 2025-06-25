@@ -6,7 +6,6 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Modules\OAuth\Exceptions\AuthenticationFailedException;
 use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
