@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['checkings', 'saving', 'investment'])->default('checkings');
+            $table->enum('type', ['checking', 'savings', 'investment'])->default('checking');
             $table->double('balance')->default(0);
             $table->dateTime('open_date');
-            $table->dateTime('close_date');
+            $table->dateTime('close_date')->nullable();
             $table->enum('status', ['active', 'inactive', 'closed'])->default('active');
             $table->foreignId('user_id')
                 ->references('id')

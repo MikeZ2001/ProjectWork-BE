@@ -14,8 +14,8 @@ readonly class AccountDTO extends EntityDTO
         protected string $type,
         protected float $balance,
         protected string $open_date,
-        protected string $close_date,
         protected string $status,
+        protected ?string $close_date = null,
     ){
     }
 

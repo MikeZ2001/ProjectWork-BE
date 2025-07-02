@@ -13,19 +13,27 @@ use Modules\Account\Models\Account;
 use Modules\Account\Repositories\AccountRepository;
 use Throwable;
 
-class AccountService
+readonly class AccountService
 {
     public function __construct(
-        private readonly AccountRepository $accountRepository,
+        private AccountRepository $accountRepository,
     ) {
     }
 
+    /**
+     * Find and paginates all account for logged user.
+     *
+     * @param  int  $perPage
+     * @return LengthAwarePaginator
+     */
     public function findAllAndPaginateForUser(int $perPage): LengthAwarePaginator
     {
         return $this->accountRepository->findAllAndPaginateForUser(perPage: $perPage);
     }
 
     /**
+     * Create an account.
+     *
      * @param  AccountDTO  $accountDTO
      * @return Account
      * @throws ResourceNotCreatedException
@@ -37,11 +45,14 @@ class AccountService
         try {
             return $this->accountRepository->create($account);
         } catch (Throwable $ex) {
+            dump($ex->getMessage());
             throw new ResourceNotCreatedException("Account could not be created.", previous: $ex);
         }
     }
 
     /**
+     * Find an account.
+     *
      * @throws ResourceNotFoundException
      */
     public function find(int $id): Account
@@ -54,6 +65,8 @@ class AccountService
     }
 
     /**
+     * Update an account.
+     *
      * @param  int  $id
      * @param  AccountDTO  $accountDTO
      * @return Account
@@ -68,12 +81,18 @@ class AccountService
             $accountDTO->hydrateModel($account);
             return $this->accountRepository->update($account);
         } catch (Throwable $ex) {
+            dump($ex->getMessage());
             throw new ResourceNotUpdatedException("Account could not be updated.", previous: $ex);
         }
     }
 
 
     /**
+     * Delete an account.
+     *
+     * @param  int  $id
+     * @return void
+     * @throws ResourceNotDeletedException
      * @throws ResourceNotFoundException
      */
     public function delete(int $id): void

@@ -3,6 +3,7 @@
 namespace Modules\Account\Http\Controllers;
 
 use App\Exceptions\ResourceNotCreatedException;
+use App\Exceptions\ResourceNotDeletedException;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
 use App\Http\Controllers\Controller;
@@ -71,6 +72,7 @@ class AccountController extends Controller
      * Destroy an account
      *
      * @throws ResourceNotFoundException
+     * @throws ResourceNotDeletedException
      */
     public function destroy(int $id): Response
     {

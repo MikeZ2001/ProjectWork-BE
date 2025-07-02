@@ -28,7 +28,7 @@ class AccountRequest extends BaseFormRequest
             'type' => 'required|string',
             'balance' => 'required|numeric',
             'open_date' => 'required|string',
-            'close_date' => 'required|string',
+            'close_date' => 'nullable|string',
             'status' => 'required|string',
         ];
     }
