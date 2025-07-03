@@ -10,46 +10,46 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Modules\Account\Http\Requests\AccountRequest;
-use Modules\Account\Models\Account;
-use Modules\Account\Services\AccountService;
+use Modules\Account\Http\Requests\TransactionRequest;
+use Modules\Account\Models\Transaction;
+use Modules\Account\Services\TransactionService;
 
-class AccountController extends Controller
+class TransactionController extends Controller
 {
     public function __construct(
-        private readonly AccountService $accountService,
+        private readonly TransactionService $accountService,
     ){
     }
 
     /**
      * Find all paginated accounts.
      */
-    public function index(Request $request): LengthAwarePaginator
+    public function index(Request $request, int $accountId): LengthAwarePaginator
     {
         $perPage = $request->integer('per_page', 10);
-        return $this->accountService->findAllAndPaginateForUser($perPage);
+        return $this->accountService->findAllAndPaginateForUserAndAccount(accountId: $accountId, perPage: $perPage);
     }
 
     /**
      * Store an account.
      *
-     * @param  AccountRequest  $request
-     * @return Account
+     * @param  TransactionRequest  $request
+     * @return Transaction
      * @throws ResourceNotCreatedException
      */
-    public function store(AccountRequest $request): Account
+    public function store(TransactionRequest $request, int $accountId): Transaction
     {
-        return $this->accountService->create($request->getDTO());
+        return $this->accountService->create($accountId, $request->getDTO());
     }
 
     /**
      * Find an account.
      *
      * @param  int  $id
-     * @return Account
+     * @return Transaction
      * @throws ResourceNotFoundException
      */
-    public function show(int $id): Account
+    public function show(int $id): Transaction
     {
         return $this->accountService->find($id);
     }
@@ -57,13 +57,13 @@ class AccountController extends Controller
     /**
      * Update an account.
      *
-     * @param  AccountRequest  $request
+     * @param  TransactionRequest  $request
      * @param  int  $id
-     * @return Account
+     * @return Transaction
      * @throws ResourceNotFoundException
      * @throws ResourceNotUpdatedException
      */
-    public function update(AccountRequest $request, int $id): Account
+    public function update(int $id, TransactionRequest $request): Transaction
     {
         return $this->accountService->update($id, $request->getDTO());
     }
