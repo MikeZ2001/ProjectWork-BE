@@ -16,4 +16,9 @@ class Account extends Model
         'close_date',
         'status'
     ];
+
+    protected $casts = [
+        'status' => AccountStatus::class,
+        'type' => AccountType::class
+    ];
 }
