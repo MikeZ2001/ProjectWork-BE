@@ -65,31 +65,33 @@ abstract class EloquentRepository
     /**
      * Persist a given model instance on the database.
      *
-     * @param Model $model
+     * @param  Model  $model
      *
      * @return Model
+     * @throws \Throwable
      */
     public function create(Model $model): Model
     {
-        $model->save();
+        $model->saveOrFail();
         return $model;
     }
 
     /**
      * Persist a given model instance on the database updating it (record must exist).
      *
-     * @param Model $model
+     * @param  Model  $model
      *
      * @return Model
      *
      * @throws EntityNotBoundException If given module is not bound to an existing record.
+     * @throws \Throwable
      */
     public function update(Model $model): Model
     {
         if (!$model->exists) {
             throw new EntityNotBoundException('Cannot update a non-existing entity.');
         }
-        $model->save();
+        $model->saveOrFail();
         return $model;
     }
 

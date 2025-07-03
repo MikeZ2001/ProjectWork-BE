@@ -81,7 +81,6 @@ readonly class AccountService
             $accountDTO->hydrateModel($account);
             return $this->accountRepository->update($account);
         } catch (Throwable $ex) {
-            dump($ex->getMessage());
             throw new ResourceNotUpdatedException("Account could not be updated.", previous: $ex);
         }
     }
