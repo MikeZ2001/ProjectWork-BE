@@ -47,7 +47,6 @@ readonly class TransactionService
      */
     public function create(int $accountId, TransactionDTO $transactionDTO): Transaction
     {
-
         $account = $this->accountService->find($accountId);
 
         $transaction = $transactionDTO->toModel();
@@ -90,8 +89,8 @@ readonly class TransactionService
      */
     public function update(int $id, TransactionDTO $transactionDTO): Transaction
     {
-        $account = $this->accountService->find($id);
         $transaction = $this->find($id);
+        $account = $this->accountService->find($transaction->account()->first()->id);
         $transactionDTO->hydrateModel($transaction);
         return DB::transaction(function () use ($account, $transaction, $transactionDTO) {
             try {
@@ -116,11 +115,16 @@ readonly class TransactionService
     public function delete(int $id): void
     {
         $transaction = $this->find($id);
-        try {
-            $this->transactionRepository->delete($transaction);
-        } catch (Throwable $ex) {
-            throw new ResourceNotDeletedException("Transaction could not be deleted.", previous: $ex);
-        }
+        $account = $this->accountService->find($transaction->account()->first()->id);
+        DB::transaction(function () use ($account, $transaction) {
+            try {
+                $this->transactionRepository->delete($transaction);
+                $this->managetransactionReverse($account, $transaction);
+            } catch (Throwable $ex) {
+                throw new ResourceNotDeletedException("Transaction could not be deleted.", previous: $ex);
+            }
+        });
+
     }
 
     /**
@@ -138,6 +142,25 @@ readonly class TransactionService
             $account->balance += $transaction->amount;
         } elseif ($transaction->type === TransactionType::Withdrawal) {
             $account->balance -= $transaction->amount;
+        }
+
+        $accountDTO = new AccountDTO(
+            type: $account->type->value,
+            balance: $account->balance,
+            open_date: $account->open_date,
+            status:  $account->status->value,
+            close_date: $account->close_date
+        );
+
+        $this->accountService->update($account->id, $accountDTO);
+    }
+
+    private function managetransactionReverse(Account $account, Transaction $transaction)
+    {
+        if ($transaction->type === TransactionType::Deposit) {
+            $account->balance -= $transaction->amount;
+        } elseif ($transaction->type === TransactionType::Withdrawal) {
+            $account->balance += $transaction->amount;
         }
 
         $accountDTO = new AccountDTO(

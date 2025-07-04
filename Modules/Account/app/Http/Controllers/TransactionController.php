@@ -18,21 +18,21 @@ use Throwable;
 class TransactionController extends Controller
 {
     public function __construct(
-        private readonly TransactionService $accountService,
+        private readonly TransactionService $transactionService,
     ){
     }
 
     /**
-     * Find all paginated accounts.
+     * Find and paginates all transactions for logged user and for selected account.
      */
     public function index(Request $request, int $accountId): LengthAwarePaginator
     {
         $perPage = $request->integer('per_page', 10);
-        return $this->accountService->findAllAndPaginateForUserAndAccount(accountId: $accountId, perPage: $perPage);
+        return $this->transactionService->findAllAndPaginateForUserAndAccount(accountId: $accountId, perPage: $perPage);
     }
 
     /**
-     * Store an account.
+     * Store a transaction for an account.
      *
      * @param TransactionRequest  $request
      * @param int $accountId
@@ -41,11 +41,11 @@ class TransactionController extends Controller
      */
     public function store(TransactionRequest $request, int $accountId): Transaction
     {
-        return $this->accountService->create($accountId, $request->getDTO());
+        return $this->transactionService->create($accountId, $request->getDTO());
     }
 
     /**
-     * Find an account.
+     * Find a transaction.
      *
      * @param  int  $id
      * @return Transaction
@@ -53,11 +53,11 @@ class TransactionController extends Controller
      */
     public function show(int $id): Transaction
     {
-        return $this->accountService->find($id);
+        return $this->transactionService->find($id);
     }
 
     /**
-     * Update an account.
+     * Update a transaction.
      *
      * @param  TransactionRequest  $request
      * @param  int  $id
@@ -67,18 +67,18 @@ class TransactionController extends Controller
      */
     public function update(int $id, TransactionRequest $request): Transaction
     {
-        return $this->accountService->update($id, $request->getDTO());
+        return $this->transactionService->update($id, $request->getDTO());
     }
 
     /**
-     * Destroy an account
+     * Destroy a transaction.
      *
      * @throws ResourceNotFoundException
      * @throws ResourceNotDeletedException
      */
     public function destroy(int $id): Response
     {
-        $this->accountService->delete($id);
+        $this->transactionService->delete($id);
         return response()->noContent();
     }
 }
