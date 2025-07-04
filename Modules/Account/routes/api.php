@@ -10,4 +10,6 @@ Route::middleware(['auth:api'])->middleware(AuthCookieMiddleware::class)->prefix
 
     Route::apiResource('accounts.transactions', TransactionController::class)
         ->shallow();
+
+    Route::post('transfers', [TransactionController::class, 'transferFunds']);
 });

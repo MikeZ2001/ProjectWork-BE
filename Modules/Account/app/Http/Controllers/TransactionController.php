@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Account\Http\Requests\TransactionRequest;
 use Modules\Account\Models\Transaction;
 use Modules\Account\Services\TransactionService;
+use Throwable;
 
 class TransactionController extends Controller
 {
@@ -33,9 +34,10 @@ class TransactionController extends Controller
     /**
      * Store an account.
      *
-     * @param  TransactionRequest  $request
+     * @param TransactionRequest  $request
+     * @param int $accountId
      * @return Transaction
-     * @throws ResourceNotCreatedException
+     * @throws ResourceNotCreatedException|ResourceNotFoundException|Throwable
      */
     public function store(TransactionRequest $request, int $accountId): Transaction
     {

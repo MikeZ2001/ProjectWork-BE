@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Exceptions\EntityNotBoundException;
+use App\Exceptions\EntityNotDeletedException;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -98,13 +99,17 @@ abstract class EloquentRepository
     /**
      * Delete a given model instance.
      *
-     * @param Model $entity
+     * @param  Model  $entity
      *
      * @return bool|null
+     * @throws EntityNotDeletedException
      */
-    public function delete(Model $entity): ?bool
+    public function delete(Model $entity): void
     {
-        return $entity->delete();
+        $records = $entity->delete();
+        if (!$records) {
+            throw new EntityNotDeletedException('Cannot delete the entity.');
+        }
     }
 
     /**
