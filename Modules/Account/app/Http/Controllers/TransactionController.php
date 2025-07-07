@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Account\Http\Requests\TransactionRequest;
+use Modules\Account\Http\Requests\TransferRequest;
 use Modules\Account\Models\Transaction;
 use Modules\Account\Services\TransactionService;
 use Throwable;
@@ -80,5 +81,18 @@ class TransactionController extends Controller
     {
         $this->transactionService->delete($id);
         return response()->noContent();
+    }
+
+    /**
+     * Transfer funds from one account to another
+     *
+     * @param TransferRequest $transferRequest
+     *
+     * @throws ResourceNotFoundException
+     * @throws ResourceNotUpdatedException
+     */
+    public function transferFunds(TransferRequest $transferRequest): void
+    {
+        $this->transactionService->transferFunds($transferRequest->getDTO());
     }
 }
