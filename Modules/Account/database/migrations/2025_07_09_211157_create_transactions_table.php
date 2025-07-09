@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('transfer_id')->nullable();
             $table->enum('type', ['withdrawal', 'transfer', 'deposit'])->default('deposit');;
             $table->float('amount');
             $table->timestamp('date')->useCurrent();
@@ -25,6 +26,10 @@ return new class extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('account_id')
                 ->references('id')->on('accounts')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('transfer_id')
+                ->references('id')->on('transfers')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();

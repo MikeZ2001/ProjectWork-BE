@@ -16,12 +16,14 @@ use Modules\Account\Models\Account;
 use Modules\Account\Models\Transaction;
 use Modules\Account\Models\TransactionType;
 use Modules\Account\Repositories\TransactionRepository;
+use Modules\Account\Repositories\TransferRepository;
 use Throwable;
 
 readonly class TransactionService
 {
     public function __construct(
         private AccountService $accountService,
+        private TransferRepository $transferRepository,
         private TransactionRepository $transactionRepository,
     ) {
     }
@@ -58,7 +60,8 @@ readonly class TransactionService
                 $transaction = $this->transactionRepository->create($transaction);
                 $this->manageTransaction($account, $transaction);
                 return $transaction;
-            } catch (Throwable $ex) {
+            } catch (\Exception $ex) {
+                dump($ex->getMessage());
                 throw new ResourceNotCreatedException("Transaction could not be created.", previous: $ex);
             }
         });
@@ -117,11 +120,19 @@ readonly class TransactionService
     {
         $transaction = $this->find($id);
         $account = $this->accountService->find($transaction->account()->first()->id);
+
         DB::transaction(function () use ($account, $transaction) {
             try {
-                $this->transactionRepository->delete($transaction);
-                $this->managetransactionReverse($account, $transaction);
-            } catch (Throwable $ex) {
+
+                if ($transaction->transfer_id) {
+                    $this->deleteTransfer($transaction->transfer_id);
+                } else {
+                    $this->transactionRepository->delete($transaction);
+                    $this->managetransactionReverse($account, $transaction);
+                }
+
+            } catch (\Exception $ex) {
+                dd($ex->getMessage());
                 throw new ResourceNotDeletedException("Transaction could not be deleted.", previous: $ex);
             }
         });
@@ -164,6 +175,8 @@ readonly class TransactionService
             $account->balance += $transaction->amount;
         }
 
+
+
         $accountDTO = new AccountDTO(
             type: $account->type->value,
             balance: $account->balance,
@@ -173,5 +186,29 @@ readonly class TransactionService
         );
 
         $this->accountService->update($account->id, $accountDTO);
+    }
+
+    /**
+     * @param int $transferId
+     * @return void
+     */
+    public function deleteTransfer(int $transferId)
+    {
+        $transfer = $this->transferRepository->findById($transferId);
+
+        $txs      = $transfer->transactions()->get();
+
+
+        DB::transaction(function() use($txs, $transfer) {
+
+            $txs->each(function (Transaction $tx) use ($transfer) {
+
+                $this->transactionRepository->delete($tx);
+                $this->managetransactionReverse($tx->account()->first(), $tx);
+            });
+
+
+            $this->transferRepository->delete($transfer);
+        });
     }
 }

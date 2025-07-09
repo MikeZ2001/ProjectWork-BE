@@ -36,30 +36,57 @@ readonly class TransferService
         if ($fromAccount->balance < $transferDTO->getAmount()) {
             throw new ResourceNotUpdatedException('You do not have sufficient balance.');
         }
-        $transactionDTO = new TransactionDTO(
-            amount: $transferDTO->getAmount(),
-            type: TransactionType::Transfer->value,
-            date: now()->toDateTimeString(),
-        );
+
 
         $transfer = $transferDTO->toModel();
         $transfer->user_id = Auth::id();
 
         try {
-            DB::transaction(function () use ($transfer, $fromAccount, $toAccount, $transferDTO, $transactionDTO) {
+            DB::transaction(function () use ($transfer, $fromAccount, $toAccount, $transferDTO) {
+                $this->transferRepository->create($transfer);
+
+                $transactionWithdrawalDTO = new TransactionDTO(
+                    amount: $transferDTO->getAmount(),
+                    type: TransactionType::Withdrawal->value,
+                    date: now()->toDateTimeString(),
+                    transfer_id: $transfer->id
+                );
+                $transactionDepositDTO = new TransactionDTO(
+                    amount: $transferDTO->getAmount(),
+                    type: TransactionType::Deposit->value,
+                    date: now()->toDateTimeString(),
+                    transfer_id: $transfer->id
+                );
                 $fromAccount->balance -= $transferDTO->getAmount();
 
-                $this->transactionService->create($fromAccount->id, $transactionDTO);
+                $this->transactionService->create($fromAccount->id, $transactionWithdrawalDTO);
                 $fromAccount->save();
                 $toAccount->balance += $transferDTO->getAmount();
-                $this->transactionService->create($toAccount->id, $transactionDTO);
+                $this->transactionService->create($toAccount->id, $transactionDepositDTO);
                 $toAccount->save();
-
-                $this->transferRepository->create($transfer);
             });
-        } catch (Throwable $ex) {
+        } catch (\Exception $ex) {
             dump($ex->getMessage());
             throw new ResourceNotUpdatedException('Amount could not be transfered.', previous: $ex);
         }
+    }
+
+    /**
+     * @param int $transferId
+     * @return void
+     */
+    public function deleteTransfer(int $transferId)
+    {
+        $transfer = $this->transferRepository->findById($transferId);
+        $txs      = $transfer->transactions;
+
+        DB::transaction(function() use($txs, $transfer) {
+
+            foreach ($txs as $tx) {
+                $this->transactionService->delete($tx->id);
+            }
+
+            $this->transferRepository->delete($transfer);
+        });
     }
 }

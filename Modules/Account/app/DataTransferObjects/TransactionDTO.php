@@ -15,6 +15,7 @@ readonly class TransactionDTO extends EntityDTO
         protected string $type,
         protected string $date,
         protected ?string $description = null,
+        protected ?int $transfer_id = null,
     ){
     }
 

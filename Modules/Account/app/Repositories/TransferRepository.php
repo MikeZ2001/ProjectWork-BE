@@ -10,4 +10,5 @@ use Modules\Account\Models\Transfer;
  */
 class TransferRepository extends EloquentRepository
 {
+    protected string $modelClass = Transfer::class;
 }
