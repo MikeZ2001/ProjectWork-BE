@@ -2,18 +2,19 @@
 
 namespace Modules\Account\DataTransferObjects;
 
-use App\DataTransferObjects\DTO;
+use App\DataTransferObjects\EntityDTO;
+use Modules\Account\Models\Transfer;
 
 /**
- * @method getDTO()
+ * @method Transfer hydrateModel(Transfer $transfer)
  */
-readonly class TransferDTO extends DTO
+readonly class TransferDTO extends EntityDTO
 {
     public function __construct(
-        private int $from_account_id,
-        private int $to_account_id,
-        private int $amount,
-        private ?string $description = null,
+        protected int $from_account_id,
+        protected int $to_account_id,
+        protected int $amount,
+        protected ?string $description = null,
     )  {
     }
 
@@ -35,5 +36,13 @@ readonly class TransferDTO extends DTO
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return Transfer
+     */
+    public function toModel(): Transfer
+    {
+        return $this->hydrateModel(new Transfer());
     }
 }

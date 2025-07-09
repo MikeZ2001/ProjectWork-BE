@@ -82,17 +82,4 @@ class TransactionController extends Controller
         $this->transactionService->delete($id);
         return response()->noContent();
     }
-
-    /**
-     * Transfer funds from one account to another
-     *
-     * @param TransferRequest $transferRequest
-     *
-     * @throws ResourceNotFoundException
-     * @throws ResourceNotUpdatedException
-     */
-    public function transferFunds(TransferRequest $transferRequest): void
-    {
-        $this->transactionService->transferFunds($transferRequest->getDTO());
-    }
 }

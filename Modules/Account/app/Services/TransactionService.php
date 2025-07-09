@@ -174,39 +174,4 @@ readonly class TransactionService
 
         $this->accountService->update($account->id, $accountDTO);
     }
-
-    /**
-     * Transfer funds from one account to another
-     *
-     * @throws ResourceNotFoundException
-     * @throws ResourceNotUpdatedException
-     */
-    public function transferFunds(TransferDTO $transferDTO): void
-    {
-        $fromAccount = $this->accountService->find($transferDTO->getFromAccountId());
-        $toAccount = $this->accountService->find($transferDTO->getToAccountId());
-
-        if ($fromAccount->balance < $transferDTO->getAmount()) {
-            throw new ResourceNotUpdatedException('You do not have sufficient balance.');
-        }
-        $transactionDTO = new TransactionDTO(
-            amount: $transferDTO->getAmount(),
-            type: TransactionType::Transfer->value,
-            date: now()->toDateTimeString(),
-        );
-
-        try {
-            DB::transaction(function () use ($fromAccount, $toAccount, $transferDTO, $transactionDTO) {
-                $fromAccount->balance -= $transferDTO->getAmount();
-
-                $this->create($fromAccount->id, $transactionDTO);
-                $fromAccount->save();
-                $toAccount->balance += $transferDTO->getAmount();
-                $this->create($toAccount->id, $transactionDTO);
-                $toAccount->save();
-            });
-        } catch (Throwable $ex) {
-            throw new ResourceNotUpdatedException('Amount could not be transfered.', previous: $ex);
-        }
-    }
 }
