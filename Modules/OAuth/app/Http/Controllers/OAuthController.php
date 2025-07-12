@@ -11,6 +11,10 @@ use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
 use Modules\OAuth\Services\AuthenticationService;
 
+/**
+ * @group Modules
+ * @subgroup OAuth
+ */
 class OAuthController extends Controller
 {
     public function __construct(
@@ -26,6 +30,9 @@ class OAuthController extends Controller
      * @return JsonResponse
      * @throws ResourceNotFoundException
      * @throws AuthenticationFailedException
+     *
+     *
+     * @unauthenticated
      *
      */
     public function login(LoginRequest $request): JsonResponse

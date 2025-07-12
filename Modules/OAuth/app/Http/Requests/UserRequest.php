@@ -7,6 +7,11 @@ use Modules\OAuth\DataTransferObjects\UserDTO;
 
 /**
  * @method UserDTO getDTO()
+ *
+ * @bodyParam first_name string required The user’s first name. Example: John
+ * @bodyParam last_name  string required The user’s last name. Example: Doe
+ * @bodyParam email      string required The user’s email address. Example: jane.doe@example.com
+ * @bodyParam password   string required The user’s password (min 8 chars). Example: secret1234
  */
 class UserRequest extends BaseFormRequest
 {
@@ -38,5 +43,35 @@ class UserRequest extends BaseFormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Provide example responses for successful and error cases.
+     *
+     * @return array<string, mixed>
+     */
+    public function responses(): array
+    {
+        return [
+            '200' => [
+                'description' => 'User created successfully',
+                'body' => [
+                    'id'         => 1,
+                    'first_name' => 'John',
+                    'last_name'  => 'Doe',
+                    'email'      => 'jane.doe@example.com',
+                ],
+            ],
+            '422' => [
+                'description' => 'Validation Error',
+                'body' => [
+                    'message' => 'Validation failed',
+                    'errors'  => [
+                        'email'    => ['The email field is required.'],
+                        'password' => ['The password must be at least 8 characters.'],
+                    ],
+                ],
+            ],
+        ];
     }
 }

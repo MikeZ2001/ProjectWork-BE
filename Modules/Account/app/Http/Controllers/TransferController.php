@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use Modules\Account\Http\Requests\TransferRequest;
 use Modules\Account\Services\TransferService;
 
+/**
+ * @group Modules
+ * @subgroup Transfer
+ */
 class TransferController extends Controller
 {
     public function __construct(private readonly TransferService $transferService)

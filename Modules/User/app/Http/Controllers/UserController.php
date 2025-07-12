@@ -8,6 +8,10 @@ use Illuminate\Http\JsonResponse;
 use Modules\OAuth\Http\Requests\UserRequest;
 use Modules\User\Services\UserService;
 
+/**
+ * @group Modules
+ * @subgroup User
+ */
 class UserController extends Controller
 {
     public function __construct(
@@ -21,6 +25,11 @@ class UserController extends Controller
      * @param  UserRequest  $request
      * @return JsonResponse
      * @throws ResourceNotCreatedException
+     *
+     * @responseFile 201 storage/responses/user-create-success.json
+     * @responseFile 422 storage/responses/user-create-error.json
+     *
+     * @unauthenticated
      */
     public function register(UserRequest $request): JsonResponse
     {

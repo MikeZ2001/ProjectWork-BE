@@ -14,6 +14,10 @@ use Modules\Account\Http\Requests\AccountRequest;
 use Modules\Account\Models\Account;
 use Modules\Account\Services\AccountService;
 
+/**
+ * @group Modules
+ * @subgroup Account
+ */
 class AccountController extends Controller
 {
     public function __construct(
@@ -23,6 +27,8 @@ class AccountController extends Controller
 
     /**
      * Find all paginated accounts.
+     *
+     * @authenticated
      */
     public function index(Request $request): LengthAwarePaginator
     {

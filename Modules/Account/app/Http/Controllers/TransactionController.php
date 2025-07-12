@@ -16,6 +16,10 @@ use Modules\Account\Models\Transaction;
 use Modules\Account\Services\TransactionService;
 use Throwable;
 
+/**
+ * @group Modules
+ * @subgroup Transaction
+ */
 class TransactionController extends Controller
 {
     public function __construct(
