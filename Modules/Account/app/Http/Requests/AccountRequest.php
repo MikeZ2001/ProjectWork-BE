@@ -25,6 +25,7 @@ class AccountRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string',
             'type' => 'required|string',
             'balance' => 'required|numeric',
             'open_date' => 'required|string',

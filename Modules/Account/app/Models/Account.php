@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     protected $fillable = [
+        'name',
         'type',
         'balance',
         'open_date',

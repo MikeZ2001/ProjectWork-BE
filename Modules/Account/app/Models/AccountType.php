@@ -7,4 +7,6 @@ enum AccountType: string
     case CHECKING = 'checking';
     case SAVINGS = 'savings';
     case INVESTMENT = 'investment';
+
+    case CASH = 'cash';
 }

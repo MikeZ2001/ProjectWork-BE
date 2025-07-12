@@ -11,6 +11,7 @@ use Modules\Account\Models\Account;
 readonly class AccountDTO extends EntityDTO
 {
     public function __construct(
+        protected string $name,
         protected string $type,
         protected float $balance,
         protected string $open_date,
