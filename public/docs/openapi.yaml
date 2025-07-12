@@ -1,0 +1,587 @@
+openapi: 3.0.3
+info:
+  title: 'Laravel API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Modules
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'Paste your Passport token above to authorize requests.'
+security:
+  -
+    default: []
+paths:
+  /api/v1/auth_status:
+    get:
+      summary: ''
+      operationId: getApiV1Auth_status
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Endpoints
+  /api/v1/accounts:
+    get:
+      summary: 'Find all paginated accounts.'
+      operationId: findAllPaginatedAccounts
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Modules
+    post:
+      summary: 'Store an account.'
+      operationId: storeAnAccount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                balance:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+                open_date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                close_date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+              required:
+                - type
+                - balance
+                - open_date
+                - status
+  '/api/v1/accounts/{id}':
+    get:
+      summary: 'Find an account.'
+      operationId: findAnAccount
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Modules
+    put:
+      summary: 'Update an account.'
+      operationId: updateAnAccount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                balance:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+                open_date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                close_date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: true
+                status:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+              required:
+                - type
+                - balance
+                - open_date
+                - status
+    delete:
+      summary: 'Destroy an account'
+      operationId: destroyAnAccount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the account.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/v1/accounts/{account_id}/transactions':
+    get:
+      summary: 'Find and paginates all transactions for logged user and for selected account.'
+      operationId: findAndPaginatesAllTransactionsForLoggedUserAndForSelectedAccount
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Modules
+    post:
+      summary: 'Store a transaction for an account.'
+      operationId: storeATransactionForAnAccount
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                amount:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+                date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+              required:
+                - type
+                - amount
+                - date
+    parameters:
+      -
+        in: path
+        name: account_id
+        description: 'The ID of the account.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/v1/transactions/{id}':
+    get:
+      summary: 'Find a transaction.'
+      operationId: findATransaction
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Modules
+    put:
+      summary: 'Update a transaction.'
+      operationId: updateATransaction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                amount:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+                date:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  nullable: true
+              required:
+                - type
+                - amount
+                - date
+    delete:
+      summary: 'Destroy a transaction.'
+      operationId: destroyATransaction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the transaction.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/v1/transfers:
+    post:
+      summary: 'Transfer funds from one account to another'
+      operationId: transferFundsFromOneAccountToAnother
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from_account_id:
+                  type: integer
+                  description: ''
+                  example: 17
+                  nullable: false
+                to_account_id:
+                  type: integer
+                  description: 'The value and <code>from_account_id</code> must be different.'
+                  example: 17
+                  nullable: false
+                amount:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+                description:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: 'Laborum eius est dolor dolores minus voluptatem.'
+                  nullable: true
+              required:
+                - from_account_id
+                - to_account_id
+                - amount
+  /api/v1/login:
+    post:
+      summary: 'Handle an authentication attempt.'
+      operationId: handleAnAuthenticationAttempt
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: qkunze@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'O[2UZ5ij-e/dl4m{o,'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/logout:
+    post:
+      summary: 'Logout user (revoke the token)'
+      operationId: logoutUserrevokeTheToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Modules
+  /api/v1/user:
+    get:
+      summary: 'Get the authenticated user'
+      operationId: getTheAuthenticatedUser
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Modules
+  /api/v1/register:
+    post:
+      summary: 'Register a new user'
+      operationId: registerANewUser
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  first_name: John
+                  last_name: Doe
+                  email: jane.doe@example.com
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  first_name:
+                    type: string
+                    example: John
+                  last_name:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    example: jane.doe@example.com
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Validation failed'
+                  errors:
+                    email:
+                      - 'The email field is required.'
+                    password:
+                      - 'The password must be at least 8 characters.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Validation failed'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'The email field is required.'
+                        items:
+                          type: string
+                      password:
+                        type: array
+                        example:
+                          - 'The password must be at least 8 characters.'
+                        items:
+                          type: string
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: 'The user’s first name.'
+                  example: John
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'The user’s last name.'
+                  example: Doe
+                  nullable: false
+                email:
+                  type: string
+                  description: 'The user’s email address.'
+                  example: jane.doe@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The user’s password (min 8 chars).'
+                  example: secret1234
+                  nullable: false
+              required:
+                - first_name
+                - last_name
+                - email
+                - password
+      security: []

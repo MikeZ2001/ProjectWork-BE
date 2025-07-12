@@ -1,0 +1,694 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8000"
+        }
+    ],
+    "info": {
+        "name": "Laravel API Documentation",
+        "_postman_id": "f648b989-c142-402e-ae2e-27d7c12fd532",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/v1\/auth_status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth_status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth_status"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 400,
+                            "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Modules",
+            "description": "",
+            "item": [
+                {
+                    "name": "Account",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Find all paginated accounts.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "vary",
+                                            "value": "Origin"
+                                        }
+                                    ],
+                                    "code": 400,
+                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Store an account.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"consequatur\",\"balance\":11613.31890586,\"open_date\":\"consequatur\",\"close_date\":\"consequatur\",\"status\":\"consequatur\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Find an account.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the account."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "vary",
+                                            "value": "Origin"
+                                        }
+                                    ],
+                                    "code": 400,
+                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update an account.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the account."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"consequatur\",\"balance\":11613.31890586,\"open_date\":\"consequatur\",\"close_date\":\"consequatur\",\"status\":\"consequatur\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Destroy an account",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the account."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Transaction",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Find and paginates all transactions for logged user and for selected account.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts\/:account_id\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:account_id\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "account_id",
+                                            "key": "account_id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the account."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "vary",
+                                            "value": "Origin"
+                                        }
+                                    ],
+                                    "code": 400,
+                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Store a transaction for an account.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/accounts\/:account_id\/transactions",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:account_id\/transactions",
+                                    "variable": [
+                                        {
+                                            "id": "account_id",
+                                            "key": "account_id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the account."
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"consequatur\",\"amount\":11613.31890586,\"date\":\"consequatur\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Find a transaction.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transactions\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transactions\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the transaction."
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "vary",
+                                            "value": "Origin"
+                                        }
+                                    ],
+                                    "code": 400,
+                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a transaction.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transactions\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transactions\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the transaction."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"type\":\"consequatur\",\"amount\":11613.31890586,\"date\":\"consequatur\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Destroy a transaction.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transactions\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transactions\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "consequatur",
+                                            "description": "The ID of the transaction."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Transfer",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Transfer funds from one account to another",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/transfers",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/transfers"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"from_account_id\":17,\"to_account_id\":17,\"amount\":11613.31890586,\"description\":\"Laborum eius est dolor dolores minus voluptatem.\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "OAuth",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Handle an authentication attempt.",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/login",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/login"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"qkunze@example.com\",\"password\":\"O[2UZ5ij-e\\\/dl4m{o,\"}"
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Logout user (revoke the token)",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/logout",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/logout"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get the authenticated user",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/user",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/user"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [
+                                        {
+                                            "key": "cache-control",
+                                            "value": "no-cache, private"
+                                        },
+                                        {
+                                            "key": "content-type",
+                                            "value": "application\/json"
+                                        },
+                                        {
+                                            "key": "vary",
+                                            "value": "Origin"
+                                        }
+                                    ],
+                                    "code": 400,
+                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "User",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Register a new user",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/register",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/register"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"first_name\":\"John\",\"last_name\":\"Doe\",\"email\":\"jane.doe@example.com\",\"password\":\"secret1234\"}"
+                                },
+                                "description": "",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"id\": 1,\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"jane.doe@example.com\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"email\": [\"The email field is required.\"],\n    \"password\": [\"The password must be at least 8 characters.\"]\n  }\n}\n",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}
