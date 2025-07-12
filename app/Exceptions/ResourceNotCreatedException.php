@@ -7,8 +7,8 @@
     
     class ResourceNotCreatedException extends BaseException
     {
-        public const string ERROR_IDENTIFIER = 'resource_not_created';
-        public const string ERROR_MESSAGE = 'Resource not created';
+        public const ERROR_IDENTIFIER = 'resource_not_created';
+        public const ERROR_MESSAGE = 'Resource not created';
         
         public function __construct(
             string $description = '',

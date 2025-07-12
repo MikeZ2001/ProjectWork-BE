@@ -26,8 +26,9 @@ class UserController extends Controller
      * @return JsonResponse
      * @throws ResourceNotCreatedException
      *
-     * @responseFile 201 storage/responses/user-create-success.json
-     * @responseFile 422 storage/responses/user-create-error.json
+     * @responseFile 201 storage/responses/users/user-create-success.json
+     * @responseFile 422 storage/responses/users/user-create-validation-error.json
+     * @responseFile 500 storage/responses/users/user-create-error.json
      *
      * @unauthenticated
      */

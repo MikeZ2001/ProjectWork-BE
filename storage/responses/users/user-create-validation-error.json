@@ -1,0 +1,10 @@
+{
+  "message": "Validation failed",
+  "errors": {
+    "first_name": ["The first name field is required.", "First name must be a string"],
+    "last_name":  ["The last name field is required.", "Last name must be a string"],
+    "email":      ["The email field is required.", "The email must be a valid email address.", "The email has already been taken"],
+    "password":   ["The password field is required.", "The password must be at least 8 characters."]
+  }
+}
+

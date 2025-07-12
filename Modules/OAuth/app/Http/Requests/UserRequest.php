@@ -44,34 +44,4 @@ class UserRequest extends BaseFormRequest
     {
         return true;
     }
-
-    /**
-     * Provide example responses for successful and error cases.
-     *
-     * @return array<string, mixed>
-     */
-    public function responses(): array
-    {
-        return [
-            '200' => [
-                'description' => 'User created successfully',
-                'body' => [
-                    'id'         => 1,
-                    'first_name' => 'John',
-                    'last_name'  => 'Doe',
-                    'email'      => 'jane.doe@example.com',
-                ],
-            ],
-            '422' => [
-                'description' => 'Validation Error',
-                'body' => [
-                    'message' => 'Validation failed',
-                    'errors'  => [
-                        'email'    => ['The email field is required.'],
-                        'password' => ['The password must be at least 8 characters.'],
-                    ],
-                ],
-            ],
-        ];
-    }
 }
