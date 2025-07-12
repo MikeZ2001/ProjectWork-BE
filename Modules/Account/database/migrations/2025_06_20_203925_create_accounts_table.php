@@ -31,14 +31,15 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            DB::statement(<<<SQL
+            $table->timestamps();
+        });
+
+        DB::statement(<<<SQL
                 ALTER TABLE accounts
                 ADD CONSTRAINT check_accounts_close_status
                 CHECK (close_date IS NULL OR status = 'closed')
                 SQL
-            );
-            $table->timestamps();
-        });
+        );
     }
 
     /**
