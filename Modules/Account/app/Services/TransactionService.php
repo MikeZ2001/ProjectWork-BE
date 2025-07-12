@@ -157,6 +157,7 @@ readonly class TransactionService
         }
 
         $accountDTO = new AccountDTO(
+            name: $account->name,
             type: $account->type->value,
             balance: $account->balance,
             open_date: $account->open_date,
@@ -178,6 +179,7 @@ readonly class TransactionService
 
 
         $accountDTO = new AccountDTO(
+            name: $account->name,
             type: $account->type->value,
             balance: $account->balance,
             open_date: $account->open_date,

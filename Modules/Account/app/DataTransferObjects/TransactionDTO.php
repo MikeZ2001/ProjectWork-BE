@@ -13,7 +13,7 @@ readonly class TransactionDTO extends EntityDTO
     public function __construct(
         protected float $amount,
         protected string $type,
-        protected string $date,
+        protected string $transaction_date,
         protected ?string $description = null,
         protected ?int $transfer_id = null,
     ){

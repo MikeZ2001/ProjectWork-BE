@@ -48,13 +48,13 @@ readonly class TransferService
                 $transactionWithdrawalDTO = new TransactionDTO(
                     amount: $transferDTO->getAmount(),
                     type: TransactionType::Withdrawal->value,
-                    date: now()->toDateTimeString(),
+                    transaction_date: now()->toDateTimeString(),
                     transfer_id: $transfer->id
                 );
                 $transactionDepositDTO = new TransactionDTO(
                     amount: $transferDTO->getAmount(),
                     type: TransactionType::Deposit->value,
-                    date: now()->toDateTimeString(),
+                    transaction_date: now()->toDateTimeString(),
                     transfer_id: $transfer->id
                 );
                 $fromAccount->balance -= $transferDTO->getAmount();

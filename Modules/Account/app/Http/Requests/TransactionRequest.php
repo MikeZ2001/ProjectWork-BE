@@ -25,7 +25,7 @@ class TransactionRequest extends BaseFormRequest
         return [
             'type' => 'required|string',
             'amount' => 'required|numeric',
-            'date' => 'required|string',
+            'transaction_date' => 'required|string',
             'description' => 'nullable|string',
         ];
     }
