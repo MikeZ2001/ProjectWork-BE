@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,27 +14,31 @@ return new class extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('from_account_id');
-            $table->unsignedBigInteger('to_account_id');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreignId('from_account_id')
+                ->constrained('accounts')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreignId('to_account_id')
+                ->constrained('accounts')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
             $table->string('description')->nullable();
-            $table->float('amount');
-
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-
-            $table->foreign('from_account_id')
-                ->references('id')->on('accounts')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-
-
-            $table->foreign('to_account_id')
-                ->references('id')->on('accounts')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-
+            $table->decimal('amount', 15, 2);
             $table->timestamps();
         });
+
+        DB::statement(<<<SQL
+            ALTER TABLE transfers
+            ADD CONSTRAINT check_transfers_amount
+            CHECK (amount > 0)
+        SQL
+        );
     }
 
     /**

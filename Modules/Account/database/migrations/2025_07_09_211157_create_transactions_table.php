@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Account\Models\TransactionType;
 
 return new class extends Migration
 {
@@ -13,28 +15,34 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('transfer_id')->nullable();
-            $table->enum('type', ['withdrawal', 'transfer', 'deposit'])->default('deposit');;
-            $table->float('amount');
-            $table->timestamp('date')->useCurrent();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreignId('account_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignId('transfer_id')
+                ->nullable()
+                ->constrained('transfers')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->enum('type', array_column(TransactionType::cases(), 'value'))
+                ->default(TransactionType::Deposit->value);
+            $table->decimal('amount', 15, 2);
+            $table->timestamp('transaction_date')->useCurrent();
             $table->string('description')->nullable();
-
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('account_id')
-                ->references('id')->on('accounts')
-                ->onDelete('cascade')->onUpdate('cascade');
-
-            $table->foreign('transfer_id')
-                ->references('id')->on('transfers')
-                ->onDelete('cascade')->onUpdate('cascade');
-
             $table->timestamps();
         });
+
+        DB::statement(<<<SQL
+            ALTER TABLE transactions
+            ADD CONSTRAINT check_transactions_amount CHECK (amount > 0)
+        SQL
+        );
     }
+
 
     /**
      * Reverse the migrations.

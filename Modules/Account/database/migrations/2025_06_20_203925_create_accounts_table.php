@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Account\Models\AccountType;
 
 return new class extends Migration
 {
@@ -13,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['checking', 'savings', 'investment'])->default('checking');
-            $table->double('balance')->default(0);
+            $table->string('name');
+            $table->enum('type', array_column(AccountType::cases(), 'value'))
+                ->default(AccountType::CHECKING->value);
+            $table->decimal('balance', 15, 2)
+                ->default(0.00);
+            $table->char('currency', 3)
+                ->default('EUR');
             $table->dateTime('open_date');
             $table->dateTime('close_date')->nullable();
             $table->enum('status', ['active', 'inactive', 'closed'])->default('active');
@@ -23,6 +30,13 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            DB::statement(<<<SQL
+                ALTER TABLE accounts
+                ADD CONSTRAINT check_accounts_close_status
+                CHECK (close_date IS NULL OR status = 'closed')
+                SQL
+            );
             $table->timestamps();
         });
     }
