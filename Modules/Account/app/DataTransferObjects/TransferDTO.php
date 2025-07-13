@@ -13,7 +13,7 @@ readonly class TransferDTO extends EntityDTO
     public function __construct(
         protected int $from_account_id,
         protected int $to_account_id,
-        protected int $amount,
+        protected string $amount,
         protected ?string $description = null,
     )  {
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\database\seeders;
+namespace Modules\User\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

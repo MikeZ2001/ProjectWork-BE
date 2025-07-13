@@ -8,9 +8,10 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Account\Http\Requests\AccountRequest;
+use Modules\Account\Http\Resources\AccountResource;
 use Modules\Account\Models\Account;
 use Modules\Account\Services\AccountService;
 
@@ -30,22 +31,22 @@ class AccountController extends Controller
      *
      * @authenticated
      */
-    public function index(Request $request): LengthAwarePaginator
+    public function index(Request $request): AnonymousResourceCollection
     {
         $perPage = $request->integer('per_page', 10);
-        return $this->accountService->findAllAndPaginateForUser($perPage);
+        return AccountResource::collection($this->accountService->findAllAndPaginateForUser($perPage));
     }
 
     /**
      * Store an account.
      *
      * @param  AccountRequest  $request
-     * @return Account
+     * @return AccountResource
      * @throws ResourceNotCreatedException
      */
-    public function store(AccountRequest $request): Account
+    public function store(AccountRequest $request): AccountResource
     {
-        return $this->accountService->create($request->getDTO());
+        return new AccountResource($this->accountService->create($request->getDTO()));
     }
 
     /**
@@ -55,9 +56,9 @@ class AccountController extends Controller
      * @return Account
      * @throws ResourceNotFoundException
      */
-    public function show(int $id): Account
+    public function show(int $id): AccountResource
     {
-        return $this->accountService->find($id);
+        return new AccountResource($this->accountService->find($id));
     }
 
     /**
@@ -69,9 +70,9 @@ class AccountController extends Controller
      * @throws ResourceNotFoundException
      * @throws ResourceNotUpdatedException
      */
-    public function update(AccountRequest $request, int $id): Account
+    public function update(AccountRequest $request, int $id): AccountResource
     {
-        return $this->accountService->update($id, $request->getDTO());
+        return new AccountResource($this->accountService->update($id, $request->getDTO()));
     }
 
     /**

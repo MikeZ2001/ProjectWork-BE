@@ -11,7 +11,7 @@ use Modules\Account\Models\Transaction;
 readonly class TransactionDTO extends EntityDTO
 {
     public function __construct(
-        protected float $amount,
+        protected string $amount,
         protected string $type,
         protected string $transaction_date,
         protected ?string $description = null,
