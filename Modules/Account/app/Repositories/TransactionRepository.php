@@ -17,6 +17,8 @@ class TransactionRepository extends EloquentRepository
 {
     protected string $modelClass = Transaction::class;
 
+    protected array $baseRelationList = ['category'];
+
     /**
      * Find all transactions by logged user and account and paginate results.
      *

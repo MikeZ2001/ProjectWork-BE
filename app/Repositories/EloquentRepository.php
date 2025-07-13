@@ -74,7 +74,7 @@ abstract class EloquentRepository
     public function create(Model $model): Model
     {
         $model->saveOrFail();
-        return $model;
+        return $model->load($this->baseRelationList);
     }
 
     /**
