@@ -24,7 +24,7 @@ class TransactionRequest extends BaseFormRequest
     {
         return [
             'type' => 'required|string',
-            'amount' => 'required|numeric',
+            'amount' => 'required|numeric|gt:0|regex:/^\d{1,13}(\.\d{1,2})?$/',
             'transaction_date' => 'required|string',
             'description' => 'nullable|string',
             'category_id' => 'required|integer',

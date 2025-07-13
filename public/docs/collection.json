@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "e648b50a-0ddb-4827-900b-946f4d1add13",
+        "_postman_id": "e2fdc4d7-bd36-4922-81e6-6d6a51c9da7d",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -222,8 +222,15 @@
                                 "url": {
                                     "host": "{{baseUrl}}",
                                     "path": "api\/v1\/accounts",
-                                    "query": [],
-                                    "raw": "{{baseUrl}}\/api\/v1\/accounts"
+                                    "query": [
+                                        {
+                                            "key": "per_page",
+                                            "value": "10",
+                                            "description": "The number of items per page.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts?per_page=10"
                                 },
                                 "method": "GET",
                                 "header": [
@@ -241,22 +248,9 @@
                             },
                             "response": [
                                 {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "vary",
-                                            "value": "Origin"
-                                        }
-                                    ],
-                                    "code": 400,
-                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Checking Account\",\n      \"type\": \"checking\",\n      \"balance\": 1000.00,\n      \"open_date\": \"2025-07-01\",\n      \"close_date\": null,\n      \"status\": \"active\",\n      \"created_at\": \"2025-07-01T09:00:00Z\",\n      \"updated_at\": \"2025-07-01T09:00:00Z\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/api.example.com\/accounts?page=1\",\n    \"last\":  \"http:\/\/api.example.com\/accounts?page=1\",\n    \"prev\":  null,\n    \"next\":  null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/api.example.com\/accounts\",\n    \"per_page\": 10,\n    \"to\": 1,\n    \"total\": 1\n  }\n}\n",
                                     "name": ""
                                 }
                             ]
@@ -283,11 +277,30 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"architecto\",\"type\":\"architecto\",\"balance\":39,\"open_date\":\"architecto\",\"close_date\":\"2051-08-06\",\"status\":\"architecto\"}"
+                                    "raw": "{\"name\":\"\\\"Savings Account\\\"\",\"type\":\"\\\"savings\\\"\",\"balance\":1500,\"open_date\":\"\\\"2025-07-01\\\"\",\"close_date\":\"\\\"2025-12-31\\\"\",\"status\":\"\\\"inactive\\\"\"}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n    \"id\": 2,\n    \"name\": \"Savings Account\",\n    \"type\": \"savings\",\n    \"balance\": 1500.00,\n    \"open_date\": \"2025-07-10\",\n    \"close_date\": null,\n    \"status\": \"active\",\n    \"created_at\": \"2025-07-10T10:00:00Z\",\n    \"updated_at\": \"2025-07-10T10:00:00Z\",\n    \"user_id\": 1\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The name field is required. (and 1 more error)\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\"\n    ],\n    \"type\": [\n      \"The selected type is invalid.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_created\",\n  \"error_description\": \"Account has not been created\",\n  \"message\": \"Resource not created\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Find an account.",
@@ -301,7 +314,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -322,22 +335,15 @@
                             },
                             "response": [
                                 {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "vary",
-                                            "value": "Origin"
-                                        }
-                                    ],
-                                    "code": 400,
-                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n    \"id\": 1,\n    \"name\": \"Checking Account\",\n    \"type\": \"checking\",\n    \"balance\": 1000.00,\n    \"open_date\": \"2025-07-01\",\n    \"close_date\": null,\n    \"status\": \"active\",\n    \"created_at\": \"2025-07-01T09:00:00Z\",\n    \"updated_at\": \"2025-07-01T09:00:00Z\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Account could not be found.\",\n  \"message\": \"Resource not found\"\n}",
                                     "name": ""
                                 }
                             ]
@@ -354,7 +360,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -372,11 +378,36 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"architecto\",\"type\":\"architecto\",\"balance\":39,\"open_date\":\"architecto\",\"close_date\":\"2051-08-06\",\"status\":\"architecto\"}"
+                                    "raw": "{\"name\":\"\\\"Savings Account\\\"\",\"type\":\"\\\"savings\\\"\",\"balance\":1500,\"open_date\":\"\\\"2025-07-01\\\"\",\"close_date\":\"\\\"2025-12-31\\\"\",\"status\":\"\\\"inactive\\\"\"}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"id\": 2,\n  \"name\": \"Savings Account Updated\",\n  \"type\": \"savings\",\n  \"balance\": 2500.00,\n  \"open_date\": \"2025-07-16\",\n  \"close_date\": null,\n  \"status\": \"active\",\n  \"created_at\": \"2025-07-10T10:00:00Z\",\n  \"updated_at\": \"2025-07-10T10:00:00Z\",\n  \"user_id\": 1\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Account could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The name field is required. (and 1 more error)\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\"\n    ],\n    \"status\": [\n      \"The selected status is invalid.\"\n    ]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_updated\",\n  \"error_description\": \"Account has not been updated\",\n  \"message\": \"Resource not updated\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Destroy an account",
@@ -390,7 +421,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -409,7 +440,26 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "{}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Account could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_deleted\",\n  \"error_description\": \"Account has not been deleted\",\n  \"message\": \"Resource not deleted\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 },
@@ -500,7 +550,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"architecto\",\"amount\":4326.41688,\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
+                                    "raw": "{\"type\":\"architecto\",\"amount\":\"64\",\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
                                 },
                                 "description": ""
                             },
@@ -589,7 +639,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"architecto\",\"amount\":4326.41688,\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
+                                    "raw": "{\"type\":\"architecto\",\"amount\":\"64\",\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
                                 },
                                 "description": ""
                             },
@@ -656,7 +706,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":4326.41688,\"description\":\"Velit et fugiat sunt nihil accusantium.\"}"
+                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":\"64\",\"description\":\"Fugiat sunt nihil accusantium harum mollitia.\"}"
                                 },
                                 "description": ""
                             },

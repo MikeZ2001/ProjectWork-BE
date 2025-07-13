@@ -1,0 +1,30 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Checking Account",
+      "type": "checking",
+      "balance": 1000.00,
+      "open_date": "2025-07-01",
+      "close_date": null,
+      "status": "active",
+      "created_at": "2025-07-01T09:00:00Z",
+      "updated_at": "2025-07-01T09:00:00Z"
+    }
+  ],
+  "links": {
+    "first": "http://api.example.com/accounts?page=1",
+    "last":  "http://api.example.com/accounts?page=1",
+    "prev":  null,
+    "next":  null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "http://api.example.com/accounts",
+    "per_page": 10,
+    "to": 1,
+    "total": 1
+  }
+}

@@ -20,20 +20,58 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      per_page:
+        name: per_page
+        description: 'The number of items per page.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      per_page: 10
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
-        status: 400
-        content: '{"error":"exception","error_description":"Unauthorized: unable to set cookie","message":"Authentication failed exception."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
+        status: 200
+        content: |
+          {
+            "data": [
+              {
+                "id": 1,
+                "name": "Checking Account",
+                "type": "checking",
+                "balance": 1000.00,
+                "open_date": "2025-07-01",
+                "close_date": null,
+                "status": "active",
+                "created_at": "2025-07-01T09:00:00Z",
+                "updated_at": "2025-07-01T09:00:00Z"
+              }
+            ],
+            "links": {
+              "first": "http://api.example.com/accounts?page=1",
+              "last":  "http://api.example.com/accounts?page=1",
+              "prev":  null,
+              "next":  null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "path": "http://api.example.com/accounts",
+              "per_page": 10,
+              "to": 1,
+              "total": 1
+            }
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth:
@@ -68,73 +106,119 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: ''
-        required: true
-        example: architecto
+        description: 'The account name.'
+        required: false
+        example: '"Savings Account"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       type:
         name: type
-        description: ''
-        required: true
-        example: architecto
+        description: 'The account type.'
+        required: false
+        example: '"savings"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       balance:
         name: balance
-        description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
-        required: true
-        example: 39
+        description: 'The balance.'
+        required: false
+        example: 1500.0
         type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       open_date:
         name: open_date
-        description: ''
-        required: true
-        example: architecto
+        description: 'The opening date.'
+        required: false
+        example: '"2025-07-01"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       close_date:
         name: close_date
-        description: 'Must be a date after or equal to <code>open_date</code>.'
+        description: 'The closing date.'
         required: false
-        example: '2051-08-06'
+        example: '"2025-12-31"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         custom: []
       status:
         name: status
-        description: ''
-        required: true
-        example: architecto
+        description: 'The status.'
+        required: false
+        example: '"inactive"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: architecto
-      type: architecto
-      balance: 39
-      open_date: architecto
-      close_date: '2051-08-06'
-      status: architecto
+      name: '"Savings Account"'
+      type: '"savings"'
+      balance: 1500.0
+      open_date: '"2025-07-01"'
+      close_date: '"2025-12-31"'
+      status: '"inactive"'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "id": 2,
+              "name": "Savings Account",
+              "type": "savings",
+              "balance": 1500.00,
+              "open_date": "2025-07-10",
+              "close_date": null,
+              "status": "active",
+              "created_at": "2025-07-10T10:00:00Z",
+              "updated_at": "2025-07-10T10:00:00Z",
+              "user_id": 1
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "The name field is required. (and 1 more error)",
+            "errors": {
+              "name": [
+                "The name field is required."
+              ],
+              "type": [
+                "The selected type is invalid."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_created",
+            "error_description": "Account has not been created",
+            "message": "Resource not created"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -166,14 +250,14 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -181,13 +265,32 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 400
-        content: '{"error":"exception","error_description":"Unauthorized: unable to set cookie","message":"Authentication failed exception."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
+        status: 200
+        content: |-
+          {
+              "id": 1,
+              "name": "Checking Account",
+              "type": "checking",
+              "balance": 1000.00,
+              "open_date": "2025-07-01",
+              "close_date": null,
+              "status": "active",
+              "created_at": "2025-07-01T09:00:00Z",
+              "updated_at": "2025-07-01T09:00:00Z"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Account could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth:
@@ -221,86 +324,143 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       name:
         name: name
-        description: ''
-        required: true
-        example: architecto
+        description: 'The account name.'
+        required: false
+        example: '"Savings Account"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       type:
         name: type
-        description: ''
-        required: true
-        example: architecto
+        description: 'The account type.'
+        required: false
+        example: '"savings"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       balance:
         name: balance
-        description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
-        required: true
-        example: 39
+        description: 'The balance.'
+        required: false
+        example: 1500.0
         type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       open_date:
         name: open_date
-        description: ''
-        required: true
-        example: architecto
+        description: 'The opening date.'
+        required: false
+        example: '"2025-07-01"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       close_date:
         name: close_date
-        description: 'Must be a date after or equal to <code>open_date</code>.'
+        description: 'The closing date.'
         required: false
-        example: '2051-08-06'
+        example: '"2025-12-31"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         custom: []
       status:
         name: status
-        description: ''
-        required: true
-        example: architecto
+        description: 'The status.'
+        required: false
+        example: '"inactive"'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: architecto
-      type: architecto
-      balance: 39
-      open_date: architecto
-      close_date: '2051-08-06'
-      status: architecto
+      name: '"Savings Account"'
+      type: '"savings"'
+      balance: 1500.0
+      open_date: '"2025-07-01"'
+      close_date: '"2025-12-31"'
+      status: '"inactive"'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 2,
+            "name": "Savings Account Updated",
+            "type": "savings",
+            "balance": 2500.00,
+            "open_date": "2025-07-16",
+            "close_date": null,
+            "status": "active",
+            "created_at": "2025-07-10T10:00:00Z",
+            "updated_at": "2025-07-10T10:00:00Z",
+            "user_id": 1
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Account could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "The name field is required. (and 1 more error)",
+            "errors": {
+              "name": [
+                "The name field is required."
+              ],
+              "status": [
+                "The selected status is invalid."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_updated",
+            "error_description": "Account has not been updated",
+            "message": "Resource not updated"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -332,20 +492,48 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Account could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_deleted",
+            "error_description": "Account has not been deleted",
+            "message": "Resource not deleted"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -454,10 +642,10 @@ endpoints:
         custom: []
       amount:
         name: amount
-        description: ''
+        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
         required: true
-        example: 4326.41688
-        type: number
+        example: '64'
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -494,7 +682,7 @@ endpoints:
         custom: []
     cleanBodyParameters:
       type: architecto
-      amount: 4326.41688
+      amount: '64'
       transaction_date: architecto
       description: 'Eius et animi quos velit et.'
       category_id: 16
@@ -609,10 +797,10 @@ endpoints:
         custom: []
       amount:
         name: amount
-        description: ''
+        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
         required: true
-        example: 4326.41688
-        type: number
+        example: '64'
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -649,7 +837,7 @@ endpoints:
         custom: []
     cleanBodyParameters:
       type: architecto
-      amount: 4326.41688
+      amount: '64'
       transaction_date: architecto
       description: 'Eius et animi quos velit et.'
       category_id: 16
@@ -753,10 +941,10 @@ endpoints:
         custom: []
       amount:
         name: amount
-        description: ''
+        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
         required: true
-        example: 4326.41688
-        type: number
+        example: '64'
+        type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -765,7 +953,7 @@ endpoints:
         name: description
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: 'Velit et fugiat sunt nihil accusantium.'
+        example: 'Fugiat sunt nihil accusantium harum mollitia.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -774,8 +962,8 @@ endpoints:
     cleanBodyParameters:
       from_account_id: 16
       to_account_id: 16
-      amount: 4326.41688
-      description: 'Velit et fugiat sunt nihil accusantium.'
+      amount: '64'
+      description: 'Fugiat sunt nihil accusantium harum mollitia.'
     fileParameters: []
     responses: []
     responseFields: []

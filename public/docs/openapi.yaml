@@ -158,28 +158,133 @@ paths:
       summary: 'Find all paginated accounts.'
       operationId: findAllPaginatedAccounts
       description: ''
-      parameters: []
+      parameters:
+        -
+          in: query
+          name: per_page
+          description: 'The number of items per page.'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'The number of items per page.'
+            example: 10
+            nullable: false
       responses:
-        400:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  error: exception
-                  error_description: 'Unauthorized: unable to set cookie'
-                  message: 'Authentication failed exception.'
+                  data:
+                    -
+                      id: 1
+                      name: 'Checking Account'
+                      type: checking
+                      balance: 1000.0
+                      open_date: '2025-07-01'
+                      close_date: null
+                      status: active
+                      created_at: '2025-07-01T09:00:00Z'
+                      updated_at: '2025-07-01T09:00:00Z'
+                  links:
+                    first: 'http://api.example.com/accounts?page=1'
+                    last: 'http://api.example.com/accounts?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    path: 'http://api.example.com/accounts'
+                    per_page: 10
+                    to: 1
+                    total: 1
                 properties:
-                  error:
-                    type: string
-                    example: exception
-                  error_description:
-                    type: string
-                    example: 'Unauthorized: unable to set cookie'
-                  message:
-                    type: string
-                    example: 'Authentication failed exception.'
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Checking Account'
+                        type: checking
+                        balance: 1000
+                        open_date: '2025-07-01'
+                        close_date: null
+                        status: active
+                        created_at: '2025-07-01T09:00:00Z'
+                        updated_at: '2025-07-01T09:00:00Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Checking Account'
+                        type:
+                          type: string
+                          example: checking
+                        balance:
+                          type: number
+                          example: 1000.0
+                        open_date:
+                          type: string
+                          example: '2025-07-01'
+                        close_date:
+                          type: string
+                          example: null
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2025-07-01T09:00:00Z'
+                        updated_at:
+                          type: string
+                          example: '2025-07-01T09:00:00Z'
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://api.example.com/accounts?page=1'
+                      last:
+                        type: string
+                        example: 'http://api.example.com/accounts?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      path:
+                        type: string
+                        example: 'http://api.example.com/accounts'
+                      per_page:
+                        type: integer
+                        example: 10
+                      to:
+                        type: integer
+                        example: 1
+                      total:
+                        type: integer
+                        example: 1
       tags:
         - Modules
     post:
@@ -187,11 +292,111 @@ paths:
       operationId: storeAnAccount
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 2
+                  name: 'Savings Account'
+                  type: savings
+                  balance: 1500.0
+                  open_date: '2025-07-10'
+                  close_date: null
+                  status: active
+                  created_at: '2025-07-10T10:00:00Z'
+                  updated_at: '2025-07-10T10:00:00Z'
+                  user_id: 1
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: 'Savings Account'
+                  type:
+                    type: string
+                    example: savings
+                  balance:
+                    type: number
+                    example: 1500.0
+                  open_date:
+                    type: string
+                    example: '2025-07-10'
+                  close_date:
+                    type: string
+                    example: null
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2025-07-10T10:00:00Z'
+                  updated_at:
+                    type: string
+                    example: '2025-07-10T10:00:00Z'
+                  user_id:
+                    type: integer
+                    example: 1
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The name field is required. (and 1 more error)'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                    type:
+                      - 'The selected type is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The name field is required. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
+                      type:
+                        type: array
+                        example:
+                          - 'The selected type is invalid.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_created
+                  error_description: 'Account has not been created'
+                  message: 'Resource not created'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_created
+                  error_description:
+                    type: string
+                    example: 'Account has not been created'
+                  message:
+                    type: string
+                    example: 'Resource not created'
       tags:
         - Modules
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -199,40 +404,34 @@ paths:
               properties:
                 name:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The account name.'
+                  example: '"Savings Account"'
                   nullable: false
                 type:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The account type.'
+                  example: '"savings"'
                   nullable: false
                 balance:
                   type: number
-                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
-                  example: 39
+                  description: 'The balance.'
+                  example: 1500.0
                   nullable: false
                 open_date:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The opening date.'
+                  example: '"2025-07-01"'
                   nullable: false
                 close_date:
                   type: string
-                  description: 'Must be a date after or equal to <code>open_date</code>.'
-                  example: '2051-08-06'
+                  description: 'The closing date.'
+                  example: '"2025-12-31"'
                   nullable: true
                 status:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The status.'
+                  example: '"inactive"'
                   nullable: false
-              required:
-                - name
-                - type
-                - balance
-                - open_date
-                - status
   '/api/v1/accounts/{id}':
     get:
       summary: 'Find an account.'
@@ -240,26 +439,70 @@ paths:
       description: ''
       parameters: []
       responses:
-        400:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  error: exception
-                  error_description: 'Unauthorized: unable to set cookie'
-                  message: 'Authentication failed exception.'
+                  id: 1
+                  name: 'Checking Account'
+                  type: checking
+                  balance: 1000.0
+                  open_date: '2025-07-01'
+                  close_date: null
+                  status: active
+                  created_at: '2025-07-01T09:00:00Z'
+                  updated_at: '2025-07-01T09:00:00Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Checking Account'
+                  type:
+                    type: string
+                    example: checking
+                  balance:
+                    type: number
+                    example: 1000.0
+                  open_date:
+                    type: string
+                    example: '2025-07-01'
+                  close_date:
+                    type: string
+                    example: null
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2025-07-01T09:00:00Z'
+                  updated_at:
+                    type: string
+                    example: '2025-07-01T09:00:00Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Account could not be found.'
+                  message: 'Resource not found'
                 properties:
                   error:
                     type: string
-                    example: exception
+                    example: resource_not_found
                   error_description:
                     type: string
-                    example: 'Unauthorized: unable to set cookie'
+                    example: 'Account could not be found.'
                   message:
                     type: string
-                    example: 'Authentication failed exception.'
+                    example: 'Resource not found'
       tags:
         - Modules
     put:
@@ -267,11 +510,131 @@ paths:
       operationId: updateAnAccount
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 2
+                  name: 'Savings Account Updated'
+                  type: savings
+                  balance: 2500.0
+                  open_date: '2025-07-16'
+                  close_date: null
+                  status: active
+                  created_at: '2025-07-10T10:00:00Z'
+                  updated_at: '2025-07-10T10:00:00Z'
+                  user_id: 1
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: 'Savings Account Updated'
+                  type:
+                    type: string
+                    example: savings
+                  balance:
+                    type: number
+                    example: 2500.0
+                  open_date:
+                    type: string
+                    example: '2025-07-16'
+                  close_date:
+                    type: string
+                    example: null
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2025-07-10T10:00:00Z'
+                  updated_at:
+                    type: string
+                    example: '2025-07-10T10:00:00Z'
+                  user_id:
+                    type: integer
+                    example: 1
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Account could not be found.'
+                  message: 'Resource not found'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_found
+                  error_description:
+                    type: string
+                    example: 'Account could not be found.'
+                  message:
+                    type: string
+                    example: 'Resource not found'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The name field is required. (and 1 more error)'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                    status:
+                      - 'The selected status is invalid.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The name field is required. (and 1 more error)'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                        items:
+                          type: string
+                      status:
+                        type: array
+                        example:
+                          - 'The selected status is invalid.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_updated
+                  error_description: 'Account has not been updated'
+                  message: 'Resource not updated'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_updated
+                  error_description:
+                    type: string
+                    example: 'Account has not been updated'
+                  message:
+                    type: string
+                    example: 'Resource not updated'
       tags:
         - Modules
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -279,46 +642,82 @@ paths:
               properties:
                 name:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The account name.'
+                  example: '"Savings Account"'
                   nullable: false
                 type:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The account type.'
+                  example: '"savings"'
                   nullable: false
                 balance:
                   type: number
-                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
-                  example: 39
+                  description: 'The balance.'
+                  example: 1500.0
                   nullable: false
                 open_date:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The opening date.'
+                  example: '"2025-07-01"'
                   nullable: false
                 close_date:
                   type: string
-                  description: 'Must be a date after or equal to <code>open_date</code>.'
-                  example: '2051-08-06'
+                  description: 'The closing date.'
+                  example: '"2025-12-31"'
                   nullable: true
                 status:
                   type: string
-                  description: ''
-                  example: architecto
+                  description: 'The status.'
+                  example: '"inactive"'
                   nullable: false
-              required:
-                - name
-                - type
-                - balance
-                - open_date
-                - status
     delete:
       summary: 'Destroy an account'
       operationId: destroyAnAccount
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        204:
+          description: ''
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Account could not be found.'
+                  message: 'Resource not found'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_found
+                  error_description:
+                    type: string
+                    example: 'Account could not be found.'
+                  message:
+                    type: string
+                    example: 'Resource not found'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_deleted
+                  error_description: 'Account has not been deleted'
+                  message: 'Resource not deleted'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_deleted
+                  error_description:
+                    type: string
+                    example: 'Account has not been deleted'
+                  message:
+                    type: string
+                    example: 'Resource not deleted'
       tags:
         - Modules
     parameters:
@@ -326,10 +725,10 @@ paths:
         in: path
         name: id
         description: 'The ID of the account.'
-        example: architecto
+        example: 1
         required: true
         schema:
-          type: string
+          type: integer
   '/api/v1/accounts/{account_id}/transactions':
     get:
       summary: 'Find and paginates all transactions for logged user and for selected account.'
@@ -380,9 +779,9 @@ paths:
                   example: architecto
                   nullable: false
                 amount:
-                  type: number
-                  description: ''
-                  example: 4326.41688
+                  type: string
+                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+                  example: '64'
                   nullable: false
                 transaction_date:
                   type: string
@@ -463,9 +862,9 @@ paths:
                   example: architecto
                   nullable: false
                 amount:
-                  type: number
-                  description: ''
-                  example: 4326.41688
+                  type: string
+                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+                  example: '64'
                   nullable: false
                 transaction_date:
                   type: string
@@ -531,14 +930,14 @@ paths:
                   example: 16
                   nullable: false
                 amount:
-                  type: number
-                  description: ''
-                  example: 4326.41688
+                  type: string
+                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+                  example: '64'
                   nullable: false
                 description:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: 'Velit et fugiat sunt nihil accusantium.'
+                  example: 'Fugiat sunt nihil accusantium harum mollitia.'
                   nullable: true
               required:
                 - from_account_id

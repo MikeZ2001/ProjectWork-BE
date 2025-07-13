@@ -25,7 +25,7 @@ class TransferRequest extends BaseFormRequest
         return [
             'from_account_id' => 'required|integer',
             'to_account_id' => 'required|integer|different:from_account_id',
-            'amount' => 'required|numeric|gt:0',
+            'amount' => 'required|numeric|gt:0|regex:/^\d{1,13}(\.\d{1,2})?$/',
             'description' => 'nullable|string|max:255',
         ];
     }

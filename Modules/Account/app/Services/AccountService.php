@@ -45,7 +45,6 @@ readonly class AccountService
         try {
             return $this->accountRepository->create($account);
         } catch (Throwable $ex) {
-            dump($ex->getMessage());
             throw new ResourceNotCreatedException("Account could not be created.", previous: $ex);
         }
     }

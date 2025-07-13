@@ -29,6 +29,9 @@ class AccountController extends Controller
     /**
      * Find all paginated accounts.
      *
+     * @queryParam per_page integer The number of items per page. Example: 10
+     * @responseFile 200 storage/responses/accounts/index-success.json
+     *
      * @authenticated
      */
     public function index(Request $request): AnonymousResourceCollection
@@ -43,6 +46,10 @@ class AccountController extends Controller
      * @param  AccountRequest  $request
      * @return AccountResource
      * @throws ResourceNotCreatedException
+     *
+     * @responseFile 201 storage/responses/accounts/create-success.json
+     * @responseFile 422 storage/responses/accounts/create-validation-error.json
+     * @responseFile 500 storage/responses/accounts/create-error.json
      */
     public function store(AccountRequest $request): AccountResource
     {
@@ -53,8 +60,13 @@ class AccountController extends Controller
      * Find an account.
      *
      * @param  int  $id
-     * @return Account
+     * @return AccountResource
      * @throws ResourceNotFoundException
+     *
+     * @responseFile 200 storage/responses/accounts/show-success.json
+     * @responseFile 404 storage/responses/accounts/not-found.json
+     *
+     * @urlParam id integer required The ID of the account. Example: 1
      */
     public function show(int $id): AccountResource
     {
@@ -66,9 +78,16 @@ class AccountController extends Controller
      *
      * @param  AccountRequest  $request
      * @param  int  $id
-     * @return Account
+     * @return AccountResource
      * @throws ResourceNotFoundException
      * @throws ResourceNotUpdatedException
+     *
+     * @responseFile 200 storage/responses/accounts/update-success.json
+     * @responseFile 422 storage/responses/accounts/update-validation-error.json
+     * @responseFile 404 storage/responses/accounts/not-found.json
+     * @responseFile 500 storage/responses/accounts/update-error.json
+     *
+     * @urlParam id integer required The ID of the account. Example: 1
      */
     public function update(AccountRequest $request, int $id): AccountResource
     {
@@ -80,6 +99,12 @@ class AccountController extends Controller
      *
      * @throws ResourceNotFoundException
      * @throws ResourceNotDeletedException
+     *
+     * @response 204
+     * @responseFile 404 storage/responses/accounts/not-found.json
+     * @responseFile 500 storage/responses/accounts/delete-error.json
+     *
+     * @urlParam id integer required The ID of the account. Example: 1
      */
     public function destroy(int $id): Response
     {

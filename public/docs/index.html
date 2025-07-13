@@ -1049,7 +1049,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/accounts" \
+    --get "http://localhost:8000/api/v1/accounts?per_page=10" \
     --header "Authorization: Bearer {YOUR_ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1059,6 +1059,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/v1/accounts"
 );
+
+const params = {
+    "per_page": "10",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_ACCESS_TOKEN}",
@@ -1083,6 +1089,9 @@ $response = $client-&gt;get(
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
+        'query' =&gt; [
+            'per_page' =&gt; '10',
+        ],
     ]
 );
 $body = $response-&gt;getBody();
@@ -1094,34 +1103,55 @@ print_r(json_decode((string) $body));</code></pre></div>
 import json
 
 url = 'http://localhost:8000/api/v1/accounts'
+params = {
+  'per_page': '10',
+}
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
   'Content-Type': 'application/json',
   'Accept': 'application/json'
 }
 
-response = requests.request('GET', url, headers=headers)
+response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre></div>
 
 </span>
 
 <span id="example-responses-GETapi-v1-accounts">
             <blockquote>
-            <p>Example response (400):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-vary: Origin
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;error&quot;: &quot;exception&quot;,
-    &quot;error_description&quot;: &quot;Unauthorized: unable to set cookie&quot;,
-    &quot;message&quot;: &quot;Authentication failed exception.&quot;
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;name&quot;: &quot;Checking Account&quot;,
+            &quot;type&quot;: &quot;checking&quot;,
+            &quot;balance&quot;: 1000,
+            &quot;open_date&quot;: &quot;2025-07-01&quot;,
+            &quot;close_date&quot;: null,
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;created_at&quot;: &quot;2025-07-01T09:00:00Z&quot;,
+            &quot;updated_at&quot;: &quot;2025-07-01T09:00:00Z&quot;
+        }
+    ],
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://api.example.com/accounts?page=1&quot;,
+        &quot;last&quot;: &quot;http://api.example.com/accounts?page=1&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: null
+    },
+    &quot;meta&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;path&quot;: &quot;http://api.example.com/accounts&quot;,
+        &quot;per_page&quot;: 10,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
 }</code>
  </pre>
     </span>
@@ -1188,7 +1218,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="per_page"                data-endpoint="GETapi-v1-accounts"
+               value="10"
+               data-component="query">
+    <br>
+<p>The number of items per page. Example: <code>10</code></p>
+            </div>
+                </form>
 
                     <h2 id="modules-POSTapi-v1-accounts">Store an account.</h2>
 
@@ -1209,12 +1251,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"architecto\",
-    \"type\": \"architecto\",
-    \"balance\": 39,
-    \"open_date\": \"architecto\",
-    \"close_date\": \"2051-08-06\",
-    \"status\": \"architecto\"
+    \"name\": \"\\\"Savings Account\\\"\",
+    \"type\": \"\\\"savings\\\"\",
+    \"balance\": 1500,
+    \"open_date\": \"\\\"2025-07-01\\\"\",
+    \"close_date\": \"\\\"2025-12-31\\\"\",
+    \"status\": \"\\\"inactive\\\"\"
 }"
 </code></pre></div>
 
@@ -1231,12 +1273,12 @@ const headers = {
 };
 
 let body = {
-    "name": "architecto",
-    "type": "architecto",
-    "balance": 39,
-    "open_date": "architecto",
-    "close_date": "2051-08-06",
-    "status": "architecto"
+    "name": "\"Savings Account\"",
+    "type": "\"savings\"",
+    "balance": 1500,
+    "open_date": "\"2025-07-01\"",
+    "close_date": "\"2025-12-31\"",
+    "status": "\"inactive\""
 };
 
 fetch(url, {
@@ -1258,12 +1300,12 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'architecto',
-            'type' =&gt; 'architecto',
-            'balance' =&gt; 39,
-            'open_date' =&gt; 'architecto',
-            'close_date' =&gt; '2051-08-06',
-            'status' =&gt; 'architecto',
+            'name' =&gt; '"Savings Account"',
+            'type' =&gt; '"savings"',
+            'balance' =&gt; 1500.0,
+            'open_date' =&gt; '"2025-07-01"',
+            'close_date' =&gt; '"2025-12-31"',
+            'status' =&gt; '"inactive"',
         ],
     ]
 );
@@ -1277,12 +1319,12 @@ import json
 
 url = 'http://localhost:8000/api/v1/accounts'
 payload = {
-    "name": "architecto",
-    "type": "architecto",
-    "balance": 39,
-    "open_date": "architecto",
-    "close_date": "2051-08-06",
-    "status": "architecto"
+    "name": "\"Savings Account\"",
+    "type": "\"savings\"",
+    "balance": 1500,
+    "open_date": "\"2025-07-01\"",
+    "close_date": "\"2025-12-31\"",
+    "status": "\"inactive\""
 }
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
@@ -1296,7 +1338,53 @@ response.json()</code></pre></div>
 </span>
 
 <span id="example-responses-POSTapi-v1-accounts">
-</span>
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 2,
+    &quot;name&quot;: &quot;Savings Account&quot;,
+    &quot;type&quot;: &quot;savings&quot;,
+    &quot;balance&quot;: 1500,
+    &quot;open_date&quot;: &quot;2025-07-10&quot;,
+    &quot;close_date&quot;: null,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created_at&quot;: &quot;2025-07-10T10:00:00Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-10T10:00:00Z&quot;,
+    &quot;user_id&quot;: 1
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The name field is required. (and 1 more error)&quot;,
+    &quot;errors&quot;: {
+        &quot;name&quot;: [
+            &quot;The name field is required.&quot;
+        ],
+        &quot;type&quot;: [
+            &quot;The selected type is invalid.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_created&quot;,
+    &quot;error_description&quot;: &quot;Account has not been created&quot;,
+    &quot;message&quot;: &quot;Resource not created&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-accounts" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-accounts"></span>:
@@ -1364,46 +1452,46 @@ You can check the Dev Tools console for debugging information.</code></pre>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-v1-accounts"
-               value="architecto"
+               value=""Savings Account""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The account name. Example: <code>"Savings Account"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="type"                data-endpoint="POSTapi-v1-accounts"
-               value="architecto"
+               value=""savings""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The account type. Example: <code>"savings"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>balance</code></b>&nbsp;&nbsp;
 <small>number</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="balance"                data-endpoint="POSTapi-v1-accounts"
-               value="39"
+               value="1500"
                data-component="body">
     <br>
-<p>Must match the regex /^\d+(.\d{1,2})?$/. Must be at least 0. Example: <code>39</code></p>
+<p>The balance. Example: <code>1500</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>open_date</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="open_date"                data-endpoint="POSTapi-v1-accounts"
-               value="architecto"
+               value=""2025-07-01""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The opening date. Example: <code>"2025-07-01"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>close_date</code></b>&nbsp;&nbsp;
@@ -1411,21 +1499,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="close_date"                data-endpoint="POSTapi-v1-accounts"
-               value="2051-08-06"
+               value=""2025-12-31""
                data-component="body">
     <br>
-<p>Must be a date after or equal to <code>open_date</code>. Example: <code>2051-08-06</code></p>
+<p>The closing date. Example: <code>"2025-12-31"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-accounts"
-               value="architecto"
+               value=""inactive""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The status. Example: <code>"inactive"</code></p>
         </div>
         </form>
 
@@ -1443,7 +1531,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/accounts/architecto" \
+    --get "http://localhost:8000/api/v1/accounts/1" \
     --header "Authorization: Bearer {YOUR_ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1451,7 +1539,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/accounts/architecto"
+    "http://localhost:8000/api/v1/accounts/1"
 );
 
 const headers = {
@@ -1468,7 +1556,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/api/v1/accounts/architecto';
+$url = 'http://localhost:8000/api/v1/accounts/1';
 $response = $client-&gt;get(
     $url,
     [
@@ -1487,7 +1575,7 @@ print_r(json_decode((string) $body));</code></pre></div>
     <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost:8000/api/v1/accounts/architecto'
+url = 'http://localhost:8000/api/v1/accounts/1'
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
   'Content-Type': 'application/json',
@@ -1501,21 +1589,31 @@ response.json()</code></pre></div>
 
 <span id="example-responses-GETapi-v1-accounts--id-">
             <blockquote>
-            <p>Example response (400):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-vary: Origin
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;error&quot;: &quot;exception&quot;,
-    &quot;error_description&quot;: &quot;Unauthorized: unable to set cookie&quot;,
-    &quot;message&quot;: &quot;Authentication failed exception.&quot;
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Checking Account&quot;,
+    &quot;type&quot;: &quot;checking&quot;,
+    &quot;balance&quot;: 1000,
+    &quot;open_date&quot;: &quot;2025-07-01&quot;,
+    &quot;close_date&quot;: null,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created_at&quot;: &quot;2025-07-01T09:00:00Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-01T09:00:00Z&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_found&quot;,
+    &quot;error_description&quot;: &quot;Account could not be found.&quot;,
+    &quot;message&quot;: &quot;Resource not found&quot;
 }</code>
  </pre>
     </span>
@@ -1585,14 +1683,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="GETapi-v1-accounts--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="GETapi-v1-accounts--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the account. Example: <code>architecto</code></p>
+<p>The ID of the account. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -1610,24 +1708,24 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/api/v1/accounts/architecto" \
+    "http://localhost:8000/api/v1/accounts/1" \
     --header "Authorization: Bearer {YOUR_ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"architecto\",
-    \"type\": \"architecto\",
-    \"balance\": 39,
-    \"open_date\": \"architecto\",
-    \"close_date\": \"2051-08-06\",
-    \"status\": \"architecto\"
+    \"name\": \"\\\"Savings Account\\\"\",
+    \"type\": \"\\\"savings\\\"\",
+    \"balance\": 1500,
+    \"open_date\": \"\\\"2025-07-01\\\"\",
+    \"close_date\": \"\\\"2025-12-31\\\"\",
+    \"status\": \"\\\"inactive\\\"\"
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/accounts/architecto"
+    "http://localhost:8000/api/v1/accounts/1"
 );
 
 const headers = {
@@ -1637,12 +1735,12 @@ const headers = {
 };
 
 let body = {
-    "name": "architecto",
-    "type": "architecto",
-    "balance": 39,
-    "open_date": "architecto",
-    "close_date": "2051-08-06",
-    "status": "architecto"
+    "name": "\"Savings Account\"",
+    "type": "\"savings\"",
+    "balance": 1500,
+    "open_date": "\"2025-07-01\"",
+    "close_date": "\"2025-12-31\"",
+    "status": "\"inactive\""
 };
 
 fetch(url, {
@@ -1654,7 +1752,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/api/v1/accounts/architecto';
+$url = 'http://localhost:8000/api/v1/accounts/1';
 $response = $client-&gt;put(
     $url,
     [
@@ -1664,12 +1762,12 @@ $response = $client-&gt;put(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'architecto',
-            'type' =&gt; 'architecto',
-            'balance' =&gt; 39,
-            'open_date' =&gt; 'architecto',
-            'close_date' =&gt; '2051-08-06',
-            'status' =&gt; 'architecto',
+            'name' =&gt; '"Savings Account"',
+            'type' =&gt; '"savings"',
+            'balance' =&gt; 1500.0,
+            'open_date' =&gt; '"2025-07-01"',
+            'close_date' =&gt; '"2025-12-31"',
+            'status' =&gt; '"inactive"',
         ],
     ]
 );
@@ -1681,14 +1779,14 @@ print_r(json_decode((string) $body));</code></pre></div>
     <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost:8000/api/v1/accounts/architecto'
+url = 'http://localhost:8000/api/v1/accounts/1'
 payload = {
-    "name": "architecto",
-    "type": "architecto",
-    "balance": 39,
-    "open_date": "architecto",
-    "close_date": "2051-08-06",
-    "status": "architecto"
+    "name": "\"Savings Account\"",
+    "type": "\"savings\"",
+    "balance": 1500,
+    "open_date": "\"2025-07-01\"",
+    "close_date": "\"2025-12-31\"",
+    "status": "\"inactive\""
 }
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
@@ -1702,7 +1800,64 @@ response.json()</code></pre></div>
 </span>
 
 <span id="example-responses-PUTapi-v1-accounts--id-">
-</span>
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 2,
+    &quot;name&quot;: &quot;Savings Account Updated&quot;,
+    &quot;type&quot;: &quot;savings&quot;,
+    &quot;balance&quot;: 2500,
+    &quot;open_date&quot;: &quot;2025-07-16&quot;,
+    &quot;close_date&quot;: null,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created_at&quot;: &quot;2025-07-10T10:00:00Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-10T10:00:00Z&quot;,
+    &quot;user_id&quot;: 1
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_found&quot;,
+    &quot;error_description&quot;: &quot;Account could not be found.&quot;,
+    &quot;message&quot;: &quot;Resource not found&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The name field is required. (and 1 more error)&quot;,
+    &quot;errors&quot;: {
+        &quot;name&quot;: [
+            &quot;The name field is required.&quot;
+        ],
+        &quot;status&quot;: [
+            &quot;The selected status is invalid.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_updated&quot;,
+    &quot;error_description&quot;: &quot;Account has not been updated&quot;,
+    &quot;message&quot;: &quot;Resource not updated&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PUTapi-v1-accounts--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PUTapi-v1-accounts--id-"></span>:
@@ -1773,59 +1928,59 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="PUTapi-v1-accounts--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the account. Example: <code>architecto</code></p>
+<p>The ID of the account. Example: <code>1</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="architecto"
+               value=""Savings Account""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The account name. Example: <code>"Savings Account"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="type"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="architecto"
+               value=""savings""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The account type. Example: <code>"savings"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>balance</code></b>&nbsp;&nbsp;
 <small>number</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="balance"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="39"
+               value="1500"
                data-component="body">
     <br>
-<p>Must match the regex /^\d+(.\d{1,2})?$/. Must be at least 0. Example: <code>39</code></p>
+<p>The balance. Example: <code>1500</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>open_date</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="open_date"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="architecto"
+               value=""2025-07-01""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The opening date. Example: <code>"2025-07-01"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>close_date</code></b>&nbsp;&nbsp;
@@ -1833,21 +1988,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="close_date"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="2051-08-06"
+               value=""2025-12-31""
                data-component="body">
     <br>
-<p>Must be a date after or equal to <code>open_date</code>. Example: <code>2051-08-06</code></p>
+<p>The closing date. Example: <code>"2025-12-31"</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-accounts--id-"
-               value="architecto"
+               value=""inactive""
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>The status. Example: <code>"inactive"</code></p>
         </div>
         </form>
 
@@ -1865,7 +2020,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/api/v1/accounts/architecto" \
+    "http://localhost:8000/api/v1/accounts/1" \
     --header "Authorization: Bearer {YOUR_ACCESS_TOKEN}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1873,7 +2028,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/accounts/architecto"
+    "http://localhost:8000/api/v1/accounts/1"
 );
 
 const headers = {
@@ -1890,7 +2045,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost:8000/api/v1/accounts/architecto';
+$url = 'http://localhost:8000/api/v1/accounts/1';
 $response = $client-&gt;delete(
     $url,
     [
@@ -1909,7 +2064,7 @@ print_r(json_decode((string) $body));</code></pre></div>
     <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost:8000/api/v1/accounts/architecto'
+url = 'http://localhost:8000/api/v1/accounts/1'
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
   'Content-Type': 'application/json',
@@ -1922,7 +2077,35 @@ response.json()</code></pre></div>
 </span>
 
 <span id="example-responses-DELETEapi-v1-accounts--id-">
-</span>
+            <blockquote>
+            <p>Example response (204):</p>
+        </blockquote>
+                <pre>
+<code>Empty response</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_found&quot;,
+    &quot;error_description&quot;: &quot;Account could not be found.&quot;,
+    &quot;message&quot;: &quot;Resource not found&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_deleted&quot;,
+    &quot;error_description&quot;: &quot;Account has not been deleted&quot;,
+    &quot;message&quot;: &quot;Resource not deleted&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-DELETEapi-v1-accounts--id-" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-DELETEapi-v1-accounts--id-"></span>:
@@ -1989,14 +2172,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
                         <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="id"                data-endpoint="DELETEapi-v1-accounts--id-"
-               value="architecto"
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="DELETEapi-v1-accounts--id-"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the account. Example: <code>architecto</code></p>
+<p>The ID of the account. Example: <code>1</code></p>
             </div>
                     </form>
 
@@ -2188,7 +2371,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"type\": \"architecto\",
-    \"amount\": 4326.41688,
+    \"amount\": \"64\",
     \"transaction_date\": \"architecto\",
     \"description\": \"Eius et animi quos velit et.\",
     \"category_id\": 16
@@ -2209,7 +2392,7 @@ const headers = {
 
 let body = {
     "type": "architecto",
-    "amount": 4326.41688,
+    "amount": "64",
     "transaction_date": "architecto",
     "description": "Eius et animi quos velit et.",
     "category_id": 16
@@ -2235,7 +2418,7 @@ $response = $client-&gt;post(
         ],
         'json' =&gt; [
             'type' =&gt; 'architecto',
-            'amount' =&gt; 4326.41688,
+            'amount' =&gt; '64',
             'transaction_date' =&gt; 'architecto',
             'description' =&gt; 'Eius et animi quos velit et.',
             'category_id' =&gt; 16,
@@ -2253,7 +2436,7 @@ import json
 url = 'http://localhost:8000/api/v1/accounts/architecto/transactions'
 payload = {
     "type": "architecto",
-    "amount": 4326.41688,
+    "amount": "64",
     "transaction_date": "architecto",
     "description": "Eius et animi quos velit et.",
     "category_id": 16
@@ -2360,14 +2543,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
-<small>number</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="amount"                data-endpoint="POSTapi-v1-accounts--account_id--transactions"
-               value="4326.41688"
+                <input type="text" style="display: none"
+                              name="amount"                data-endpoint="POSTapi-v1-accounts--account_id--transactions"
+               value="64"
                data-component="body">
     <br>
-<p>Example: <code>4326.41688</code></p>
+<p>Must match the regex /^\d+(.\d{1,2})?$/. Example: <code>64</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>transaction_date</code></b>&nbsp;&nbsp;
@@ -2591,7 +2774,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"type\": \"architecto\",
-    \"amount\": 4326.41688,
+    \"amount\": \"64\",
     \"transaction_date\": \"architecto\",
     \"description\": \"Eius et animi quos velit et.\",
     \"category_id\": 16
@@ -2612,7 +2795,7 @@ const headers = {
 
 let body = {
     "type": "architecto",
-    "amount": 4326.41688,
+    "amount": "64",
     "transaction_date": "architecto",
     "description": "Eius et animi quos velit et.",
     "category_id": 16
@@ -2638,7 +2821,7 @@ $response = $client-&gt;put(
         ],
         'json' =&gt; [
             'type' =&gt; 'architecto',
-            'amount' =&gt; 4326.41688,
+            'amount' =&gt; '64',
             'transaction_date' =&gt; 'architecto',
             'description' =&gt; 'Eius et animi quos velit et.',
             'category_id' =&gt; 16,
@@ -2656,7 +2839,7 @@ import json
 url = 'http://localhost:8000/api/v1/transactions/architecto'
 payload = {
     "type": "architecto",
-    "amount": 4326.41688,
+    "amount": "64",
     "transaction_date": "architecto",
     "description": "Eius et animi quos velit et.",
     "category_id": 16
@@ -2767,14 +2950,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
-<small>number</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="amount"                data-endpoint="PUTapi-v1-transactions--id-"
-               value="4326.41688"
+                <input type="text" style="display: none"
+                              name="amount"                data-endpoint="PUTapi-v1-transactions--id-"
+               value="64"
                data-component="body">
     <br>
-<p>Example: <code>4326.41688</code></p>
+<p>Must match the regex /^\d+(.\d{1,2})?$/. Example: <code>64</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>transaction_date</code></b>&nbsp;&nbsp;
@@ -2982,8 +3165,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"from_account_id\": 16,
     \"to_account_id\": 16,
-    \"amount\": 4326.41688,
-    \"description\": \"Velit et fugiat sunt nihil accusantium.\"
+    \"amount\": \"64\",
+    \"description\": \"Fugiat sunt nihil accusantium harum mollitia.\"
 }"
 </code></pre></div>
 
@@ -3002,8 +3185,8 @@ const headers = {
 let body = {
     "from_account_id": 16,
     "to_account_id": 16,
-    "amount": 4326.41688,
-    "description": "Velit et fugiat sunt nihil accusantium."
+    "amount": "64",
+    "description": "Fugiat sunt nihil accusantium harum mollitia."
 };
 
 fetch(url, {
@@ -3027,8 +3210,8 @@ $response = $client-&gt;post(
         'json' =&gt; [
             'from_account_id' =&gt; 16,
             'to_account_id' =&gt; 16,
-            'amount' =&gt; 4326.41688,
-            'description' =&gt; 'Velit et fugiat sunt nihil accusantium.',
+            'amount' =&gt; '64',
+            'description' =&gt; 'Fugiat sunt nihil accusantium harum mollitia.',
         ],
     ]
 );
@@ -3044,8 +3227,8 @@ url = 'http://localhost:8000/api/v1/transfers'
 payload = {
     "from_account_id": 16,
     "to_account_id": 16,
-    "amount": 4326.41688,
-    "description": "Velit et fugiat sunt nihil accusantium."
+    "amount": "64",
+    "description": "Fugiat sunt nihil accusantium harum mollitia."
 }
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
@@ -3148,14 +3331,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
-<small>number</small>&nbsp;
+<small>string</small>&nbsp;
  &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="amount"                data-endpoint="POSTapi-v1-transfers"
-               value="4326.41688"
+                <input type="text" style="display: none"
+                              name="amount"                data-endpoint="POSTapi-v1-transfers"
+               value="64"
                data-component="body">
     <br>
-<p>Example: <code>4326.41688</code></p>
+<p>Must match the regex /^\d+(.\d{1,2})?$/. Example: <code>64</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
@@ -3163,10 +3346,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="POSTapi-v1-transfers"
-               value="Velit et fugiat sunt nihil accusantium."
+               value="Fugiat sunt nihil accusantium harum mollitia."
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>Velit et fugiat sunt nihil accusantium.</code></p>
+<p>Must not be greater than 255 characters. Example: <code>Fugiat sunt nihil accusantium harum mollitia.</code></p>
         </div>
         </form>
 

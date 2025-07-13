@@ -20,6 +20,7 @@ class Account extends Model
 
     protected $casts = [
         'status' => AccountStatus::class,
-        'type' => AccountType::class
+        'type' => AccountType::class,
+        'balance' => 'decimal:2'
     ];
 }
