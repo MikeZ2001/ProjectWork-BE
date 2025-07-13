@@ -4,6 +4,7 @@ namespace Modules\OAuth\Services;
 
 use App\Exceptions\ResourceNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 use Laravel\Passport\RefreshTokenRepository;
@@ -68,6 +69,11 @@ readonly class AuthenticationService {
         if ($response !== 1) {
             throw new LogoutException("Refresh token not revoked");
         }
+
+         response()->json(null, Response::HTTP_NO_CONTENT)
+            ->withCookie(Cookie::forget('access_token'))
+            ->withCookie(Cookie::forget('refresh_token'));
+
     }
     
     
