@@ -28,6 +28,10 @@ return new class extends Migration
                 ->constrained('transfers')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->foreignId('category_id')
+                ->constrained('categories')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->enum('type', array_column(TransactionType::cases(), 'value'))
                 ->default(TransactionType::Deposit->value);
             $table->decimal('amount', 15, 2);

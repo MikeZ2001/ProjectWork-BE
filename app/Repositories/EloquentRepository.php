@@ -113,8 +113,6 @@ abstract class EloquentRepository
     }
 
     /**
-     * z
-     * /**
      * @var string The name of the model class this repository instance performs queries on.
      */
     protected string $modelClass;

@@ -3,18 +3,12 @@
 namespace Modules\Account\Http\Requests;
 
 use App\Http\Requests\BaseFormRequest;
-use Modules\Account\DataTransferObjects\TransactionDTO;
-
+use Modules\Account\DataTransferObjects\CategoryDTO;
 /**
- * @method getDTO()
+ * @method CategoryDTO getDTO()
  */
-class TransactionRequest extends BaseFormRequest
+class CategoryRequest extends BaseFormRequest
 {
-    protected function getDTOClassName(): string
-    {
-        return TransactionDTO::class;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,12 +17,14 @@ class TransactionRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string',
-            'amount' => 'required|numeric',
-            'transaction_date' => 'required|string',
-            'description' => 'nullable|string',
-            'category_id' => 'required|integer',
+            'name' => 'required|string',
+            'description' => 'nullable|string'
         ];
+    }
+
+    protected function getDTOClassName(): string
+    {
+        return CategoryDTO::class;
     }
 
     /**
