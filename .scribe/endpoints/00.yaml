@@ -39,7 +39,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -66,11 +66,21 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
+      name:
+        name: name
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
       type:
         name: type
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -78,9 +88,9 @@ endpoints:
         custom: []
       balance:
         name: balance
-        description: ''
+        description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
         required: true
-        example: 11613.31890586
+        example: 39
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -90,7 +100,7 @@ endpoints:
         name: open_date
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -98,9 +108,9 @@ endpoints:
         custom: []
       close_date:
         name: close_date
-        description: ''
+        description: 'Must be a date after or equal to <code>open_date</code>.'
         required: false
-        example: consequatur
+        example: '2051-08-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -110,25 +120,26 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      type: consequatur
-      balance: 11613.31890586
-      open_date: consequatur
-      close_date: consequatur
-      status: consequatur
+      name: architecto
+      type: architecto
+      balance: 39
+      open_date: architecto
+      close_date: '2051-08-06'
+      status: architecto
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -155,14 +166,14 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -182,7 +193,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -210,22 +221,32 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
+      name:
+        name: name
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
       type:
         name: type
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -233,9 +254,9 @@ endpoints:
         custom: []
       balance:
         name: balance
-        description: ''
+        description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
         required: true
-        example: 11613.31890586
+        example: 39
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -245,7 +266,7 @@ endpoints:
         name: open_date
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -253,9 +274,9 @@ endpoints:
         custom: []
       close_date:
         name: close_date
-        description: ''
+        description: 'Must be a date after or equal to <code>open_date</code>.'
         required: false
-        example: consequatur
+        example: '2051-08-06'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -265,25 +286,26 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      type: consequatur
-      balance: 11613.31890586
-      open_date: consequatur
-      close_date: consequatur
-      status: consequatur
+      name: architecto
+      type: architecto
+      balance: 39
+      open_date: architecto
+      close_date: '2051-08-06'
+      status: architecto
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -310,14 +332,14 @@ endpoints:
         name: id
         description: 'The ID of the account.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -328,7 +350,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -355,14 +377,14 @@ endpoints:
         name: account_id
         description: 'The ID of the account.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      account_id: consequatur
+      account_id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -382,7 +404,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -409,14 +431,14 @@ endpoints:
         name: account_id
         description: 'The ID of the account.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      account_id: consequatur
+      account_id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -424,7 +446,7 @@ endpoints:
         name: type
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -434,17 +456,17 @@ endpoints:
         name: amount
         description: ''
         required: true
-        example: 11613.31890586
+        example: 4326.41688
         type: number
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      date:
-        name: date
+      transaction_date:
+        name: transaction_date
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -454,24 +476,35 @@ endpoints:
         name: description
         description: ''
         required: false
-        example: 'Dolores dolorum amet iste laborum eius est dolor.'
+        example: 'Eius et animi quos velit et.'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
+      category_id:
+        name: category_id
+        description: ''
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
     cleanBodyParameters:
-      type: consequatur
-      amount: 11613.31890586
-      date: consequatur
-      description: 'Dolores dolorum amet iste laborum eius est dolor.'
+      type: architecto
+      amount: 4326.41688
+      transaction_date: architecto
+      description: 'Eius et animi quos velit et.'
+      category_id: 16
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -498,14 +531,14 @@ endpoints:
         name: id
         description: 'The ID of the transaction.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -525,7 +558,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -553,14 +586,14 @@ endpoints:
         name: id
         description: 'The ID of the transaction.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -568,7 +601,7 @@ endpoints:
         name: type
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -578,17 +611,17 @@ endpoints:
         name: amount
         description: ''
         required: true
-        example: 11613.31890586
+        example: 4326.41688
         type: number
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      date:
-        name: date
+      transaction_date:
+        name: transaction_date
         description: ''
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -598,24 +631,35 @@ endpoints:
         name: description
         description: ''
         required: false
-        example: 'Dolores dolorum amet iste laborum eius est dolor.'
+        example: 'Eius et animi quos velit et.'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
+      category_id:
+        name: category_id
+        description: ''
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
     cleanBodyParameters:
-      type: consequatur
-      amount: 11613.31890586
-      date: consequatur
-      description: 'Dolores dolorum amet iste laborum eius est dolor.'
+      type: architecto
+      amount: 4326.41688
+      transaction_date: architecto
+      description: 'Eius et animi quos velit et.'
+      category_id: 16
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -642,14 +686,14 @@ endpoints:
         name: id
         description: 'The ID of the transaction.'
         required: true
-        example: consequatur
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: consequatur
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -660,7 +704,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -691,7 +735,7 @@ endpoints:
         name: from_account_id
         description: ''
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -701,7 +745,7 @@ endpoints:
         name: to_account_id
         description: 'The value and <code>from_account_id</code> must be different.'
         required: true
-        example: 17
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -711,7 +755,7 @@ endpoints:
         name: amount
         description: ''
         required: true
-        example: 11613.31890586
+        example: 4326.41688
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -721,24 +765,24 @@ endpoints:
         name: description
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: 'Laborum eius est dolor dolores minus voluptatem.'
+        example: 'Velit et fugiat sunt nihil accusantium.'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      from_account_id: 17
-      to_account_id: 17
-      amount: 11613.31890586
-      description: 'Laborum eius est dolor dolores minus voluptatem.'
+      from_account_id: 16
+      to_account_id: 16
+      amount: 4326.41688
+      description: 'Velit et fugiat sunt nihil accusantium.'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -766,29 +810,80 @@ endpoints:
     bodyParameters:
       email:
         name: email
-        description: 'Must be a valid email address.'
+        description: 'The user’s email.'
         required: true
-        example: qkunze@example.com
+        example: user@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       password:
         name: password
-        description: ''
+        description: 'The user’s password.'
         required: true
-        example: 'O[2UZ5ij-e/dl4m{o,'
+        example: secret
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: qkunze@example.com
-      password: 'O[2UZ5ij-e/dl4m{o,'
+      email: user@example.com
+      password: secret
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "token_type": "Bearer",
+            "expires_in": 1296000,
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiYmRmM2FmNWJkYWM4OWRlZGI0YmFiNjA2ODVkYjc5OTliOWJkNjlkZmJlM2ZjN2FiODViM2M3NDg0NDE0YjQxZjUwOGJlODE0ZGNjN2ZmMmUiLCJpYXQiOjE3NTI0Mjg0MTQuNjA4Njg3LCJuYmYiOjE3NTI0Mjg0MTQuNjA4Njg4LCJleHAiOjE3NTM3MjQ0MTQuNTk3OTI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.RYk6LHr3PWt1XQcI0WTWvVE041DlOcc4vS-q9PStZ51fNFd8FRtkxYL3aGViqoImSClHteNvPcIP8REVwXVdUx1ZEJ-EdiA8--SqpdZzj3c5uMYwl8v3lMrEoa670--0N8s9TjXS1a5E7wAlIDOqHFVk0zguKz9MzcuiIKYsefkZulYVLxTftZyWDAfEt4f4I8qHeXQW0Q9jiJ_rlRbeHfS0gSjKT1NX6ODrfEWlZSmkzcFG7IkADeeeZaDdbIuxI3lge1w69cuNddOHX2qYA3C1ADkew5VYZdl0etaZTTPNXourdlfr7PP9HU_qbZcu2D5pOnsCxmMyElFs3npRlhS-CeoYnjpoRgf_g15G2LuIQONBVHebsuFqz3Ta1_zW_3NVxL8YBFcND7mrSDY87sB4g15nZC9QELfxn-irOb5FUenjvtL4D0chnAdxEWAv2I-jnTtXotMvFd1KT35ceKKbDozyDmYVp5HjqrIbOOs2aeoaEhzudj3w2DxTlH5OqX8-I6-JazwnMta5zgNS5Kd5a6HHCrc04K4n5IlgWoEuImf_HIphgqjHsAWeaBJe4tJ22VitnZxdRXvzYqYUeIcaDnhAdegH8CxKCkFz1QDy8yh75I10WbQMeZCDbhrG6sbfvGKqShjL0GWimsoC-8xENpg5xH9F9GbB4PGeNeE",
+            "refresh_token": "def502004d10b094a44bf92d5be4320bda4feceee26aba55a9713698982e775cc7efedee12c576368d5bcd9952938cb765ab65ddfdb79770086371b2bc7fbee6ec5146c8e93074b2bbf5f17948089ed50a7ec7dd9eaae30600fa16dcd10419400eb57b8c6a12ac818596efd61a10f7e2a38e7af0fbd9df578d330eb8c49934ac124dcecfe6535556c573f699686510f8e69b419a3a9080af53dca4ebe13188c877ac8dfa3d62eaeccdd2e8fdc6289e7f018f9ec6c594943072a43f8fad50b2c4e145c962f3be7db5daca6ea1d114e30da11ca8c58388f65850ff12276c1d80b083483d4402cd3d7151d3a96ad0124987ab346cb3b4dd2db9c52686070ea255dfb568fbd9af193c15210195cc0257519b1366f7e4c2d2d40a639a877443a36de6a08b8a25a04cbab1a7d5dedd345575b1f58a3790a8a009855414ddffc706fbe9414acd3d43c61dcaa98109c3436e85488768182803bb677a7940d4f2b03e83a82e"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "error": "exception",
+            "error_description": "The user credentials were incorrect.",
+            "message": "Authentication failed exception."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |
+          {
+            "message": "Token invalid or revoked"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+            "message": "The email field is required. (and 1 more error).",
+            "errors": {
+              "email": ["The email field is required."],
+              "password": ["The password field is required."]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: ''
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth: []
     controller: null
@@ -819,12 +914,31 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "message": "Successfully logged out"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "message_access_token": "Unable to revoke access token.",
+            "message_refresh_token": "Unable to revoke refresh token."
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -855,19 +969,22 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 400
-        content: '{"error":"exception","error_description":"Unauthorized: unable to set cookie","message":"Authentication failed exception."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "jane.doe@example.com"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -954,13 +1071,27 @@ endpoints:
         custom: []
       -
         status: 422
-        content: |
+        content: |+
           {
             "message": "Validation failed",
             "errors": {
-              "email": ["The email field is required."],
-              "password": ["The password must be at least 8 characters."]
+              "first_name": ["The first name field is required.", "First name must be a string"],
+              "last_name":  ["The last name field is required.", "Last name must be a string"],
+              "email":      ["The email field is required.", "The email must be a valid email address.", "The email has already been taken"],
+              "password":   ["The password field is required.", "The password must be at least 8 characters."]
             }
+          }
+
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_created",
+            "error_description": "User has not been created",
+            "message": "Resource not created"
           }
         headers: []
         description: ''

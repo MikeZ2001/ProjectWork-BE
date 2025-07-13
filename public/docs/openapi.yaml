@@ -23,6 +23,107 @@ security:
   -
     default: []
 paths:
+  /api/v1/categories:
+    get:
+      summary: ''
+      operationId: getApiV1Categories
+      description: ''
+      parameters: []
+      responses:
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'Unauthorized: unable to set cookie'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'Unauthorized: unable to set cookie'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+      tags:
+        - Endpoints
+    post:
+      summary: ''
+      operationId: postApiV1Categories
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+              required:
+                - name
+  '/api/v1/categories/{id}':
+    put:
+      summary: ''
+      operationId: putApiV1CategoriesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
+                description:
+                  type: string
+                  description: ''
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+              required:
+                - name
+    delete:
+      summary: ''
+      operationId: deleteApiV1CategoriesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the category.'
+        example: architecto
+        required: true
+        schema:
+          type: string
   /api/v1/auth_status:
     get:
       summary: ''
@@ -96,32 +197,38 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
                 type:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 balance:
                   type: number
-                  description: ''
-                  example: 11613.31890586
+                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
+                  example: 39
                   nullable: false
                 open_date:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 close_date:
                   type: string
-                  description: ''
-                  example: consequatur
+                  description: 'Must be a date after or equal to <code>open_date</code>.'
+                  example: '2051-08-06'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
               required:
+                - name
                 - type
                 - balance
                 - open_date
@@ -170,32 +277,38 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
+                  description: ''
+                  example: architecto
+                  nullable: false
                 type:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 balance:
                   type: number
-                  description: ''
-                  example: 11613.31890586
+                  description: 'Must match the regex /^\d+(\.\d{1,2})?$/. Must be at least 0.'
+                  example: 39
                   nullable: false
                 open_date:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 close_date:
                   type: string
-                  description: ''
-                  example: consequatur
+                  description: 'Must be a date after or equal to <code>open_date</code>.'
+                  example: '2051-08-06'
                   nullable: true
                 status:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
               required:
+                - name
                 - type
                 - balance
                 - open_date
@@ -213,7 +326,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the account.'
-        example: consequatur
+        example: architecto
         required: true
         schema:
           type: string
@@ -264,33 +377,39 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 amount:
                   type: number
                   description: ''
-                  example: 11613.31890586
+                  example: 4326.41688
                   nullable: false
-                date:
+                transaction_date:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  example: 'Eius et animi quos velit et.'
                   nullable: true
+                category_id:
+                  type: integer
+                  description: ''
+                  example: 16
+                  nullable: false
               required:
                 - type
                 - amount
-                - date
+                - transaction_date
+                - category_id
     parameters:
       -
         in: path
         name: account_id
         description: 'The ID of the account.'
-        example: consequatur
+        example: architecto
         required: true
         schema:
           type: string
@@ -341,27 +460,33 @@ paths:
                 type:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 amount:
                   type: number
                   description: ''
-                  example: 11613.31890586
+                  example: 4326.41688
                   nullable: false
-                date:
+                transaction_date:
                   type: string
                   description: ''
-                  example: consequatur
+                  example: architecto
                   nullable: false
                 description:
                   type: string
                   description: ''
-                  example: 'Dolores dolorum amet iste laborum eius est dolor.'
+                  example: 'Eius et animi quos velit et.'
                   nullable: true
+                category_id:
+                  type: integer
+                  description: ''
+                  example: 16
+                  nullable: false
               required:
                 - type
                 - amount
-                - date
+                - transaction_date
+                - category_id
     delete:
       summary: 'Destroy a transaction.'
       operationId: destroyATransaction
@@ -375,7 +500,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the transaction.'
-        example: consequatur
+        example: architecto
         required: true
         schema:
           type: string
@@ -398,22 +523,22 @@ paths:
                 from_account_id:
                   type: integer
                   description: ''
-                  example: 17
+                  example: 16
                   nullable: false
                 to_account_id:
                   type: integer
                   description: 'The value and <code>from_account_id</code> must be different.'
-                  example: 17
+                  example: 16
                   nullable: false
                 amount:
                   type: number
                   description: ''
-                  example: 11613.31890586
+                  example: 4326.41688
                   nullable: false
                 description:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: 'Laborum eius est dolor dolores minus voluptatem.'
+                  example: 'Velit et fugiat sunt nihil accusantium.'
                   nullable: true
               required:
                 - from_account_id
@@ -425,7 +550,102 @@ paths:
       operationId: handleAnAuthenticationAttempt
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token_type: Bearer
+                  expires_in: 1296000
+                  access_token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiYmRmM2FmNWJkYWM4OWRlZGI0YmFiNjA2ODVkYjc5OTliOWJkNjlkZmJlM2ZjN2FiODViM2M3NDg0NDE0YjQxZjUwOGJlODE0ZGNjN2ZmMmUiLCJpYXQiOjE3NTI0Mjg0MTQuNjA4Njg3LCJuYmYiOjE3NTI0Mjg0MTQuNjA4Njg4LCJleHAiOjE3NTM3MjQ0MTQuNTk3OTI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.RYk6LHr3PWt1XQcI0WTWvVE041DlOcc4vS-q9PStZ51fNFd8FRtkxYL3aGViqoImSClHteNvPcIP8REVwXVdUx1ZEJ-EdiA8--SqpdZzj3c5uMYwl8v3lMrEoa670--0N8s9TjXS1a5E7wAlIDOqHFVk0zguKz9MzcuiIKYsefkZulYVLxTftZyWDAfEt4f4I8qHeXQW0Q9jiJ_rlRbeHfS0gSjKT1NX6ODrfEWlZSmkzcFG7IkADeeeZaDdbIuxI3lge1w69cuNddOHX2qYA3C1ADkew5VYZdl0etaZTTPNXourdlfr7PP9HU_qbZcu2D5pOnsCxmMyElFs3npRlhS-CeoYnjpoRgf_g15G2LuIQONBVHebsuFqz3Ta1_zW_3NVxL8YBFcND7mrSDY87sB4g15nZC9QELfxn-irOb5FUenjvtL4D0chnAdxEWAv2I-jnTtXotMvFd1KT35ceKKbDozyDmYVp5HjqrIbOOs2aeoaEhzudj3w2DxTlH5OqX8-I6-JazwnMta5zgNS5Kd5a6HHCrc04K4n5IlgWoEuImf_HIphgqjHsAWeaBJe4tJ22VitnZxdRXvzYqYUeIcaDnhAdegH8CxKCkFz1QDy8yh75I10WbQMeZCDbhrG6sbfvGKqShjL0GWimsoC-8xENpg5xH9F9GbB4PGeNeE
+                  refresh_token: def502004d10b094a44bf92d5be4320bda4feceee26aba55a9713698982e775cc7efedee12c576368d5bcd9952938cb765ab65ddfdb79770086371b2bc7fbee6ec5146c8e93074b2bbf5f17948089ed50a7ec7dd9eaae30600fa16dcd10419400eb57b8c6a12ac818596efd61a10f7e2a38e7af0fbd9df578d330eb8c49934ac124dcecfe6535556c573f699686510f8e69b419a3a9080af53dca4ebe13188c877ac8dfa3d62eaeccdd2e8fdc6289e7f018f9ec6c594943072a43f8fad50b2c4e145c962f3be7db5daca6ea1d114e30da11ca8c58388f65850ff12276c1d80b083483d4402cd3d7151d3a96ad0124987ab346cb3b4dd2db9c52686070ea255dfb568fbd9af193c15210195cc0257519b1366f7e4c2d2d40a639a877443a36de6a08b8a25a04cbab1a7d5dedd345575b1f58a3790a8a009855414ddffc706fbe9414acd3d43c61dcaa98109c3436e85488768182803bb677a7940d4f2b03e83a82e
+                properties:
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    example: 1296000
+                  access_token:
+                    type: string
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiYmRmM2FmNWJkYWM4OWRlZGI0YmFiNjA2ODVkYjc5OTliOWJkNjlkZmJlM2ZjN2FiODViM2M3NDg0NDE0YjQxZjUwOGJlODE0ZGNjN2ZmMmUiLCJpYXQiOjE3NTI0Mjg0MTQuNjA4Njg3LCJuYmYiOjE3NTI0Mjg0MTQuNjA4Njg4LCJleHAiOjE3NTM3MjQ0MTQuNTk3OTI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.RYk6LHr3PWt1XQcI0WTWvVE041DlOcc4vS-q9PStZ51fNFd8FRtkxYL3aGViqoImSClHteNvPcIP8REVwXVdUx1ZEJ-EdiA8--SqpdZzj3c5uMYwl8v3lMrEoa670--0N8s9TjXS1a5E7wAlIDOqHFVk0zguKz9MzcuiIKYsefkZulYVLxTftZyWDAfEt4f4I8qHeXQW0Q9jiJ_rlRbeHfS0gSjKT1NX6ODrfEWlZSmkzcFG7IkADeeeZaDdbIuxI3lge1w69cuNddOHX2qYA3C1ADkew5VYZdl0etaZTTPNXourdlfr7PP9HU_qbZcu2D5pOnsCxmMyElFs3npRlhS-CeoYnjpoRgf_g15G2LuIQONBVHebsuFqz3Ta1_zW_3NVxL8YBFcND7mrSDY87sB4g15nZC9QELfxn-irOb5FUenjvtL4D0chnAdxEWAv2I-jnTtXotMvFd1KT35ceKKbDozyDmYVp5HjqrIbOOs2aeoaEhzudj3w2DxTlH5OqX8-I6-JazwnMta5zgNS5Kd5a6HHCrc04K4n5IlgWoEuImf_HIphgqjHsAWeaBJe4tJ22VitnZxdRXvzYqYUeIcaDnhAdegH8CxKCkFz1QDy8yh75I10WbQMeZCDbhrG6sbfvGKqShjL0GWimsoC-8xENpg5xH9F9GbB4PGeNeE
+                  refresh_token:
+                    type: string
+                    example: def502004d10b094a44bf92d5be4320bda4feceee26aba55a9713698982e775cc7efedee12c576368d5bcd9952938cb765ab65ddfdb79770086371b2bc7fbee6ec5146c8e93074b2bbf5f17948089ed50a7ec7dd9eaae30600fa16dcd10419400eb57b8c6a12ac818596efd61a10f7e2a38e7af0fbd9df578d330eb8c49934ac124dcecfe6535556c573f699686510f8e69b419a3a9080af53dca4ebe13188c877ac8dfa3d62eaeccdd2e8fdc6289e7f018f9ec6c594943072a43f8fad50b2c4e145c962f3be7db5daca6ea1d114e30da11ca8c58388f65850ff12276c1d80b083483d4402cd3d7151d3a96ad0124987ab346cb3b4dd2db9c52686070ea255dfb568fbd9af193c15210195cc0257519b1366f7e4c2d2d40a639a877443a36de6a08b8a25a04cbab1a7d5dedd345575b1f58a3790a8a009855414ddffc706fbe9414acd3d43c61dcaa98109c3436e85488768182803bb677a7940d4f2b03e83a82e
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: exception
+                  error_description: 'The user credentials were incorrect.'
+                  message: 'Authentication failed exception.'
+                properties:
+                  error:
+                    type: string
+                    example: exception
+                  error_description:
+                    type: string
+                    example: 'The user credentials were incorrect.'
+                  message:
+                    type: string
+                    example: 'Authentication failed exception.'
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token invalid or revoked'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token invalid or revoked'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The email field is required. (and 1 more error).'
+                  errors:
+                    email:
+                      - 'The email field is required.'
+                    password:
+                      - 'The password field is required.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The email field is required. (and 1 more error).'
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        example:
+                          - 'The email field is required.'
+                        items:
+                          type: string
+                      password:
+                        type: array
+                        example:
+                          - 'The password field is required.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
       tags:
         - Modules
       requestBody:
@@ -437,13 +657,13 @@ paths:
               properties:
                 email:
                   type: string
-                  description: 'Must be a valid email address.'
-                  example: qkunze@example.com
+                  description: 'The user’s email.'
+                  example: user@example.com
                   nullable: false
                 password:
                   type: string
-                  description: ''
-                  example: 'O[2UZ5ij-e/dl4m{o,'
+                  description: 'The user’s password.'
+                  example: secret
                   nullable: false
               required:
                 - email
@@ -455,7 +675,35 @@ paths:
       operationId: logoutUserrevokeTheToken
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Successfully logged out'
+                properties:
+                  message:
+                    type: string
+                    example: 'Successfully logged out'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message_access_token: 'Unable to revoke access token.'
+                  message_refresh_token: 'Unable to revoke refresh token.'
+                properties:
+                  message_access_token:
+                    type: string
+                    example: 'Unable to revoke access token.'
+                  message_refresh_token:
+                    type: string
+                    example: 'Unable to revoke refresh token.'
       tags:
         - Modules
   /api/v1/user:
@@ -465,26 +713,30 @@ paths:
       description: ''
       parameters: []
       responses:
-        400:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  error: exception
-                  error_description: 'Unauthorized: unable to set cookie'
-                  message: 'Authentication failed exception.'
+                  id: 1
+                  first_name: John
+                  last_name: Doe
+                  email: jane.doe@example.com
                 properties:
-                  error:
+                  id:
+                    type: integer
+                    example: 1
+                  first_name:
                     type: string
-                    example: exception
-                  error_description:
+                    example: John
+                  last_name:
                     type: string
-                    example: 'Unauthorized: unable to set cookie'
-                  message:
+                    example: Doe
+                  email:
                     type: string
-                    example: 'Authentication failed exception.'
+                    example: jane.doe@example.com
       tags:
         - Modules
   /api/v1/register:
@@ -527,9 +779,18 @@ paths:
                 example:
                   message: 'Validation failed'
                   errors:
+                    first_name:
+                      - 'The first name field is required.'
+                      - 'First name must be a string'
+                    last_name:
+                      - 'The last name field is required.'
+                      - 'Last name must be a string'
                     email:
                       - 'The email field is required.'
+                      - 'The email must be a valid email address.'
+                      - 'The email has already been taken'
                     password:
+                      - 'The password field is required.'
                       - 'The password must be at least 8 characters.'
                 properties:
                   message:
@@ -538,18 +799,55 @@ paths:
                   errors:
                     type: object
                     properties:
+                      first_name:
+                        type: array
+                        example:
+                          - 'The first name field is required.'
+                          - 'First name must be a string'
+                        items:
+                          type: string
+                      last_name:
+                        type: array
+                        example:
+                          - 'The last name field is required.'
+                          - 'Last name must be a string'
+                        items:
+                          type: string
                       email:
                         type: array
                         example:
                           - 'The email field is required.'
+                          - 'The email must be a valid email address.'
+                          - 'The email has already been taken'
                         items:
                           type: string
                       password:
                         type: array
                         example:
+                          - 'The password field is required.'
                           - 'The password must be at least 8 characters.'
                         items:
                           type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_created
+                  error_description: 'User has not been created'
+                  message: 'Resource not created'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_created
+                  error_description:
+                    type: string
+                    example: 'User has not been created'
+                  message:
+                    type: string
+                    example: 'Resource not created'
       tags:
         - Modules
       requestBody:

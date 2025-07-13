@@ -1,0 +1,4 @@
+{
+  "message_access_token": "Unable to revoke access token.",
+  "message_refresh_token": "Unable to revoke refresh token."
+}

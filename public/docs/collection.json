@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "6fe2dd8d-7e26-48fc-aa55-778fda059ef3",
+        "_postman_id": "e648b50a-0ddb-4827-900b-946f4d1add13",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -19,6 +19,148 @@
             "name": "Endpoints",
             "description": "",
             "item": [
+                {
+                    "name": "GET api\/v1\/categories",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 400,
+                            "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/categories",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"architecto\",\"description\":\"Eius et animi quos velit et.\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT api\/v1\/categories\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"architecto\",\"description\":\"Eius et animi quos velit et.\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/v1\/categories\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/categories\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the category."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
                 {
                     "name": "GET api\/v1\/auth_status",
                     "request": {
@@ -141,7 +283,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"consequatur\",\"balance\":11613.31890586,\"open_date\":\"consequatur\",\"close_date\":\"consequatur\",\"status\":\"consequatur\"}"
+                                    "raw": "{\"name\":\"architecto\",\"type\":\"architecto\",\"balance\":39,\"open_date\":\"architecto\",\"close_date\":\"2051-08-06\",\"status\":\"architecto\"}"
                                 },
                                 "description": ""
                             },
@@ -159,7 +301,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -212,7 +354,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -230,7 +372,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"consequatur\",\"balance\":11613.31890586,\"open_date\":\"consequatur\",\"close_date\":\"consequatur\",\"status\":\"consequatur\"}"
+                                    "raw": "{\"name\":\"architecto\",\"type\":\"architecto\",\"balance\":39,\"open_date\":\"architecto\",\"close_date\":\"2051-08-06\",\"status\":\"architecto\"}"
                                 },
                                 "description": ""
                             },
@@ -248,7 +390,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -287,7 +429,7 @@
                                         {
                                             "id": "account_id",
                                             "key": "account_id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -340,7 +482,7 @@
                                         {
                                             "id": "account_id",
                                             "key": "account_id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -358,7 +500,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"consequatur\",\"amount\":11613.31890586,\"date\":\"consequatur\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\"}"
+                                    "raw": "{\"type\":\"architecto\",\"amount\":4326.41688,\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
                                 },
                                 "description": ""
                             },
@@ -376,7 +518,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the transaction."
                                         }
                                     ]
@@ -429,7 +571,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the transaction."
                                         }
                                     ]
@@ -447,7 +589,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"consequatur\",\"amount\":11613.31890586,\"date\":\"consequatur\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\"}"
+                                    "raw": "{\"type\":\"architecto\",\"amount\":4326.41688,\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
                                 },
                                 "description": ""
                             },
@@ -465,7 +607,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "consequatur",
+                                            "value": "architecto",
                                             "description": "The ID of the transaction."
                                         }
                                     ]
@@ -514,7 +656,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"from_account_id\":17,\"to_account_id\":17,\"amount\":11613.31890586,\"description\":\"Laborum eius est dolor dolores minus voluptatem.\"}"
+                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":4326.41688,\"description\":\"Velit et fugiat sunt nihil accusantium.\"}"
                                 },
                                 "description": ""
                             },
@@ -548,14 +690,45 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"email\":\"qkunze@example.com\",\"password\":\"O[2UZ5ij-e\\\/dl4m{o,\"}"
+                                    "raw": "{\"email\":\"user@example.com\",\"password\":\"secret\"}"
                                 },
                                 "description": "",
                                 "auth": {
                                     "type": "noauth"
                                 }
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 1296000,\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiYmRmM2FmNWJkYWM4OWRlZGI0YmFiNjA2ODVkYjc5OTliOWJkNjlkZmJlM2ZjN2FiODViM2M3NDg0NDE0YjQxZjUwOGJlODE0ZGNjN2ZmMmUiLCJpYXQiOjE3NTI0Mjg0MTQuNjA4Njg3LCJuYmYiOjE3NTI0Mjg0MTQuNjA4Njg4LCJleHAiOjE3NTM3MjQ0MTQuNTk3OTI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.RYk6LHr3PWt1XQcI0WTWvVE041DlOcc4vS-q9PStZ51fNFd8FRtkxYL3aGViqoImSClHteNvPcIP8REVwXVdUx1ZEJ-EdiA8--SqpdZzj3c5uMYwl8v3lMrEoa670--0N8s9TjXS1a5E7wAlIDOqHFVk0zguKz9MzcuiIKYsefkZulYVLxTftZyWDAfEt4f4I8qHeXQW0Q9jiJ_rlRbeHfS0gSjKT1NX6ODrfEWlZSmkzcFG7IkADeeeZaDdbIuxI3lge1w69cuNddOHX2qYA3C1ADkew5VYZdl0etaZTTPNXourdlfr7PP9HU_qbZcu2D5pOnsCxmMyElFs3npRlhS-CeoYnjpoRgf_g15G2LuIQONBVHebsuFqz3Ta1_zW_3NVxL8YBFcND7mrSDY87sB4g15nZC9QELfxn-irOb5FUenjvtL4D0chnAdxEWAv2I-jnTtXotMvFd1KT35ceKKbDozyDmYVp5HjqrIbOOs2aeoaEhzudj3w2DxTlH5OqX8-I6-JazwnMta5zgNS5Kd5a6HHCrc04K4n5IlgWoEuImf_HIphgqjHsAWeaBJe4tJ22VitnZxdRXvzYqYUeIcaDnhAdegH8CxKCkFz1QDy8yh75I10WbQMeZCDbhrG6sbfvGKqShjL0GWimsoC-8xENpg5xH9F9GbB4PGeNeE\",\n  \"refresh_token\": \"def502004d10b094a44bf92d5be4320bda4feceee26aba55a9713698982e775cc7efedee12c576368d5bcd9952938cb765ab65ddfdb79770086371b2bc7fbee6ec5146c8e93074b2bbf5f17948089ed50a7ec7dd9eaae30600fa16dcd10419400eb57b8c6a12ac818596efd61a10f7e2a38e7af0fbd9df578d330eb8c49934ac124dcecfe6535556c573f699686510f8e69b419a3a9080af53dca4ebe13188c877ac8dfa3d62eaeccdd2e8fdc6289e7f018f9ec6c594943072a43f8fad50b2c4e145c962f3be7db5daca6ea1d114e30da11ca8c58388f65850ff12276c1d80b083483d4402cd3d7151d3a96ad0124987ab346cb3b4dd2db9c52686070ea255dfb568fbd9af193c15210195cc0257519b1366f7e4c2d2d40a639a877443a36de6a08b8a25a04cbab1a7d5dedd345575b1f58a3790a8a009855414ddffc706fbe9414acd3d43c61dcaa98109c3436e85488768182803bb677a7940d4f2b03e83a82e\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 400,
+                                    "body": "{\n  \"error\": \"exception\",\n  \"error_description\": \"The user credentials were incorrect.\",\n  \"message\": \"Authentication failed exception.\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 401,
+                                    "body": "{\n  \"message\": \"Token invalid or revoked\"\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The email field is required. (and 1 more error).\",\n  \"errors\": {\n    \"email\": [\"The email field is required.\"],\n    \"password\": [\"The password field is required.\"]\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Logout user (revoke the token)",
@@ -580,7 +753,20 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"message\": \"Successfully logged out\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"message_access_token\": \"Unable to revoke access token.\",\n  \"message_refresh_token\": \"Unable to revoke refresh token.\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Get the authenticated user",
@@ -607,22 +793,9 @@
                             },
                             "response": [
                                 {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "vary",
-                                            "value": "Origin"
-                                        }
-                                    ],
-                                    "code": 400,
-                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"id\": 1,\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"jane.doe@example.com\"\n}",
                                     "name": ""
                                 }
                             ]
@@ -672,7 +845,13 @@
                                 {
                                     "header": [],
                                     "code": 422,
-                                    "body": "{\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"email\": [\"The email field is required.\"],\n    \"password\": [\"The password must be at least 8 characters.\"]\n  }\n}\n",
+                                    "body": "{\n  \"message\": \"Validation failed\",\n  \"errors\": {\n    \"first_name\": [\"The first name field is required.\", \"First name must be a string\"],\n    \"last_name\":  [\"The last name field is required.\", \"Last name must be a string\"],\n    \"email\":      [\"The email field is required.\", \"The email must be a valid email address.\", \"The email has already been taken\"],\n    \"password\":   [\"The password field is required.\", \"The password must be at least 8 characters.\"]\n  }\n}\n\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_created\",\n  \"error_description\": \"User has not been created\",\n  \"message\": \"Resource not created\"\n}",
                                     "name": ""
                                 }
                             ]

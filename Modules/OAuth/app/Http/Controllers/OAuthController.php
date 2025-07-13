@@ -10,6 +10,8 @@ use Modules\OAuth\Exceptions\AuthenticationFailedException;
 use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
 use Modules\OAuth\Services\AuthenticationService;
+use Modules\User\Http\Resources\UserResource;
+use Modules\User\Models\User;
 
 /**
  * @group Modules
@@ -31,6 +33,11 @@ class OAuthController extends Controller
      * @throws ResourceNotFoundException
      * @throws AuthenticationFailedException
      *
+     * @responseFile 201 storage/responses/oauth/login-success.json
+     * @responseFile 422 storage/responses/oauth/login-validation-error.json
+     * @responseFile 400 storage/responses/oauth/login-failed-exception.json
+     * @responseFile 401 storage/responses/oauth/login-unauthorized-exception.json
+     * @responseFile 500 storage/responses/oauth/login-error.json
      *
      * @unauthenticated
      *
@@ -70,6 +77,10 @@ class OAuthController extends Controller
      * @return JsonResponse
      * @throws LogoutException
      * @throws ResourceNotFoundException
+     *
+     * @responseFile 200 storage/responses/oauth/logout-success.json
+     * @responseFile 500 storage/responses/oauth/logout-error.json
+     *
      */
     public function logout(Request $request): JsonResponse
     {
@@ -90,10 +101,12 @@ class OAuthController extends Controller
      * Get the authenticated user
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return UserResource
+     *
+     * @responseFile 200 storage/responses/oauth/user-success.json
      */
-    public function user(Request $request): JsonResponse
+    public function user(Request $request): UserResource
     {
-        return response()->json($request->user());
+        return new UserResource($request->user());
     }
 }

@@ -7,6 +7,9 @@ use Modules\OAuth\DataTransferObjects\AuthenticationDTO;
 
 /**
  * @method AuthenticationDTO getDTO()
+ *
+ * @bodyParam email string required The user’s email. Example: user@example.com
+ * @bodyParam password string required The user’s password. Example: secret
  */
 class LoginRequest extends BaseFormRequest {
     
