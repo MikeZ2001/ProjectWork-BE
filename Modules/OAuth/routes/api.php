@@ -9,10 +9,6 @@ Route::post('login', [OAuthController::class, 'login']);
 
 // Protected routes
 Route::middleware(['auth:api'])->middleware(AuthCookieMiddleware::class)->group(function () {
-    // Auth routes
     Route::post('logout', [OAuthController::class, 'logout']);
     Route::get('user', [OAuthController::class, 'user']);
-    Route::get('auth_status', function () {
-        return response()->json(['authenticated' => true]);
-    });
 });

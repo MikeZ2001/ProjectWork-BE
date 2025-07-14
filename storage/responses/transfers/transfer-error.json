@@ -1,0 +1,5 @@
+{
+  "error": "resource_not_created",
+  "error_description": "Transfer has not been created",
+  "message": "Resource not created"
+}

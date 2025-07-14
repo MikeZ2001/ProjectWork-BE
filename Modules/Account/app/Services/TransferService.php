@@ -4,6 +4,7 @@ namespace Modules\Account\Services;
 
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Account\DataTransferObjects\TransactionDTO;
@@ -37,7 +38,6 @@ readonly class TransferService
             throw new ResourceNotUpdatedException('You do not have sufficient balance.');
         }
 
-
         $transfer = $transferDTO->toModel();
         $transfer->user_id = Auth::id();
 
@@ -65,8 +65,7 @@ readonly class TransferService
                 $this->transactionService->create($toAccount->id, $transactionDepositDTO);
                 $toAccount->save();
             });
-        } catch (\Exception $ex) {
-            dump($ex->getMessage());
+        } catch (Exception $ex) {
             throw new ResourceNotUpdatedException('Amount could not be transfered.', previous: $ex);
         }
     }

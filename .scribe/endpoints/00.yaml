@@ -1248,51 +1248,109 @@ endpoints:
     bodyParameters:
       from_account_id:
         name: from_account_id
-        description: ''
+        description: 'ID of the account to transfer **from**.'
         required: true
-        example: 16
+        example: 1
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       to_account_id:
         name: to_account_id
-        description: 'The value and <code>from_account_id</code> must be different.'
+        description: 'ID of the account to transfer **to**. Must differ from `from_account_id`.'
         required: true
-        example: 16
+        example: 2
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       amount:
         name: amount
-        description: 'Must match the regex /^\d{1,13}(\.\d{1,2})?$/.'
+        description: 'Amount to transfer (must be > 0, up to two decimals).'
         required: true
-        example: '6425593142326'
+        example: 100.0
         type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       description:
         name: description
-        description: 'Must not be greater than 255 characters.'
+        description: 'Optional description for the transfer.'
         required: false
-        example: 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.'
-        type: string
+        example: 'Transfer to savings'
+        type: string|null
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         custom: []
     cleanBodyParameters:
-      from_account_id: 16
-      to_account_id: 16
-      amount: '6425593142326'
-      description: 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.'
+      from_account_id: 1
+      to_account_id: 2
+      amount: 100.0
+      description: 'Transfer to savings'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Transfer could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "from_account_id": [
+                "The from account id field is required.",
+                "The from account id must be an integer."
+              ],
+              "to_account_id": [
+                "The to account id field is required.",
+                "The to account id must be an integer.",
+                "The to account id and from account id must be different."
+              ],
+              "amount": [
+                "The amount field is required.",
+                "The amount must be a number.",
+                "The amount must be greater than 0.",
+                "The amount format is invalid."
+              ],
+              "description": [
+                "The description must be a string.",
+                "The description may not be greater than 255 characters."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_created",
+            "error_description": "Transfer has not been created",
+            "message": "Resource not created"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers

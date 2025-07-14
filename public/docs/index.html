@@ -3485,10 +3485,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"from_account_id\": 16,
-    \"to_account_id\": 16,
-    \"amount\": \"6425593142326\",
-    \"description\": \"Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.\"
+    \"from_account_id\": 1,
+    \"to_account_id\": 2,
+    \"amount\": 100,
+    \"description\": \"Transfer to savings\"
 }"
 </code></pre></div>
 
@@ -3505,10 +3505,10 @@ const headers = {
 };
 
 let body = {
-    "from_account_id": 16,
-    "to_account_id": 16,
-    "amount": "6425593142326",
-    "description": "Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui."
+    "from_account_id": 1,
+    "to_account_id": 2,
+    "amount": 100,
+    "description": "Transfer to savings"
 };
 
 fetch(url, {
@@ -3530,10 +3530,10 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'from_account_id' =&gt; 16,
-            'to_account_id' =&gt; 16,
-            'amount' =&gt; '6425593142326',
-            'description' =&gt; 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.',
+            'from_account_id' =&gt; 1,
+            'to_account_id' =&gt; 2,
+            'amount' =&gt; 100.0,
+            'description' =&gt; 'Transfer to savings',
         ],
     ]
 );
@@ -3547,10 +3547,10 @@ import json
 
 url = 'http://localhost:8000/api/v1/transfers'
 payload = {
-    "from_account_id": 16,
-    "to_account_id": 16,
-    "amount": "6425593142326",
-    "description": "Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui."
+    "from_account_id": 1,
+    "to_account_id": 2,
+    "amount": 100,
+    "description": "Transfer to savings"
 }
 headers = {
   'Authorization': 'Bearer {YOUR_ACCESS_TOKEN}',
@@ -3564,7 +3564,65 @@ response.json()</code></pre></div>
 </span>
 
 <span id="example-responses-POSTapi-v1-transfers">
-</span>
+            <blockquote>
+            <p>Example response (204):</p>
+        </blockquote>
+                <pre>
+<code>Empty response</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_found&quot;,
+    &quot;error_description&quot;: &quot;Transfer could not be found.&quot;,
+    &quot;message&quot;: &quot;Resource not found&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;from_account_id&quot;: [
+            &quot;The from account id field is required.&quot;,
+            &quot;The from account id must be an integer.&quot;
+        ],
+        &quot;to_account_id&quot;: [
+            &quot;The to account id field is required.&quot;,
+            &quot;The to account id must be an integer.&quot;,
+            &quot;The to account id and from account id must be different.&quot;
+        ],
+        &quot;amount&quot;: [
+            &quot;The amount field is required.&quot;,
+            &quot;The amount must be a number.&quot;,
+            &quot;The amount must be greater than 0.&quot;,
+            &quot;The amount format is invalid.&quot;
+        ],
+        &quot;description&quot;: [
+            &quot;The description must be a string.&quot;,
+            &quot;The description may not be greater than 255 characters.&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;resource_not_created&quot;,
+    &quot;error_description&quot;: &quot;Transfer has not been created&quot;,
+    &quot;message&quot;: &quot;Resource not created&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-transfers" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-transfers"></span>:
@@ -3635,10 +3693,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="from_account_id"                data-endpoint="POSTapi-v1-transfers"
-               value="16"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>ID of the account to transfer <strong>from</strong>. Example: <code>1</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>to_account_id</code></b>&nbsp;&nbsp;
@@ -3646,10 +3704,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="to_account_id"                data-endpoint="POSTapi-v1-transfers"
-               value="16"
+               value="2"
                data-component="body">
     <br>
-<p>The value and <code>from_account_id</code> must be different. Example: <code>16</code></p>
+<p>ID of the account to transfer <strong>to</strong>. Must differ from <code>from_account_id</code>. Example: <code>2</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>amount</code></b>&nbsp;&nbsp;
@@ -3657,21 +3715,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="amount"                data-endpoint="POSTapi-v1-transfers"
-               value="6425593142326"
+               value="100"
                data-component="body">
     <br>
-<p>Must match the regex /^\d{1,13}(.\d{1,2})?$/. Example: <code>6425593142326</code></p>
+<p>Amount to transfer (must be &gt; 0, up to two decimals). Example: <code>100</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>string|null</small>&nbsp;
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="POSTapi-v1-transfers"
-               value="Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui."
+               value="Transfer to savings"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.</code></p>
+<p>Optional description for the transfer. Example: <code>Transfer to savings</code></p>
         </div>
         </form>
 

@@ -6,6 +6,7 @@ use App\Exceptions\ResourceNotCreatedException;
 use App\Exceptions\ResourceNotDeletedException;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,8 +61,7 @@ readonly class TransactionService
                 $transaction = $this->transactionRepository->create($transaction);
                 $this->manageTransaction($account, $transaction);
                 return $transaction;
-            } catch (\Exception $ex) {
-                dump($ex->getMessage());
+            } catch (Exception $ex) {
                 throw new ResourceNotCreatedException("Transaction could not be created.", previous: $ex);
             }
         });
@@ -101,7 +101,7 @@ readonly class TransactionService
                 $transaction = $this->transactionRepository->update($transaction);
                 $this->manageTransaction($account, $transaction);
                 return $transaction;
-            } catch (Throwable $ex) {
+            } catch (Exception $ex) {
                 throw new ResourceNotUpdatedException("Transaction could not be updated.", previous: $ex);
             }
         });
@@ -131,8 +131,7 @@ readonly class TransactionService
                     $this->managetransactionReverse($account, $transaction);
                 }
 
-            } catch (\Exception $ex) {
-                dd($ex->getMessage());
+            } catch (Exception $ex) {
                 throw new ResourceNotDeletedException("Transaction could not be deleted.", previous: $ex);
             }
         });
@@ -176,8 +175,6 @@ readonly class TransactionService
             $account->balance += $transaction->amount;
         }
 
-
-
         $accountDTO = new AccountDTO(
             name: $account->name,
             type: $account->type->value,
@@ -198,8 +195,7 @@ readonly class TransactionService
     {
         $transfer = $this->transferRepository->findById($transferId);
 
-        $txs      = $transfer->transactions()->get();
-
+        $txs = $transfer->transactions()->get();
 
         DB::transaction(function() use($txs, $transfer) {
 
@@ -208,7 +204,6 @@ readonly class TransactionService
                 $this->transactionRepository->delete($tx);
                 $this->managetransactionReverse($tx->account()->first(), $tx);
             });
-
 
             $this->transferRepository->delete($transfer);
         });

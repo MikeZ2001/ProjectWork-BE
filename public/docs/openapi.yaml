@@ -1667,7 +1667,111 @@ paths:
       operationId: transferFundsFromOneAccountToAnother
       description: ''
       parameters: []
-      responses: {  }
+      responses:
+        204:
+          description: ''
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Transfer could not be found.'
+                  message: 'Resource not found'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_found
+                  error_description:
+                    type: string
+                    example: 'Transfer could not be found.'
+                  message:
+                    type: string
+                    example: 'Resource not found'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    from_account_id:
+                      - 'The from account id field is required.'
+                      - 'The from account id must be an integer.'
+                    to_account_id:
+                      - 'The to account id field is required.'
+                      - 'The to account id must be an integer.'
+                      - 'The to account id and from account id must be different.'
+                    amount:
+                      - 'The amount field is required.'
+                      - 'The amount must be a number.'
+                      - 'The amount must be greater than 0.'
+                      - 'The amount format is invalid.'
+                    description:
+                      - 'The description must be a string.'
+                      - 'The description may not be greater than 255 characters.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      from_account_id:
+                        type: array
+                        example:
+                          - 'The from account id field is required.'
+                          - 'The from account id must be an integer.'
+                        items:
+                          type: string
+                      to_account_id:
+                        type: array
+                        example:
+                          - 'The to account id field is required.'
+                          - 'The to account id must be an integer.'
+                          - 'The to account id and from account id must be different.'
+                        items:
+                          type: string
+                      amount:
+                        type: array
+                        example:
+                          - 'The amount field is required.'
+                          - 'The amount must be a number.'
+                          - 'The amount must be greater than 0.'
+                          - 'The amount format is invalid.'
+                        items:
+                          type: string
+                      description:
+                        type: array
+                        example:
+                          - 'The description must be a string.'
+                          - 'The description may not be greater than 255 characters.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_created
+                  error_description: 'Transfer has not been created'
+                  message: 'Resource not created'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_created
+                  error_description:
+                    type: string
+                    example: 'Transfer has not been created'
+                  message:
+                    type: string
+                    example: 'Resource not created'
       tags:
         - Modules
       requestBody:
@@ -1679,23 +1783,23 @@ paths:
               properties:
                 from_account_id:
                   type: integer
-                  description: ''
-                  example: 16
+                  description: 'ID of the account to transfer **from**.'
+                  example: 1
                   nullable: false
                 to_account_id:
                   type: integer
-                  description: 'The value and <code>from_account_id</code> must be different.'
-                  example: 16
+                  description: 'ID of the account to transfer **to**. Must differ from `from_account_id`.'
+                  example: 2
                   nullable: false
                 amount:
                   type: number
-                  description: 'Must match the regex /^\d{1,13}(\.\d{1,2})?$/.'
-                  example: '6425593142326'
+                  description: 'Amount to transfer (must be > 0, up to two decimals).'
+                  example: 100.0
                   nullable: false
                 description:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.'
+                  type: string|null
+                  description: 'Optional description for the transfer.'
+                  example: 'Transfer to savings'
                   nullable: true
               required:
                 - from_account_id

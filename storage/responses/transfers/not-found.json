@@ -1,0 +1,5 @@
+{
+  "error": "resource_not_found",
+  "error_description": "Transfer could not be found.",
+  "message": "Resource not found"
+}

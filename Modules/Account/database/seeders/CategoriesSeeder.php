@@ -21,8 +21,7 @@ class CategoriesSeeder extends Seeder
             'Travel',
             'Salary',
             'Investment Income',
-            'Gifts & Donations',
-            'Other',
+            'Gifts & Donations'
         ];
 
         $insertData = array_map(function($name) {

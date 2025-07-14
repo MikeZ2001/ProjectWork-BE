@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "647b378a-dbfc-4d9e-859b-05cae8402f08",
+        "_postman_id": "ee057d02-aea3-4374-a6d4-a4954894bb9b",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -756,11 +756,36 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":\"6425593142326\",\"description\":\"Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.\"}"
+                                    "raw": "{\"from_account_id\":1,\"to_account_id\":2,\"amount\":100,\"description\":\"Transfer to savings\"}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "{}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Transfer could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"from_account_id\": [\n      \"The from account id field is required.\",\n      \"The from account id must be an integer.\"\n    ],\n    \"to_account_id\": [\n      \"The to account id field is required.\",\n      \"The to account id must be an integer.\",\n      \"The to account id and from account id must be different.\"\n    ],\n    \"amount\": [\n      \"The amount field is required.\",\n      \"The amount must be a number.\",\n      \"The amount must be greater than 0.\",\n      \"The amount format is invalid.\"\n    ],\n    \"description\": [\n      \"The description must be a string.\",\n      \"The description may not be greater than 255 characters.\"\n    ]\n  }\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_created\",\n  \"error_description\": \"Transfer has not been created\",\n  \"message\": \"Resource not created\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 },
