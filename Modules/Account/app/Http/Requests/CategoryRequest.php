@@ -18,7 +18,6 @@ class CategoryRequest extends BaseFormRequest
     {
         return [
             'name' => 'required|string',
-            'description' => 'nullable|string'
         ];
     }
 

@@ -1,0 +1,5 @@
+{
+  "error": "resource_not_created",
+  "error_description": "Category could not be created.",
+  "message": "Resource not created"
+}

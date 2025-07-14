@@ -14,11 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $category = Category::firstOrCreate(
-            ['name' => 'Other'],
-        );
-
-        Schema::create('transactions', function (Blueprint $table) use ($category) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
@@ -34,7 +30,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('category_id')
-                ->default($category->id)
+                ->nullable()
                 ->constrained('categories')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

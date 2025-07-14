@@ -611,6 +611,310 @@ endpoints:
   -
     httpMethods:
       - GET
+    uri: api/v1/categories
+    metadata:
+      groupName: Modules
+      groupDescription: ''
+      subgroup: Category
+      subgroupDescription: ''
+      title: 'List Categories'
+      description: 'Retrieve all categories.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          [
+            {
+              "id": 1,
+              "name": "Other",
+              "created_at": "2025-07-14T17:09:12.000000Z",
+              "updated_at": "2025-07-14T17:09:12.000000Z"
+            }
+          ]
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/categories
+    metadata:
+      groupName: Modules
+      groupDescription: ''
+      subgroup: Category
+      subgroupDescription: ''
+      title: 'Create a Category'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the category.'
+        required: true
+        example: Savings
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: Savings
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |
+          {
+            "name": "Savings"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "name": [
+                "The name field is required.",
+                "The name must be a string."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_created",
+            "error_description": "Category could not be created.",
+            "message": "Resource not created"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/categories/{id}'
+    metadata:
+      groupName: Modules
+      groupDescription: ''
+      subgroup: Category
+      subgroupDescription: ''
+      title: 'Update a Category'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the category.'
+        required: true
+        example: Investments
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: Investments
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |
+          {
+            "name": "Investments"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Category could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "name": [
+                "The name field is required.",
+                "The name must be a string."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_updated",
+            "error_description": "Category could not be updated.",
+            "message": "Resource not updated"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/categories/{id}'
+    metadata:
+      groupName: Modules
+      groupDescription: ''
+      subgroup: Category
+      subgroupDescription: ''
+      title: 'Delete a Category'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_ACCESS_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Category could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_deleted",
+            "error_description": "Category could not be deleted.",
+            "message": "Resource not deleted"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
     uri: 'api/v1/accounts/{account_id}/transactions'
     metadata:
       groupName: Modules
@@ -817,7 +1121,7 @@ endpoints:
         type: integer
         enumValues: []
         exampleWasSpecified: true
-        nullable: false
+        nullable: true
         custom: []
     cleanBodyParameters:
       type: Withdrawal
@@ -1059,7 +1363,7 @@ endpoints:
         type: integer
         enumValues: []
         exampleWasSpecified: true
-        nullable: false
+        nullable: true
         custom: []
     cleanBodyParameters:
       type: Deposit

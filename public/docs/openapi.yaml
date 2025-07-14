@@ -8,9 +8,6 @@ servers:
     url: 'http://localhost:8000'
 tags:
   -
-    name: Endpoints
-    description: ''
-  -
     name: Modules
     description: ''
 components:
@@ -23,136 +20,6 @@ security:
   -
     default: []
 paths:
-  /api/v1/categories:
-    get:
-      summary: ''
-      operationId: getApiV1Categories
-      description: ''
-      parameters: []
-      responses:
-        400:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  error: exception
-                  error_description: 'Unauthorized: unable to set cookie'
-                  message: 'Authentication failed exception.'
-                properties:
-                  error:
-                    type: string
-                    example: exception
-                  error_description:
-                    type: string
-                    example: 'Unauthorized: unable to set cookie'
-                  message:
-                    type: string
-                    example: 'Authentication failed exception.'
-      tags:
-        - Endpoints
-    post:
-      summary: ''
-      operationId: postApiV1Categories
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: ''
-                  example: architecto
-                  nullable: false
-                description:
-                  type: string
-                  description: ''
-                  example: 'Eius et animi quos velit et.'
-                  nullable: true
-              required:
-                - name
-  '/api/v1/categories/{id}':
-    put:
-      summary: ''
-      operationId: putApiV1CategoriesId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: ''
-                  example: architecto
-                  nullable: false
-                description:
-                  type: string
-                  description: ''
-                  example: 'Eius et animi quos velit et.'
-                  nullable: true
-              required:
-                - name
-    delete:
-      summary: ''
-      operationId: deleteApiV1CategoriesId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the category.'
-        example: architecto
-        required: true
-        schema:
-          type: string
-  /api/v1/auth_status:
-    get:
-      summary: ''
-      operationId: getApiV1Auth_status
-      description: ''
-      parameters: []
-      responses:
-        400:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  error: exception
-                  error_description: 'Unauthorized: unable to set cookie'
-                  message: 'Authentication failed exception.'
-                properties:
-                  error:
-                    type: string
-                    example: exception
-                  error_description:
-                    type: string
-                    example: 'Unauthorized: unable to set cookie'
-                  message:
-                    type: string
-                    example: 'Authentication failed exception.'
-      tags:
-        - Endpoints
   /api/v1/accounts:
     get:
       summary: 'Find all paginated accounts.'
@@ -895,6 +762,269 @@ paths:
         required: true
         schema:
           type: integer
+  /api/v1/categories:
+    get:
+      summary: 'List Categories'
+      operationId: listCategories
+      description: 'Retrieve all categories.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 1
+                    name: Other
+                    created_at: '2025-07-14T17:09:12.000000Z'
+                    updated_at: '2025-07-14T17:09:12.000000Z'
+      tags:
+        - Modules
+    post:
+      summary: 'Create a Category'
+      operationId: createACategory
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name: Savings
+                properties:
+                  name:
+                    type: string
+                    example: Savings
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                      - 'The name must be a string.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                          - 'The name must be a string.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_created
+                  error_description: 'Category could not be created.'
+                  message: 'Resource not created'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_created
+                  error_description:
+                    type: string
+                    example: 'Category could not be created.'
+                  message:
+                    type: string
+                    example: 'Resource not created'
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the category.'
+                  example: Savings
+                  nullable: false
+              required:
+                - name
+  '/api/v1/categories/{id}':
+    put:
+      summary: 'Update a Category'
+      operationId: updateACategory
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name: Investments
+                properties:
+                  name:
+                    type: string
+                    example: Investments
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Category could not be found.'
+                  message: 'Resource not found'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_found
+                  error_description:
+                    type: string
+                    example: 'Category could not be found.'
+                  message:
+                    type: string
+                    example: 'Resource not found'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors:
+                    name:
+                      - 'The name field is required.'
+                      - 'The name must be a string.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        example:
+                          - 'The name field is required.'
+                          - 'The name must be a string.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_updated
+                  error_description: 'Category could not be updated.'
+                  message: 'Resource not updated'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_updated
+                  error_description:
+                    type: string
+                    example: 'Category could not be updated.'
+                  message:
+                    type: string
+                    example: 'Resource not updated'
+      tags:
+        - Modules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the category.'
+                  example: Investments
+                  nullable: false
+              required:
+                - name
+    delete:
+      summary: 'Delete a Category'
+      operationId: deleteACategory
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: ''
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_found
+                  error_description: 'Category could not be found.'
+                  message: 'Resource not found'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_found
+                  error_description:
+                    type: string
+                    example: 'Category could not be found.'
+                  message:
+                    type: string
+                    example: 'Resource not found'
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: resource_not_deleted
+                  error_description: 'Category could not be deleted.'
+                  message: 'Resource not deleted'
+                properties:
+                  error:
+                    type: string
+                    example: resource_not_deleted
+                  error_description:
+                    type: string
+                    example: 'Category could not be deleted.'
+                  message:
+                    type: string
+                    example: 'Resource not deleted'
+      tags:
+        - Modules
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the category.'
+        example: 1
+        required: true
+        schema:
+          type: integer
   '/api/v1/accounts/{account_id}/transactions':
     get:
       summary: 'Find and paginates all transactions for logged user and for selected account.'
@@ -1293,7 +1423,7 @@ paths:
                   type: integer
                   description: 'Category identifier.'
                   example: 42
-                  nullable: false
+                  nullable: true
               required:
                 - type
                 - amount
@@ -1596,7 +1726,7 @@ paths:
                   type: integer
                   description: 'Category identifier.'
                   example: 42
-                  nullable: false
+                  nullable: true
               required:
                 - type
                 - amount

@@ -10,204 +10,11 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "ee057d02-aea3-4374-a6d4-a4954894bb9b",
+        "_postman_id": "0f7979ae-b3e4-4fd4-8012-e6b3dfd65c32",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
-        {
-            "name": "Endpoints",
-            "description": "",
-            "item": [
-                {
-                    "name": "GET api\/v1\/categories",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/categories",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/categories"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "vary",
-                                    "value": "Origin"
-                                }
-                            ],
-                            "code": 400,
-                            "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "POST api\/v1\/categories",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/categories",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/categories"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"architecto\",\"description\":\"Eius et animi quos velit et.\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "PUT api\/v1\/categories\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/categories\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the category."
-                                }
-                            ]
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"architecto\",\"description\":\"Eius et animi quos velit et.\"}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "DELETE api\/v1\/categories\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/categories\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the category."
-                                }
-                            ]
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GET api\/v1\/auth_status",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/auth_status",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/auth_status"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "vary",
-                                    "value": "Origin"
-                                }
-                            ],
-                            "code": 400,
-                            "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
-                            "name": ""
-                        }
-                    ]
-                }
-            ]
-        },
         {
             "name": "Modules",
             "description": "",
@@ -457,6 +264,204 @@
                                     "header": [],
                                     "code": 500,
                                     "body": "{\n  \"error\": \"resource_not_deleted\",\n  \"error_description\": \"Account has not been deleted\",\n  \"message\": \"Resource not deleted\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Category",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "List Categories",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/categories",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/categories"
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": "Retrieve all categories."
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Other\",\n    \"created_at\": \"2025-07-14T17:09:12.000000Z\",\n    \"updated_at\": \"2025-07-14T17:09:12.000000Z\"\n  }\n]",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a Category",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/categories",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/categories"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Savings\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n  \"name\": \"Savings\"\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\",\n      \"The name must be a string.\"\n    ]\n  }\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_created\",\n  \"error_description\": \"Category could not be created.\",\n  \"message\": \"Resource not created\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a Category",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/categories\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "1",
+                                            "description": "The ID of the category."
+                                        }
+                                    ]
+                                },
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Investments\"}"
+                                },
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"name\": \"Investments\"\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Category could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\",\n      \"The name must be a string.\"\n    ]\n  }\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_updated\",\n  \"error_description\": \"Category could not be updated.\",\n  \"message\": \"Resource not updated\"\n}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Delete a Category",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/categories\/:id",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/categories\/:id",
+                                    "variable": [
+                                        {
+                                            "id": "id",
+                                            "key": "id",
+                                            "value": "1",
+                                            "description": "The ID of the category."
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": null,
+                                "description": ""
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "{}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Category could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_deleted\",\n  \"error_description\": \"Category could not be deleted.\",\n  \"message\": \"Resource not deleted\"\n}",
                                     "name": ""
                                 }
                             ]
