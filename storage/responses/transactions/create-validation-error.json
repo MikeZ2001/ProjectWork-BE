@@ -1,0 +1,23 @@
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "type": [
+      "The type field is required.",
+      "The selected type is invalid."
+    ],
+    "amount": [
+      "The amount field is required.",
+      "The amount must be a number.",
+      "The amount must be greater than 0.",
+      "The amount format is invalid."
+    ],
+    "transaction_date": [
+      "The transaction date field is required.",
+      "The transaction date is not a valid date."
+    ],
+    "category_id": [
+      "The category id field is required.",
+      "The selected category id is invalid."
+    ]
+  }
+}

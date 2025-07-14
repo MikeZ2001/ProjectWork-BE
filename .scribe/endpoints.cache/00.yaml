@@ -41,35 +41,54 @@ endpoints:
     responses:
       -
         status: 200
-        content: |
+        content: |-
           {
             "data": [
               {
                 "id": 1,
-                "name": "Checking Account",
-                "type": "checking",
-                "balance": 1000.00,
-                "open_date": "2025-07-01",
+                "name": "My savings account",
+                "type": "savings",
+                "balance": "103.99",
+                "currency": "EUR",
+                "open_date": "2025-07-13 00:00:00",
                 "close_date": null,
                 "status": "active",
-                "created_at": "2025-07-01T09:00:00Z",
-                "updated_at": "2025-07-01T09:00:00Z"
+                "user_id": 1,
+                "created_at": "2025-07-13T11:38:52.000000Z",
+                "updated_at": "2025-07-14T11:03:59.000000Z"
               }
             ],
             "links": {
-              "first": "http://api.example.com/accounts?page=1",
-              "last":  "http://api.example.com/accounts?page=1",
-              "prev":  null,
-              "next":  null
+              "first": "http://localhost:8000/api/v1/accounts?page=1",
+              "last": "http://localhost:8000/api/v1/accounts?page=1",
+              "prev": null,
+              "next": null
             },
             "meta": {
               "current_page": 1,
               "from": 1,
               "last_page": 1,
-              "path": "http://api.example.com/accounts",
+              "links": [
+                {
+                  "url": null,
+                  "label": "&laquo; Previous",
+                  "active": false
+                },
+                {
+                  "url": "http://localhost:8000/api/v1/accounts?page=1",
+                  "label": "1",
+                  "active": true
+                },
+                {
+                  "url": null,
+                  "label": "Next &raquo;",
+                  "active": false
+                }
+              ],
+              "path": "http://localhost:8000/api/v1/accounts",
               "per_page": 10,
-              "to": 1,
-              "total": 1
+              "to": 4,
+              "total": 4
             }
           }
         headers: []
@@ -108,9 +127,9 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'The account name.'
-        required: false
-        example: '"Savings Account"'
+        description: 'The account’s name.'
+        required: true
+        example: '“Savings Account”'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -118,9 +137,9 @@ endpoints:
         custom: []
       type:
         name: type
-        description: 'The account type.'
-        required: false
-        example: '"savings"'
+        description: 'Must be one of the values in Modules\Account\Models\AccountType enum.'
+        required: true
+        example: savings
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -128,9 +147,9 @@ endpoints:
         custom: []
       balance:
         name: balance
-        description: 'The balance.'
-        required: false
-        example: 1500.0
+        description: 'The opening balance, Must be ≥ 0.'
+        required: true
+        example: 2500.75
         type: number
         enumValues: []
         exampleWasSpecified: true
@@ -138,72 +157,94 @@ endpoints:
         custom: []
       open_date:
         name: open_date
-        description: 'The opening date.'
-        required: false
-        example: '"2025-07-01"'
-        type: string
+        description: 'The opening date Format: YYYY-MM-DD.'
+        required: true
+        example: “2025-07-01”
+        type: date
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
       close_date:
         name: close_date
-        description: 'The closing date.'
+        description: 'The closing date, if any. Must be on or after open_date.'
         required: false
-        example: '"2025-12-31"'
-        type: string
+        example: null
+        type: date|null
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         custom: []
       status:
         name: status
-        description: 'The status.'
-        required: false
-        example: '"inactive"'
+        description: 'Must be one of the values in Modules\Account\Models\AccountStatus enum.'
+        required: true
+        example: active
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: '"Savings Account"'
-      type: '"savings"'
-      balance: 1500.0
-      open_date: '"2025-07-01"'
-      close_date: '"2025-12-31"'
-      status: '"inactive"'
+      name: '“Savings Account”'
+      type: savings
+      balance: 2500.75
+      open_date: “2025-07-01”
+      close_date: null
+      status: active
     fileParameters: []
     responses:
       -
         status: 201
         content: |-
           {
-              "id": 2,
               "name": "Savings Account",
               "type": "savings",
-              "balance": 1500.00,
-              "open_date": "2025-07-10",
+              "balance": 2500.75,
+              "open_date": "2025-07-01",
               "close_date": null,
               "status": "active",
-              "created_at": "2025-07-10T10:00:00Z",
-              "updated_at": "2025-07-10T10:00:00Z",
-              "user_id": 1
+              "user_id": 1,
+              "updated_at": "2025-07-14T12:10:35.000000Z",
+              "created_at": "2025-07-14T12:10:35.000000Z",
+              "id": 1
           }
         headers: []
         description: ''
         custom: []
       -
         status: 422
-        content: |-
+        content: |
           {
-            "message": "The name field is required. (and 1 more error)",
+            "message": "The given data was invalid.",
             "errors": {
               "name": [
-                "The name field is required."
+                "The name field is required.",
+                "The name must be a string."
               ],
               "type": [
+                "The type field is required.",
+                "The type must be a string.",
                 "The selected type is invalid."
+              ],
+              "balance": [
+                "The balance field is required.",
+                "The balance must be a number.",
+                "The balance must be at least 0.",
+                "The balance format is invalid."
+              ],
+              "open_date": [
+                "The open date field is required.",
+                "The open date must be a string."
+              ],
+              "close_date": [
+                "The close date must be a string.",
+                "The close date must be a date after or equal to open date."
+              ],
+              "status": [
+                "The status field is required.",
+                "The status must be a string.",
+                "The selected status is invalid."
               ]
             }
           }
@@ -339,9 +380,9 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'The account name.'
-        required: false
-        example: '"Savings Account"'
+        description: 'The account’s name.'
+        required: true
+        example: '“Savings Account Updated”'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -349,9 +390,9 @@ endpoints:
         custom: []
       type:
         name: type
-        description: 'The account type.'
-        required: false
-        example: '"savings"'
+        description: 'Must be one of the values in Modules\Account\Models\AccountType enum.'
+        required: true
+        example: savings
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -359,9 +400,9 @@ endpoints:
         custom: []
       balance:
         name: balance
-        description: 'The balance.'
-        required: false
-        example: 1500.0
+        description: 'The opening balance, Must be ≥ 0.'
+        required: true
+        example: 2500.75
         type: number
         enumValues: []
         exampleWasSpecified: true
@@ -369,57 +410,57 @@ endpoints:
         custom: []
       open_date:
         name: open_date
-        description: 'The opening date.'
-        required: false
-        example: '"2025-07-01"'
-        type: string
+        description: 'The opening date Format: YYYY-MM-DD.'
+        required: true
+        example: “2025-07-01”
+        type: date
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
       close_date:
         name: close_date
-        description: 'The closing date.'
+        description: 'The closing date, if any. Must be on or after open_date.'
         required: false
-        example: '"2025-12-31"'
-        type: string
+        example: “2025-07-27”
+        type: date|null
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         custom: []
       status:
         name: status
-        description: 'The status.'
-        required: false
-        example: '"inactive"'
+        description: 'Must be one of the values in Modules\Account\Models\AccountStatus enum.'
+        required: true
+        example: closed
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: '"Savings Account"'
-      type: '"savings"'
-      balance: 1500.0
-      open_date: '"2025-07-01"'
-      close_date: '"2025-12-31"'
-      status: '"inactive"'
+      name: '“Savings Account Updated”'
+      type: savings
+      balance: 2500.75
+      open_date: “2025-07-01”
+      close_date: “2025-07-27”
+      status: closed
     fileParameters: []
     responses:
       -
         status: 200
         content: |-
           {
-            "id": 2,
             "name": "Savings Account Updated",
             "type": "savings",
-            "balance": 2500.00,
-            "open_date": "2025-07-16",
-            "close_date": null,
-            "status": "active",
-            "created_at": "2025-07-10T10:00:00Z",
-            "updated_at": "2025-07-10T10:00:00Z",
-            "user_id": 1
+            "balance": 2500.75,
+            "open_date": "2025-07-01",
+            "close_date": "2025-07-27",
+            "status": "closed",
+            "user_id": 1,
+            "updated_at": "2025-07-14T12:10:35.000000Z",
+            "created_at": "2025-07-14T12:10:35.000000Z",
+            "id": 1
           }
         headers: []
         description: ''
@@ -437,14 +478,36 @@ endpoints:
         custom: []
       -
         status: 422
-        content: |-
+        content: |
           {
-            "message": "The name field is required. (and 1 more error)",
+            "message": "The given data was invalid.",
             "errors": {
               "name": [
-                "The name field is required."
+                "The name field is required.",
+                "The name must be a string."
+              ],
+              "type": [
+                "The type field is required.",
+                "The type must be a string.",
+                "The selected type is invalid."
+              ],
+              "balance": [
+                "The balance field is required.",
+                "The balance must be a number.",
+                "The balance must be at least 0.",
+                "The balance format is invalid."
+              ],
+              "open_date": [
+                "The open date field is required.",
+                "The open date must be a string."
+              ],
+              "close_date": [
+                "The close date must be a string.",
+                "The close date must be a date after or equal to open date."
               ],
               "status": [
+                "The status field is required.",
+                "The status must be a string.",
                 "The selected status is invalid."
               ]
             }
@@ -567,28 +630,102 @@ endpoints:
         name: account_id
         description: 'The ID of the account.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      account_id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
+      account_id: 1
+    queryParameters:
+      per_page:
+        name: per_page
+        description: 'The number of items per page. Default: 10.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      per_page: 15
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
-        status: 400
-        content: '{"error":"exception","error_description":"Unauthorized: unable to set cookie","message":"Authentication failed exception."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 7,
+                "type": "deposit",
+                "amount": "128.00",
+                "transaction_date": "2025-07-12 00:00:00",
+                "description": null,
+                "created_at": "2025-07-13T15:08:43.000000Z",
+                "updated_at": "2025-07-14T10:53:48.000000Z",
+                "category": {
+                  "id": 40,
+                  "name": "Investment Income",
+                  "created_at": "2025-07-13T14:38:13.000000Z",
+                  "updated_at": null
+                }
+              },
+              {
+                "id": 15,
+                "type": "withdrawal",
+                "amount": "10.00",
+                "transaction_date": "2025-07-14 00:00:00",
+                "description": null,
+                "created_at": "2025-07-14T10:54:43.000000Z",
+                "updated_at": "2025-07-14T10:54:43.000000Z",
+                "category": {
+                  "id": 30,
+                  "name": "Food & Dining",
+                  "created_at": "2025-07-13T14:38:13.000000Z",
+                  "updated_at": null
+                }
+              }
+            ],
+            "links": {
+              "first": "http://localhost:8000/api/v1/accounts/1/transactions?page=1",
+              "last": "http://localhost:8000/api/v1/accounts/1/transactions?page=1",
+              "prev": null,
+              "next": null
+            },
+            "meta": {
+              "current_page": 1,
+              "from": 1,
+              "last_page": 1,
+              "links": [
+                {
+                  "url": null,
+                  "label": "&laquo; Previous",
+                  "active": false
+                },
+                {
+                  "url": "http://localhost:8000/api/v1/accounts/1/transactions?page=1",
+                  "label": "1",
+                  "active": true
+                },
+                {
+                  "url": null,
+                  "label": "Next &raquo;",
+                  "active": false
+                }
+              ],
+              "path": "http://localhost:8000/api/v1/accounts/1/transactions",
+              "per_page": 10,
+              "to": 3,
+              "total": 3
+            }
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth:
@@ -621,75 +758,139 @@ endpoints:
         name: account_id
         description: 'The ID of the account.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      account_id: architecto
+      account_id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       type:
         name: type
-        description: ''
+        description: 'Transaction type (Deposit, Withdrawal or Transfer).'
         required: true
-        example: architecto
+        example: Withdrawal
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       amount:
         name: amount
-        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+        description: 'Transaction amount (must be > 0, up to two decimals).'
         required: true
-        example: '64'
-        type: string
+        example: 100.0
+        type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       transaction_date:
         name: transaction_date
-        description: ''
+        description: 'Date of transaction (YYYY-MM-DD).'
         required: true
-        example: architecto
+        example: '2025-07-14'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       description:
         name: description
-        description: ''
+        description: 'Optional description.'
         required: false
-        example: 'Eius et animi quos velit et.'
-        type: string
+        example: Other
+        type: string|null
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         custom: []
       category_id:
         name: category_id
-        description: ''
+        description: 'Category identifier.'
         required: true
-        example: 16
+        example: 42
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      type: architecto
-      amount: '64'
-      transaction_date: architecto
-      description: 'Eius et animi quos velit et.'
-      category_id: 16
+      type: Withdrawal
+      amount: 100.0
+      transaction_date: '2025-07-14'
+      description: Other
+      category_id: 42
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+              "id": 17,
+              "type": "withdrawal",
+              "amount": "100",
+              "transaction_date": "2025-07-14T09:00:00",
+              "description": "Other",
+              "created_at": "2025-07-14T11:03:59.000000Z",
+              "updated_at": "2025-07-14T11:03:59.000000Z",
+              "category": {
+                  "id": 42,
+                  "name": "Other",
+                  "created_at": "2025-07-13T14:38:13.000000Z",
+                  "updated_at": null
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "type": [
+                "The type field is required.",
+                "The type must be a string."
+              ],
+              "amount": [
+                "The amount field is required.",
+                "The amount must be a number.",
+                "The amount must be greater than 0.",
+                "The amount format is invalid."
+              ],
+              "transaction_date": [
+                "The transaction date field is required.",
+                "The transaction date must be a string."
+              ],
+              "description": [
+                "The description must be a string."
+              ],
+              "category_id": [
+                "The category id field is required.",
+                "The category id must be an integer."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_created",
+            "error_description": "Transaction has not been created",
+            "message": "Resource not created"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -719,16 +920,16 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the transaction.'
+        description: 'Transaction ID.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -736,13 +937,36 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 400
-        content: '{"error":"exception","error_description":"Unauthorized: unable to set cookie","message":"Authentication failed exception."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
+        status: 200
+        content: |-
+          {
+              "id": 12,
+              "type": "deposit",
+              "amount": "10.00",
+              "transaction_date": "2025-06-20 09:00:00",
+              "description": null,
+              "created_at": "2025-07-13T15:12:01.000000Z",
+              "updated_at": "2025-07-13T15:12:01.000000Z",
+              "category": {
+                  "id": 42,
+                  "name": "Other",
+                  "created_at": "2025-07-13T14:38:13.000000Z",
+                  "updated_at": null
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Transaction could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth:
@@ -776,75 +1000,150 @@ endpoints:
         name: id
         description: 'The ID of the transaction.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       type:
         name: type
-        description: ''
+        description: 'Transaction type (Deposit, Withdrawal or Transfer).'
         required: true
-        example: architecto
+        example: Deposit
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       amount:
         name: amount
-        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+        description: 'Transaction amount (must be > 0, up to two decimals).'
         required: true
-        example: '64'
-        type: string
+        example: 150.0
+        type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       transaction_date:
         name: transaction_date
-        description: ''
+        description: 'Date of transaction (YYYY-MM-DD).'
         required: true
-        example: architecto
+        example: '2025-07-15'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
       description:
         name: description
-        description: ''
+        description: 'Optional description.'
         required: false
-        example: 'Eius et animi quos velit et.'
-        type: string
+        example: 'Updated description'
+        type: string|null
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         custom: []
       category_id:
         name: category_id
-        description: ''
+        description: 'Category identifier.'
         required: true
-        example: 16
+        example: 42
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanBodyParameters:
-      type: architecto
-      amount: '64'
-      transaction_date: architecto
-      description: 'Eius et animi quos velit et.'
-      category_id: 16
+      type: Deposit
+      amount: 150.0
+      transaction_date: '2025-07-15'
+      description: 'Updated description'
+      category_id: 42
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 17,
+            "type": "deposit",
+            "amount": "150",
+            "transaction_date": "2025-06-15T09:00:00",
+            "description": null,
+            "created_at": "2025-07-14T11:03:59.000000Z",
+            "updated_at": "2025-07-14T11:03:59.000000Z",
+            "category": {
+              "id": 42,
+              "name": "Other",
+              "created_at": "2025-07-13T14:38:13.000000Z",
+              "updated_at": null
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Transaction could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+              "type": [
+                "The type field is required.",
+                "The type must be a string."
+              ],
+              "amount": [
+                "The amount field is required.",
+                "The amount must be a number.",
+                "The amount must be greater than 0.",
+                "The amount format is invalid."
+              ],
+              "transaction_date": [
+                "The transaction date field is required.",
+                "The transaction date must be a string."
+              ],
+              "description": [
+                "The description must be a string."
+              ],
+              "category_id": [
+                "The category id field is required.",
+                "The category id must be an integer."
+              ]
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_updated",
+            "error_description": "Transaction has not been updated",
+            "message": "Resource not updated"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -876,20 +1175,48 @@ endpoints:
         name: id
         description: 'The ID of the transaction.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 204
+        content: '{}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "error": "resource_not_found",
+            "error_description": "Transaction could not be found.",
+            "message": "Resource not found"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "error": "resource_not_deleted",
+            "error_description": "Transaction has not been deleted",
+            "message": "Resource not deleted"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth:
       - headers
@@ -943,10 +1270,10 @@ endpoints:
         custom: []
       amount:
         name: amount
-        description: 'Must match the regex /^\d+(\.\d{1,2})?$/.'
+        description: 'Must match the regex /^\d{1,13}(\.\d{1,2})?$/.'
         required: true
-        example: '64'
-        type: string
+        example: '6425593142326'
+        type: number
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -955,7 +1282,7 @@ endpoints:
         name: description
         description: 'Must not be greater than 255 characters.'
         required: false
-        example: 'Fugiat sunt nihil accusantium harum mollitia.'
+        example: 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -964,8 +1291,8 @@ endpoints:
     cleanBodyParameters:
       from_account_id: 16
       to_account_id: 16
-      amount: '64'
-      description: 'Fugiat sunt nihil accusantium harum mollitia.'
+      amount: '6425593142326'
+      description: 'Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.'
     fileParameters: []
     responses: []
     responseFields: []

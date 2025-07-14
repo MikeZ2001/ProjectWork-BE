@@ -10,13 +10,6 @@ use Modules\Account\Models\AccountType;
 
 /**
  * @method AccountDTO getDTO()
- *
- * @bodyParam name string The account name. Example: "Savings Account"
- * @bodyParam type string The account type. Example: "savings"
- * @bodyParam balance number The balance. Example: 1500.00
- * @bodyParam open_date string The opening date. Example: "2025-07-01"
- * @bodyParam close_date string The closing date. Example: "2025-12-31"
- * @bodyParam status string The status. Example: "inactive"
  */
 class AccountRequest extends BaseFormRequest
 {
@@ -53,4 +46,7 @@ class AccountRequest extends BaseFormRequest
     {
         return true;
     }
+
+
+
 }

@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "e2fdc4d7-bd36-4922-81e6-6d6a51c9da7d",
+        "_postman_id": "647b378a-dbfc-4d9e-859b-05cae8402f08",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -250,7 +250,7 @@
                                 {
                                     "header": [],
                                     "code": 200,
-                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Checking Account\",\n      \"type\": \"checking\",\n      \"balance\": 1000.00,\n      \"open_date\": \"2025-07-01\",\n      \"close_date\": null,\n      \"status\": \"active\",\n      \"created_at\": \"2025-07-01T09:00:00Z\",\n      \"updated_at\": \"2025-07-01T09:00:00Z\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/api.example.com\/accounts?page=1\",\n    \"last\":  \"http:\/\/api.example.com\/accounts?page=1\",\n    \"prev\":  null,\n    \"next\":  null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"path\": \"http:\/\/api.example.com\/accounts\",\n    \"per_page\": 10,\n    \"to\": 1,\n    \"total\": 1\n  }\n}\n",
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"My savings account\",\n      \"type\": \"savings\",\n      \"balance\": \"103.99\",\n      \"currency\": \"EUR\",\n      \"open_date\": \"2025-07-13 00:00:00\",\n      \"close_date\": null,\n      \"status\": \"active\",\n      \"user_id\": 1,\n      \"created_at\": \"2025-07-13T11:38:52.000000Z\",\n      \"updated_at\": \"2025-07-14T11:03:59.000000Z\"\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost:8000\/api\/v1\/accounts?page=1\",\n    \"last\": \"http:\/\/localhost:8000\/api\/v1\/accounts?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"links\": [\n      {\n        \"url\": null,\n        \"label\": \"&laquo; Previous\",\n        \"active\": false\n      },\n      {\n        \"url\": \"http:\/\/localhost:8000\/api\/v1\/accounts?page=1\",\n        \"label\": \"1\",\n        \"active\": true\n      },\n      {\n        \"url\": null,\n        \"label\": \"Next &raquo;\",\n        \"active\": false\n      }\n    ],\n    \"path\": \"http:\/\/localhost:8000\/api\/v1\/accounts\",\n    \"per_page\": 10,\n    \"to\": 4,\n    \"total\": 4\n  }\n}",
                                     "name": ""
                                 }
                             ]
@@ -277,7 +277,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"\\\"Savings Account\\\"\",\"type\":\"\\\"savings\\\"\",\"balance\":1500,\"open_date\":\"\\\"2025-07-01\\\"\",\"close_date\":\"\\\"2025-12-31\\\"\",\"status\":\"\\\"inactive\\\"\"}"
+                                    "raw": "{\"name\":\"\u201cSavings Account\u201d\",\"type\":\"savings\",\"balance\":2500.75,\"open_date\":\"\u201c2025-07-01\u201d\",\"close_date\":null,\"status\":\"active\"}"
                                 },
                                 "description": ""
                             },
@@ -285,13 +285,13 @@
                                 {
                                     "header": [],
                                     "code": 201,
-                                    "body": "{\n    \"id\": 2,\n    \"name\": \"Savings Account\",\n    \"type\": \"savings\",\n    \"balance\": 1500.00,\n    \"open_date\": \"2025-07-10\",\n    \"close_date\": null,\n    \"status\": \"active\",\n    \"created_at\": \"2025-07-10T10:00:00Z\",\n    \"updated_at\": \"2025-07-10T10:00:00Z\",\n    \"user_id\": 1\n}",
+                                    "body": "{\n    \"name\": \"Savings Account\",\n    \"type\": \"savings\",\n    \"balance\": 2500.75,\n    \"open_date\": \"2025-07-01\",\n    \"close_date\": null,\n    \"status\": \"active\",\n    \"user_id\": 1,\n    \"updated_at\": \"2025-07-14T12:10:35.000000Z\",\n    \"created_at\": \"2025-07-14T12:10:35.000000Z\",\n    \"id\": 1\n}",
                                     "name": ""
                                 },
                                 {
                                     "header": [],
                                     "code": 422,
-                                    "body": "{\n  \"message\": \"The name field is required. (and 1 more error)\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\"\n    ],\n    \"type\": [\n      \"The selected type is invalid.\"\n    ]\n  }\n}",
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\",\n      \"The name must be a string.\"\n    ],\n    \"type\": [\n      \"The type field is required.\",\n      \"The type must be a string.\",\n      \"The selected type is invalid.\"\n    ],\n    \"balance\": [\n      \"The balance field is required.\",\n      \"The balance must be a number.\",\n      \"The balance must be at least 0.\",\n      \"The balance format is invalid.\"\n    ],\n    \"open_date\": [\n      \"The open date field is required.\",\n      \"The open date must be a string.\"\n    ],\n    \"close_date\": [\n      \"The close date must be a string.\",\n      \"The close date must be a date after or equal to open date.\"\n    ],\n    \"status\": [\n      \"The status field is required.\",\n      \"The status must be a string.\",\n      \"The selected status is invalid.\"\n    ]\n  }\n}\n",
                                     "name": ""
                                 },
                                 {
@@ -378,7 +378,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"\\\"Savings Account\\\"\",\"type\":\"\\\"savings\\\"\",\"balance\":1500,\"open_date\":\"\\\"2025-07-01\\\"\",\"close_date\":\"\\\"2025-12-31\\\"\",\"status\":\"\\\"inactive\\\"\"}"
+                                    "raw": "{\"name\":\"\u201cSavings Account Updated\u201d\",\"type\":\"savings\",\"balance\":2500.75,\"open_date\":\"\u201c2025-07-01\u201d\",\"close_date\":\"\u201c2025-07-27\u201d\",\"status\":\"closed\"}"
                                 },
                                 "description": ""
                             },
@@ -386,7 +386,7 @@
                                 {
                                     "header": [],
                                     "code": 200,
-                                    "body": "{\n  \"id\": 2,\n  \"name\": \"Savings Account Updated\",\n  \"type\": \"savings\",\n  \"balance\": 2500.00,\n  \"open_date\": \"2025-07-16\",\n  \"close_date\": null,\n  \"status\": \"active\",\n  \"created_at\": \"2025-07-10T10:00:00Z\",\n  \"updated_at\": \"2025-07-10T10:00:00Z\",\n  \"user_id\": 1\n}",
+                                    "body": "{\n  \"name\": \"Savings Account Updated\",\n  \"type\": \"savings\",\n  \"balance\": 2500.75,\n  \"open_date\": \"2025-07-01\",\n  \"close_date\": \"2025-07-27\",\n  \"status\": \"closed\",\n  \"user_id\": 1,\n  \"updated_at\": \"2025-07-14T12:10:35.000000Z\",\n  \"created_at\": \"2025-07-14T12:10:35.000000Z\",\n  \"id\": 1\n}",
                                     "name": ""
                                 },
                                 {
@@ -398,7 +398,7 @@
                                 {
                                     "header": [],
                                     "code": 422,
-                                    "body": "{\n  \"message\": \"The name field is required. (and 1 more error)\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\"\n    ],\n    \"status\": [\n      \"The selected status is invalid.\"\n    ]\n  }\n}",
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\",\n      \"The name must be a string.\"\n    ],\n    \"type\": [\n      \"The type field is required.\",\n      \"The type must be a string.\",\n      \"The selected type is invalid.\"\n    ],\n    \"balance\": [\n      \"The balance field is required.\",\n      \"The balance must be a number.\",\n      \"The balance must be at least 0.\",\n      \"The balance format is invalid.\"\n    ],\n    \"open_date\": [\n      \"The open date field is required.\",\n      \"The open date must be a string.\"\n    ],\n    \"close_date\": [\n      \"The close date must be a string.\",\n      \"The close date must be a date after or equal to open date.\"\n    ],\n    \"status\": [\n      \"The status field is required.\",\n      \"The status must be a string.\",\n      \"The selected status is invalid.\"\n    ]\n  }\n}\n",
                                     "name": ""
                                 },
                                 {
@@ -473,13 +473,20 @@
                                 "url": {
                                     "host": "{{baseUrl}}",
                                     "path": "api\/v1\/accounts\/:account_id\/transactions",
-                                    "query": [],
-                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:account_id\/transactions",
+                                    "query": [
+                                        {
+                                            "key": "per_page",
+                                            "value": "15",
+                                            "description": "The number of items per page. Default: 10.",
+                                            "disabled": false
+                                        }
+                                    ],
+                                    "raw": "{{baseUrl}}\/api\/v1\/accounts\/:account_id\/transactions?per_page=15",
                                     "variable": [
                                         {
                                             "id": "account_id",
                                             "key": "account_id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -500,22 +507,9 @@
                             },
                             "response": [
                                 {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "vary",
-                                            "value": "Origin"
-                                        }
-                                    ],
-                                    "code": 400,
-                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"data\": [\n    {\n      \"id\": 7,\n      \"type\": \"deposit\",\n      \"amount\": \"128.00\",\n      \"transaction_date\": \"2025-07-12 00:00:00\",\n      \"description\": null,\n      \"created_at\": \"2025-07-13T15:08:43.000000Z\",\n      \"updated_at\": \"2025-07-14T10:53:48.000000Z\",\n      \"category\": {\n        \"id\": 40,\n        \"name\": \"Investment Income\",\n        \"created_at\": \"2025-07-13T14:38:13.000000Z\",\n        \"updated_at\": null\n      }\n    },\n    {\n      \"id\": 15,\n      \"type\": \"withdrawal\",\n      \"amount\": \"10.00\",\n      \"transaction_date\": \"2025-07-14 00:00:00\",\n      \"description\": null,\n      \"created_at\": \"2025-07-14T10:54:43.000000Z\",\n      \"updated_at\": \"2025-07-14T10:54:43.000000Z\",\n      \"category\": {\n        \"id\": 30,\n        \"name\": \"Food & Dining\",\n        \"created_at\": \"2025-07-13T14:38:13.000000Z\",\n        \"updated_at\": null\n      }\n    }\n  ],\n  \"links\": {\n    \"first\": \"http:\/\/localhost:8000\/api\/v1\/accounts\/1\/transactions?page=1\",\n    \"last\": \"http:\/\/localhost:8000\/api\/v1\/accounts\/1\/transactions?page=1\",\n    \"prev\": null,\n    \"next\": null\n  },\n  \"meta\": {\n    \"current_page\": 1,\n    \"from\": 1,\n    \"last_page\": 1,\n    \"links\": [\n      {\n        \"url\": null,\n        \"label\": \"&laquo; Previous\",\n        \"active\": false\n      },\n      {\n        \"url\": \"http:\/\/localhost:8000\/api\/v1\/accounts\/1\/transactions?page=1\",\n        \"label\": \"1\",\n        \"active\": true\n      },\n      {\n        \"url\": null,\n        \"label\": \"Next &raquo;\",\n        \"active\": false\n      }\n    ],\n    \"path\": \"http:\/\/localhost:8000\/api\/v1\/accounts\/1\/transactions\",\n    \"per_page\": 10,\n    \"to\": 3,\n    \"total\": 3\n  }\n}",
                                     "name": ""
                                 }
                             ]
@@ -532,7 +526,7 @@
                                         {
                                             "id": "account_id",
                                             "key": "account_id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the account."
                                         }
                                     ]
@@ -550,11 +544,30 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"architecto\",\"amount\":\"64\",\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
+                                    "raw": "{\"type\":\"Withdrawal\",\"amount\":100,\"transaction_date\":\"2025-07-14\",\"description\":\"Other\",\"category_id\":42}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 201,
+                                    "body": "{\n    \"id\": 17,\n    \"type\": \"withdrawal\",\n    \"amount\": \"100\",\n    \"transaction_date\": \"2025-07-14T09:00:00\",\n    \"description\": \"Other\",\n    \"created_at\": \"2025-07-14T11:03:59.000000Z\",\n    \"updated_at\": \"2025-07-14T11:03:59.000000Z\",\n    \"category\": {\n        \"id\": 42,\n        \"name\": \"Other\",\n        \"created_at\": \"2025-07-13T14:38:13.000000Z\",\n        \"updated_at\": null\n    }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"type\": [\n      \"The type field is required.\",\n      \"The type must be a string.\"\n    ],\n    \"amount\": [\n      \"The amount field is required.\",\n      \"The amount must be a number.\",\n      \"The amount must be greater than 0.\",\n      \"The amount format is invalid.\"\n    ],\n    \"transaction_date\": [\n      \"The transaction date field is required.\",\n      \"The transaction date must be a string.\"\n    ],\n    \"description\": [\n      \"The description must be a string.\"\n    ],\n    \"category_id\": [\n      \"The category id field is required.\",\n      \"The category id must be an integer.\"\n    ]\n  }\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_created\",\n  \"error_description\": \"Transaction has not been created\",\n  \"message\": \"Resource not created\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Find a transaction.",
@@ -568,8 +581,8 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
-                                            "description": "The ID of the transaction."
+                                            "value": "1",
+                                            "description": "Transaction ID."
                                         }
                                     ]
                                 },
@@ -589,22 +602,15 @@
                             },
                             "response": [
                                 {
-                                    "header": [
-                                        {
-                                            "key": "cache-control",
-                                            "value": "no-cache, private"
-                                        },
-                                        {
-                                            "key": "content-type",
-                                            "value": "application\/json"
-                                        },
-                                        {
-                                            "key": "vary",
-                                            "value": "Origin"
-                                        }
-                                    ],
-                                    "code": 400,
-                                    "body": "{\"error\":\"exception\",\"error_description\":\"Unauthorized: unable to set cookie\",\"message\":\"Authentication failed exception.\"}",
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n    \"id\": 12,\n    \"type\": \"deposit\",\n    \"amount\": \"10.00\",\n    \"transaction_date\": \"2025-06-20 09:00:00\",\n    \"description\": null,\n    \"created_at\": \"2025-07-13T15:12:01.000000Z\",\n    \"updated_at\": \"2025-07-13T15:12:01.000000Z\",\n    \"category\": {\n        \"id\": 42,\n        \"name\": \"Other\",\n        \"created_at\": \"2025-07-13T14:38:13.000000Z\",\n        \"updated_at\": null\n    }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Transaction could not be found.\",\n  \"message\": \"Resource not found\"\n}",
                                     "name": ""
                                 }
                             ]
@@ -621,7 +627,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the transaction."
                                         }
                                     ]
@@ -639,11 +645,36 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"type\":\"architecto\",\"amount\":\"64\",\"transaction_date\":\"architecto\",\"description\":\"Eius et animi quos velit et.\",\"category_id\":16}"
+                                    "raw": "{\"type\":\"Deposit\",\"amount\":150,\"transaction_date\":\"2025-07-15\",\"description\":\"Updated description\",\"category_id\":42}"
                                 },
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\n  \"id\": 17,\n  \"type\": \"deposit\",\n  \"amount\": \"150\",\n  \"transaction_date\": \"2025-06-15T09:00:00\",\n  \"description\": null,\n  \"created_at\": \"2025-07-14T11:03:59.000000Z\",\n  \"updated_at\": \"2025-07-14T11:03:59.000000Z\",\n  \"category\": {\n    \"id\": 42,\n    \"name\": \"Other\",\n    \"created_at\": \"2025-07-13T14:38:13.000000Z\",\n    \"updated_at\": null\n  }\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Transaction could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\n  \"message\": \"The given data was invalid.\",\n  \"errors\": {\n    \"type\": [\n      \"The type field is required.\",\n      \"The type must be a string.\"\n    ],\n    \"amount\": [\n      \"The amount field is required.\",\n      \"The amount must be a number.\",\n      \"The amount must be greater than 0.\",\n      \"The amount format is invalid.\"\n    ],\n    \"transaction_date\": [\n      \"The transaction date field is required.\",\n      \"The transaction date must be a string.\"\n    ],\n    \"description\": [\n      \"The description must be a string.\"\n    ],\n    \"category_id\": [\n      \"The category id field is required.\",\n      \"The category id must be an integer.\"\n    ]\n  }\n}\n",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_updated\",\n  \"error_description\": \"Transaction has not been updated\",\n  \"message\": \"Resource not updated\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         },
                         {
                             "name": "Destroy a transaction.",
@@ -657,7 +688,7 @@
                                         {
                                             "id": "id",
                                             "key": "id",
-                                            "value": "architecto",
+                                            "value": "1",
                                             "description": "The ID of the transaction."
                                         }
                                     ]
@@ -676,7 +707,26 @@
                                 "body": null,
                                 "description": ""
                             },
-                            "response": []
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 204,
+                                    "body": "{}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\n  \"error\": \"resource_not_found\",\n  \"error_description\": \"Transaction could not be found.\",\n  \"message\": \"Resource not found\"\n}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 500,
+                                    "body": "{\n  \"error\": \"resource_not_deleted\",\n  \"error_description\": \"Transaction has not been deleted\",\n  \"message\": \"Resource not deleted\"\n}",
+                                    "name": ""
+                                }
+                            ]
                         }
                     ]
                 },
@@ -706,7 +756,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":\"64\",\"description\":\"Fugiat sunt nihil accusantium harum mollitia.\"}"
+                                    "raw": "{\"from_account_id\":16,\"to_account_id\":16,\"amount\":\"6425593142326\",\"description\":\"Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui.\"}"
                                 },
                                 "description": ""
                             },

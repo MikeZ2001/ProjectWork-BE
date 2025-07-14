@@ -1,0 +1,5 @@
+{
+  "error": "resource_not_updated",
+  "error_description": "Transaction has not been updated",
+  "message": "Resource not updated"
+}

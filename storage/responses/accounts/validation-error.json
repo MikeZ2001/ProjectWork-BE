@@ -1,0 +1,33 @@
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "name": [
+      "The name field is required.",
+      "The name must be a string."
+    ],
+    "type": [
+      "The type field is required.",
+      "The type must be a string.",
+      "The selected type is invalid."
+    ],
+    "balance": [
+      "The balance field is required.",
+      "The balance must be a number.",
+      "The balance must be at least 0.",
+      "The balance format is invalid."
+    ],
+    "open_date": [
+      "The open date field is required.",
+      "The open date must be a string."
+    ],
+    "close_date": [
+      "The close date must be a string.",
+      "The close date must be a date after or equal to open date."
+    ],
+    "status": [
+      "The status field is required.",
+      "The status must be a string.",
+      "The selected status is invalid."
+    ]
+  }
+}
