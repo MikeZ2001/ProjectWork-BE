@@ -31,6 +31,7 @@ class TransactionRepository extends EloquentRepository
         return $this->makeBuilder()
             ->where('user_id', '=', Auth::id())
             ->where('account_id', '=', $accountId)
+            ->orderBy('transaction_date', 'desc')
             ->paginate(perPage: $perPage);
     }
 }
