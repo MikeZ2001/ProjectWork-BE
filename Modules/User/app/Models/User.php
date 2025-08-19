@@ -2,16 +2,21 @@
 
 namespace Modules\User\Models;
 
+use AllowDynamicProperties;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use Modules\User\database\factories\UserFactory;
+use Modules\User\Database\Factories\UserFactoryFeatureTest;
 
+#[AllowDynamicProperties]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
+    use HasApiTokens;
+    use Notifiable;
+
+    public static string $factory = User::class;
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +52,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Override the model factory resolution so Laravel uses your module factory.
+     */
+    protected static function newFactory(): UserFactoryFeatureTest
+    {
+        return UserFactoryFeatureTest::new();
     }
 }

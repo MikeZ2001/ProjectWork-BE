@@ -94,12 +94,20 @@ readonly class TransactionService
     public function update(int $id, TransactionDTO $transactionDTO): Transaction
     {
         $transaction = $this->find($id);
+        $initialTransactionType = $transaction->type;
+        $initialTransactionAmount = $transaction->amount;
         $account = $this->accountService->find($transaction->account()->first()->id);
         $transactionDTO->hydrateModel($transaction);
-        return DB::transaction(function () use ($account, $transaction, $transactionDTO) {
+        return DB::transaction(function () use ($initialTransactionAmount, $account, $transaction, $transactionDTO, $initialTransactionType) {
             try {
                 $transaction = $this->transactionRepository->update($transaction);
-                $this->manageTransaction($account, $transaction);
+                if ($initialTransactionType !== $transaction->type) {
+                    $this->manageTransaction($account, $transaction);
+                } else if ($initialTransactionAmount !== $transaction->amount) {
+                    //Add or remove amount if modified
+                    $this->manageTransactionUpdate($account, $transaction, $initialTransactionAmount);
+                }
+
                 return $transaction;
             } catch (Exception $ex) {
                 throw new ResourceNotUpdatedException("Transaction could not be updated.", previous: $ex);
@@ -149,9 +157,9 @@ readonly class TransactionService
      */
     private function manageTransaction(Account $account, Transaction $transaction)
     {
-        if ($transaction->type === TransactionType::Deposit) {
+        if ($transaction->type === TransactionType::Deposit || $transaction->type === TransactionType::TransferDeposit) {
             $account->balance += $transaction->amount;
-        } elseif ($transaction->type === TransactionType::Withdrawal) {
+        } elseif ($transaction->type === TransactionType::Withdrawal || $transaction->type === TransactionType::TransferWithdrawal) {
             $account->balance -= $transaction->amount;
         }
 
@@ -169,9 +177,9 @@ readonly class TransactionService
 
     private function managetransactionReverse(Account $account, Transaction $transaction)
     {
-        if ($transaction->type === TransactionType::Deposit) {
+        if ($transaction->type === TransactionType::Deposit || $transaction->type === TransactionType::TransferDeposit) {
             $account->balance -= $transaction->amount;
-        } elseif ($transaction->type === TransactionType::Withdrawal) {
+        } elseif ($transaction->type === TransactionType::Withdrawal || $transaction->type === TransactionType::TransferWithdrawal) {
             $account->balance += $transaction->amount;
         }
 
@@ -207,5 +215,33 @@ readonly class TransactionService
 
             $this->transferRepository->delete($transfer);
         });
+    }
+
+    private function manageTransactionUpdate(Account $account, $transaction, int $initialTransactionAmount)
+    {
+        // difference between new and old amounts
+        $amountDifference = $transaction->amount - $initialTransactionAmount;
+
+        // apply delta based on type
+        $signedDelta = match ($transaction->type) {
+            TransactionType::Deposit,
+            TransactionType::TransferDeposit =>  $amountDifference,
+
+            TransactionType::Withdrawal,
+            TransactionType::TransferWithdrawal => -$amountDifference,
+        };
+
+        $account->balance += $signedDelta;
+
+        $accountDTO = new AccountDTO(
+            name: $account->name,
+            type: $account->type->value,
+            balance: $account->balance,
+            open_date: $account->open_date,
+            status:  $account->status->value,
+            close_date: $account->close_date
+        );
+
+        $this->accountService->update($account->id, $accountDTO);
     }
 }

@@ -20,7 +20,6 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'john.doe@example.com',
             'password' => Hash::make('password'),
-            'role' => 'user',
         ]);
         
         // Create an admin user
@@ -29,7 +28,6 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
-            'role' => 'admin',
         ]);
         
         // Create an operator user
@@ -38,7 +36,6 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'operator@example.com',
             'password' => Hash::make('password'),
-            'role' => 'operator',
         ]);
     }
 }

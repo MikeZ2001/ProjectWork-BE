@@ -6,6 +6,7 @@ use App\Exceptions\ResourceNotCreatedException;
 use App\Exceptions\ResourceNotDeletedException;
 use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
+use App\Filters\Ordering\Direction;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Modules\Account\DataTransferObjects\CategoryDTO;
@@ -22,7 +23,7 @@ class CategoryService
 
     public function findAll(): Collection
     {
-        return $this->categoryRepository->findAll();
+        return $this->categoryRepository->findAllAndOrderBy(Direction::ASC);
     }
 
     public function findById(int $id): Category
