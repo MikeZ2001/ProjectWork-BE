@@ -8,6 +8,7 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Exceptions\ResourceNotUpdatedException;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Account\DataTransferObjects\AccountDTO;
@@ -28,6 +29,17 @@ readonly class TransactionService
         private TransactionRepository $transactionRepository,
     ) {
     }
+
+    /**
+     * Find and paginates all transactions for logged user and for selected account.
+     *
+     * @return Collection
+     */
+    public function findAllAndPaginateForUser(): Collection
+    {
+        return $this->transactionRepository->findAllAndPaginateForUser();
+    }
+
 
     /**
      * Find and paginates all transactions for logged user and for selected account.

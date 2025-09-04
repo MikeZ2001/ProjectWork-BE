@@ -15,5 +15,7 @@ Route::middleware(['auth:api'])->middleware(AuthCookieMiddleware::class)->prefix
     Route::apiResource('accounts.transactions', TransactionController::class)
         ->shallow();
 
+    Route::get('transactions-by-user', [TransactionController::class, 'findAllByAuthUser']);
+
     Route::post('transfers', [TransferController::class, 'transferFunds']);
 });

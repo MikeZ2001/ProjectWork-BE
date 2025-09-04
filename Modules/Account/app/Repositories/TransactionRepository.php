@@ -4,6 +4,7 @@ namespace Modules\Account\Repositories;
 
 use App\Repositories\EloquentRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Modules\Account\Models\Transaction;
 
@@ -33,5 +34,17 @@ class TransactionRepository extends EloquentRepository
             ->where('account_id', '=', $accountId)
             ->orderBy('transaction_date', 'desc')
             ->paginate(perPage: $perPage);
+    }
+
+    /**
+     * Find all transactions by logged user and account and paginate results.
+     *
+     * @return Collection
+     */
+    public function findAllAndPaginateForUser(): Collection
+    {
+        return $this->makeBuilder()
+            ->where('user_id', '=', Auth::id())
+            ->orderBy('transaction_date', 'desc')->get();
     }
 }

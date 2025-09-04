@@ -28,6 +28,21 @@ class TransactionController extends Controller
         private readonly TransactionService $transactionService,
     ){
     }
+    /**
+     * Find and paginates all transactions for logged user and for selected account.
+     *
+     * @return AnonymousResourceCollection
+     *
+     * @urlParam account_id integer required The ID of the account. Example: 1
+     * @queryParam per_page integer The number of items per page. Default: 10. Example: 15
+     *
+     * @responseFile 200 responses/transactions/index-success.json
+     */
+    public function findAllByAuthUser(): AnonymousResourceCollection
+    {
+        return TransactionResource::collection($this->transactionService->findAllAndPaginateForUser());
+    }
+
 
     /**
      * Find and paginates all transactions for logged user and for selected account.
