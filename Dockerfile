@@ -1,5 +1,5 @@
 # ProjectWork-BE/Dockerfile
-FROM php:8.3-cli
+FROM php:8.3-fpm
 
 WORKDIR /var/www/html
 
@@ -8,21 +8,19 @@ WORKDIR /var/www/html
 # - libicu-dev:      for intl
 # - libzip-dev + zlib1g-dev: for zip
 # - libpng-dev + libjpeg62-turbo-dev + libfreetype6-dev + libwebp-dev: for gd
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl zip unzip ca-certificates \
-    libicu-dev libzip-dev zlib1g-dev \
-    libpng-dev libjpeg62-turbo-dev libfreetype6-dev libwebp-dev \
- && update-ca-certificates \
- && rm -rf /var/lib/apt/lists/*
-
-# ---- PHP extensions ----
-# Configure GD to use JPEG/FreeType/WebP; then install all needed exts
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
- && docker-php-ext-install -j$(nproc) \
-    pdo_mysql mbstring exif pcntl bcmath intl zip gd
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    zip \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # ---- Composer ----
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 ENV COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1
 
 # ---- App files ----
@@ -32,7 +30,9 @@ RUN rm -f .env .env.production
 
 # Install prod deps & discover packages (no dev)
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
- && php artisan package:discover --ansi || true
+ && php artisan config:clear || true \
+ && php artisan route:clear || true \
+ && php artisan view:clear || true
 
 # Permissions
 RUN chmod -R 775 storage bootstrap/cache
