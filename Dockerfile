@@ -6,15 +6,19 @@ WORKDIR /var/www/html
 
 # System deps
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev \
-  && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
-  && rm -rf /var/lib/apt/lists/*
+    git curl zip unzip ca-certificates \
+    libpng-dev libxml2-dev libzip-dev libicu-dev \
+ && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl zip \
+ && update-ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # App files
 COPY . .
+
+RUN rm -f .env .env.production
 
 # Prod install (no dev deps), optimize autoload
 RUN composer install --no-dev --optimize-autoloader --no-interaction \
