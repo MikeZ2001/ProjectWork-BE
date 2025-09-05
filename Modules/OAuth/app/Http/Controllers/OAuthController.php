@@ -23,7 +23,7 @@ class OAuthController extends Controller
         private readonly AuthenticationService $authenticationService
     ) {
     }
-
+    
     /**
      * Handle an authentication attempt.
      *
@@ -45,31 +45,18 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
-        $cookieDomain = config('session.domain');
+
+        // Set cookies with Partitioned attribute for Safari cross-site compatibility
+        $maxAge = 60 * 60 * 24 * 7; // 7 days in seconds
+        $cookieAttrs = 'Path=/; Max-Age='.$maxAge.'; Secure; HttpOnly; SameSite=None; Partitioned';
+
+        $setCookieHeaders = [
+            'access_token='.$responseContent['access_token'].'; '.$cookieAttrs,
+            'refresh_token='.$responseContent['refresh_token'].'; '.$cookieAttrs,
+        ];
 
         return response()->json($responseContent)
-            ->cookie(
-                'access_token',
-                $responseContent['access_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                $cookieDomain,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            )
-            ->cookie(
-                'refresh_token',
-                $responseContent['refresh_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                $cookieDomain,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            );
+            ->withHeaders(['Set-Cookie' => $setCookieHeaders]);
     }
 
     /**
@@ -92,13 +79,13 @@ class OAuthController extends Controller
         }
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
-
+        
         return response()->json([
             'message' => 'Successfully logged out'
         ])->withCookie(cookie()->forget('access_token'))
             ->withCookie(cookie()->forget('refresh_token'));
     }
-
+    
     /**
      * Get the authenticated user
      *
