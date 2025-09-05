@@ -46,17 +46,41 @@ class OAuthController extends Controller
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
 
-        // Set cookies with Partitioned attribute for Safari cross-site compatibility
-        $maxAge = 60 * 60 * 24 * 7; // 7 days in seconds
-        $cookieAttrs = 'Path=/; Max-Age='.$maxAge.'; Secure; HttpOnly; SameSite=None; Partitioned';
+        // Use Laravel's cookie helper with explicit domain and Partitioned attribute
+        $response = response()->json($responseContent);
+        
+        // Set cookies using Laravel's cookie helper (more reliable than raw headers)
+        $response->withCookie(cookie(
+            'access_token',
+            $responseContent['access_token'],
+            60 * 24 * 7, // 7 days
+            '/',
+            null, // host-only cookie (no domain)
+            true, // secure
+            true, // httpOnly
+            false, // raw
+            'none' // sameSite
+        ));
+        
+        $response->withCookie(cookie(
+            'refresh_token',
+            $responseContent['refresh_token'],
+            60 * 24 * 7, // 7 days
+            '/',
+            null, // host-only cookie (no domain)
+            true, // secure
+            true, // httpOnly
+            false, // raw
+            'none' // sameSite
+        ));
+        
+        // Add Partitioned attribute via raw headers (Laravel doesn't support it natively)
+        $response->headers->set('Set-Cookie', [
+            'access_token='.$responseContent['access_token'].'; Path=/; Max-Age=604800; Secure; HttpOnly; SameSite=None; Partitioned',
+            'refresh_token='.$responseContent['refresh_token'].'; Path=/; Max-Age=604800; Secure; HttpOnly; SameSite=None; Partitioned'
+        ], false);
 
-        $setCookieHeaders = [
-            'access_token='.$responseContent['access_token'].'; '.$cookieAttrs,
-            'refresh_token='.$responseContent['refresh_token'].'; '.$cookieAttrs,
-        ];
-
-        return response()->json($responseContent)
-            ->withHeaders(['Set-Cookie' => $setCookieHeaders]);
+        return $response;
     }
 
     /**
@@ -80,16 +104,10 @@ class OAuthController extends Controller
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
         
-        // Clear cookies with Partitioned attribute
-        $clearAttrs = 'Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None; Partitioned';
-        $setCookieHeaders = [
-            'access_token=; '.$clearAttrs,
-            'refresh_token=; '.$clearAttrs,
-        ];
-        
         return response()->json([
             'message' => 'Successfully logged out'
-        ])->withHeaders(['Set-Cookie' => $setCookieHeaders]);
+        ])->withCookie(cookie()->forget('access_token'))
+            ->withCookie(cookie()->forget('refresh_token'));
     }
     
     /**
@@ -99,7 +117,6 @@ class OAuthController extends Controller
      * @return UserResource
      *
      * @responseFile 200 storage/responses/oauth/user-success.json
-     *
      */
     public function user(Request $request): UserResource
     {
