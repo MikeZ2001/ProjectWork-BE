@@ -17,15 +17,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && update-ca-certificates
 
+# Install Composer early so subsequent steps can use it
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # Environment for Composer in containers
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_MEMORY_LIMIT=-1
-
-# Install dependencies (prod-friendly flags)
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Create system user to run Composer and Artisan Commands
 RUN useradd -G www-data,root -u 1000 -d /home/dev dev \
@@ -40,12 +37,8 @@ RUN chown -R dev:dev /var/www/html \
     && chmod -R 755 storage \
     && chmod -R 755 bootstrap/cache
 
-# Change current user to dev
-
-
-# Install Laravel dependencies
-RUN composer install --no-interaction --optimize-autoloader
-
+# Install PHP dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 RUN composer dump-autoload --optimize
 
 # Expose port (only needed if using artisan serve, not FPM)
