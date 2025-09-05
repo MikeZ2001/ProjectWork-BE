@@ -19,7 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', '*'], // React frontend URL
+    // Read allowed origins from env, comma-separated. Example:
+    // CORS_ALLOWED_ORIGINS=https://your-vercel-app.vercel.app,https://www.yourdomain.com
+    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')))),
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +31,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true, // Enable cookies/credentials 
+    // Read supports_credentials from env; default false in production unless explicitly enabled
+    'supports_credentials' => filter_var(env('CORS_SUPPORTS_CREDENTIALS', false), FILTER_VALIDATE_BOOL),
 
 ]; 

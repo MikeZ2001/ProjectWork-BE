@@ -42,5 +42,5 @@ RUN composer dump-autoload --optimize
 # Expose port (only needed if using artisan serve, not FPM)
 EXPOSE 8000
 
-# Start Laravel dev server (for local dev)
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start Laravel dev server (for local dev and Render)
+CMD ["sh", "-lc", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
