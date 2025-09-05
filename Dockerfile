@@ -30,5 +30,9 @@ ENV PORT=8080
 EXPOSE 8080
 
 # IMPORTANT: listen on 0.0.0.0 and $PORT
-CMD php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=${PORT}
+    # IMPORTANT: listen on 0.0.0.0 and $PORT
+    CMD php artisan optimize:clear && \
+        composer dump-autoload -o && \
+        php artisan migrate --force && \
+        php artisan serve --host=0.0.0.0 --port=${PORT}
+
