@@ -6,6 +6,7 @@ namespace Modules\OAuth\Providers;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Nwidart\Modules\Traits\PathNamespace;
+use Modules\OAuth\Console\Commands\EnsurePasswordClient;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -44,7 +45,9 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            EnsurePasswordClient::class,
+        ]);
     }
 
     /**

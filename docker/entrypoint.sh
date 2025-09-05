@@ -10,7 +10,7 @@ SLEEP_SECONDS=5
 COUNT=0
 
 while [ $COUNT -lt $MAX_RETRIES ]; do
-  if php artisan migrate --force && php artisan module:migrate --force; then
+  if php artisan migrate --force && php artisan module:migrate --force --all; then
     echo "Migrations completed"
     break
   else
@@ -21,8 +21,8 @@ while [ $COUNT -lt $MAX_RETRIES ]; do
 
 done
 
-# If still failing after retries, continue to start app (optional: exit 1 to fail startup)
-# echo "Migrations failed after ${MAX_RETRIES} attempts" >&2
-# exit 1
+# Create Passport keys if missing and ensure password client exists
+php artisan passport:keys --force || true
+php artisan oauth:ensure-password-client --no-interaction || true
 
 exec "$@" 
