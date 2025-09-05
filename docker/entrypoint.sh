@@ -21,8 +21,15 @@ while [ $COUNT -lt $MAX_RETRIES ]; do
 
 done
 
-# Create Passport keys if missing and ensure password client exists
-php artisan passport:keys --force || true
+# Only create Passport keys if they don't exist (don't regenerate existing keys)
+if [ ! -f "storage/oauth-private.key" ] || [ ! -f "storage/oauth-public.key" ]; then
+    echo "Creating Passport keys..."
+    php artisan passport:keys --force
+else
+    echo "Passport keys already exist, skipping generation"
+fi
+
+# Ensure password client exists
 php artisan oauth:ensure-password-client --no-interaction || true
 
-exec "$@" 
+exec "$@"
