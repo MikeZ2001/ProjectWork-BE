@@ -32,8 +32,8 @@ RUN useradd -G www-data,root -u 1000 -d /home/dev dev \
 # Copy application files
 COPY . .
 
-# Add entrypoint and make it executable
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Add entrypoint and make it executable (explicit path)
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set permissions
