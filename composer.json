@@ -11,7 +11,8 @@
         "laravel/framework": "^12.0",
         "laravel/passport": "^12.4",
         "laravel/tinker": "^2.10.1",
-        "nwidart/laravel-modules": "^12.0"
+        "nwidart/laravel-modules": "^12.0",
+      "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
