@@ -1,9 +1,6 @@
 #!/usr/bin/env sh
 set -e
 
-# Cache config for performance
-php artisan config:cache || true
-
 # Retry migrations a few times in case DB isn't ready yet
 MAX_RETRIES=10
 SLEEP_SECONDS=5
@@ -31,5 +28,8 @@ fi
 
 # Ensure password client exists
 php artisan oauth:ensure-password-client --no-interaction || true
+
+# Cache config AFTER all environment variables are set
+php artisan config:cache || true
 
 exec "$@"
