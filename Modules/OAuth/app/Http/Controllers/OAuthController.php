@@ -45,31 +45,23 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
-        $cookieDomain = config('session.domain');
 
-        return response()->json($responseContent)
-            ->cookie(
-                'access_token',
-                $responseContent['access_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                $cookieDomain,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'none'
-            )
-            ->cookie(
-            'refresh_token',
-            $responseContent['refresh_token'],
-            60 * 24 * 7, // 7 days
-            '/',
-            $cookieDomain,
-            true, // secure (only HTTPS)
-            true, // HttpOnly
-            false,
-            'none'
-        );
+        // Use host-only cookies (no explicit domain) and mark as Partitioned for Safari
+        $expires = time() + (60 * 60 * 24 * 7); // 7 days
+        $cookieOptions = [
+            'expires' => $expires,
+            'path' => '/',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'None',
+            'partitioned' => true,
+        ];
+
+        // Set HttpOnly cookies with Partitioned attribute (PHP 8.3+)
+        setcookie('access_token', $responseContent['access_token'], $cookieOptions);
+        setcookie('refresh_token', $responseContent['refresh_token'], $cookieOptions);
+
+        return response()->json($responseContent);
     }
 
     /**
