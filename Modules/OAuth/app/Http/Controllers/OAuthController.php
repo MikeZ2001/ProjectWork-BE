@@ -45,31 +45,29 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
-        $cookieDomain = config('session.domain');
-
         return response()->json($responseContent)
             ->cookie(
                 'access_token',
                 $responseContent['access_token'],
                 60 * 24 * 7, // 7 days
                 '/',
-                $cookieDomain,
+                null,
                 true, // secure (only HTTPS)
                 true, // HttpOnly
                 false,
-                'none'
+                'None'
             )
             ->cookie(
-                'refresh_token',
-                $responseContent['refresh_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                $cookieDomain,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'none'
-            );
+            'refresh_token',
+            $responseContent['refresh_token'],
+            60 * 24 * 7, // 7 days
+            '/',
+            null,
+            true, // secure (only HTTPS)
+            true, // HttpOnly
+            false,
+            'None'
+        );
     }
 
     /**
