@@ -32,6 +32,10 @@ RUN useradd -G www-data,root -u 1000 -d /home/dev dev \
 # Copy application files
 COPY . .
 
+# Add entrypoint and make it executable
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Set permissions
 RUN chown -R dev:dev /var/www/html \
     && chmod -R 755 storage \
@@ -44,5 +48,6 @@ RUN composer dump-autoload --optimize
 # Expose port (only needed if using artisan serve, not FPM)
 EXPOSE 8000
 
-# Start Laravel dev server (for local dev and Render)
+# Use entrypoint and start Laravel
+ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
 CMD ["sh", "-lc", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
