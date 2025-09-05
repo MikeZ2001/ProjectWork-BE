@@ -28,18 +28,16 @@ COPY . .
 # never ship local env files
 RUN rm -f .env .env.production
 
-# Install prod deps & discover packages (no dev)
-RUN composer install --no-dev --optimize-autoloader --no-interaction \
- && php artisan config:clear || true \
- && php artisan route:clear || true \
- && php artisan view:clear || true
-
 # Permissions
 RUN chmod -R 775 storage bootstrap/cache
 
 # Render will set $PORT at runtime
 ENV PORT=8080
 EXPOSE 8080
+
+RUN composer install --no-interaction --optimize-autoloader
+
+RUN composer dump-autoload --optimize
 
 # Always refresh autoload & clear caches on boot
 CMD composer dump-autoload -o && \
