@@ -4,16 +4,25 @@ FROM php:8.3-fpm
 # Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies
+# Install system dependencies + CA certs + build tools + zip
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    zip \
     unzip \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    libzip-dev \
+    ca-certificates \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && update-ca-certificates
+
+# Environment for Composer in containers
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_MEMORY_LIMIT=-1
+
+# Install dependencies (prod-friendly flags)
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
