@@ -1,13 +1,10 @@
-# ProjectWork-BE/Dockerfile
+# Use official PHP image with FPM
 FROM php:8.3-fpm
 
+# Set working directory
 WORKDIR /var/www/html
 
-# ---- System deps & headers (no libonig on PHP 8) ----
-# - ca-certificates: for TLS (PDO MySQL to TiDB)
-# - libicu-dev:      for intl
-# - libzip-dev + zlib1g-dev: for zip
-# - libpng-dev + libjpeg62-turbo-dev + libfreetype6-dev + libwebp-dev: for gd
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -18,28 +15,32 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# ---- Composer ----
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-ENV COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u 1000 -d /home/dev dev \
+    && mkdir -p /home/dev/.composer \
+    && chown -R dev:dev /home/dev
 
-# ---- App files ----
+# Copy application files
 COPY . .
-# never ship local env files
-RUN rm -f .env .env.production
 
-# Permissions
-RUN chmod -R 775 storage bootstrap/cache
+# Set permissions
+RUN chown -R dev:dev /var/www/html \
+    && chmod -R 755 storage \
+    && chmod -R 755 bootstrap/cache
 
-# Render will set $PORT at runtime
-ENV PORT=8080
-EXPOSE 8080
+# Change current user to dev
 
+
+# Install Laravel dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
 RUN composer dump-autoload --optimize
 
-# Always refresh autoload & clear caches on boot
-CMD composer dump-autoload -o && \
-    php artisan optimize:clear && \
-    php artisan serve --host=0.0.0.0 --port=${PORT}
+# Expose port (only needed if using artisan serve, not FPM)
+EXPOSE 8000
+
+# Start Laravel dev server (for local dev)
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
