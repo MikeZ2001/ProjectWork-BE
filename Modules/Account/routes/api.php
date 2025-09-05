@@ -7,7 +7,7 @@ use Modules\Account\Http\Controllers\TransactionController;
 use Modules\Account\Http\Controllers\TransferController;
 use Modules\OAuth\Http\Middleware\AuthCookieMiddleware;
 
-Route::middleware(['auth:api'])->middleware(AuthCookieMiddleware::class)->prefix('v1')->group(function () {
+Route::middleware([AuthCookieMiddleware::class, 'auth:api'])->prefix('v1')->group(function () {
     Route::apiResource('accounts', AccountController::class);
 
     Route::apiResource('categories', CategoryController::class);

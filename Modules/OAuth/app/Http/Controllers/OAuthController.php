@@ -23,7 +23,7 @@ class OAuthController extends Controller
         private readonly AuthenticationService $authenticationService
     ) {
     }
-
+    
     /**
      * Handle an authentication attempt.
      *
@@ -45,29 +45,18 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
+
+        // Set cookies with Partitioned attribute for Safari cross-site compatibility
+        $maxAge = 60 * 60 * 24 * 7; // 7 days in seconds
+        $cookieAttrs = 'Path=/; Max-Age='.$maxAge.'; Secure; HttpOnly; SameSite=None; Partitioned';
+
+        $setCookieHeaders = [
+            'access_token='.$responseContent['access_token'].'; '.$cookieAttrs,
+            'refresh_token='.$responseContent['refresh_token'].'; '.$cookieAttrs,
+        ];
+
         return response()->json($responseContent)
-            ->cookie(
-                'access_token',
-                $responseContent['access_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                null,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            )
-            ->cookie(
-                'refresh_token',
-                $responseContent['refresh_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                null,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            );
+            ->withHeaders(['Set-Cookie' => $setCookieHeaders]);
     }
 
     /**
@@ -90,13 +79,19 @@ class OAuthController extends Controller
         }
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
-
+        
+        // Clear cookies with Partitioned attribute
+        $clearAttrs = 'Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None; Partitioned';
+        $setCookieHeaders = [
+            'access_token=; '.$clearAttrs,
+            'refresh_token=; '.$clearAttrs,
+        ];
+        
         return response()->json([
             'message' => 'Successfully logged out'
-        ])->withCookie(cookie()->forget('access_token'))
-            ->withCookie(cookie()->forget('refresh_token'));
+        ])->withHeaders(['Set-Cookie' => $setCookieHeaders]);
     }
-
+    
     /**
      * Get the authenticated user
      *
@@ -104,6 +99,7 @@ class OAuthController extends Controller
      * @return UserResource
      *
      * @responseFile 200 storage/responses/oauth/user-success.json
+     *
      */
     public function user(Request $request): UserResource
     {
