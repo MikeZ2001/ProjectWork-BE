@@ -90,19 +90,13 @@ class OAuthController extends Controller
         }
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
-        
-        // Clear cookies with Partitioned attribute
-        $clearAttrs = 'Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None; Partitioned';
-        $setCookieHeaders = [
-            'access_token=; '.$clearAttrs,
-            'refresh_token=; '.$clearAttrs,
-        ];
-        
+
         return response()->json([
             'message' => 'Successfully logged out'
-        ])->withHeaders(['Set-Cookie' => $setCookieHeaders]);
+        ])->withCookie(cookie()->forget('access_token'))
+            ->withCookie(cookie()->forget('refresh_token'));
     }
-    
+
     /**
      * Get the authenticated user
      *
