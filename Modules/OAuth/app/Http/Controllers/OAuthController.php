@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Modules\OAuth\Exceptions\AuthenticationFailedException;
 use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
@@ -54,9 +55,17 @@ class OAuthController extends Controller
         // Check if this is a cross-domain request
         $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
-        if ($isCrossDomain) {
+        if (true) {
             // For cross-domain scenarios, set cookies without domain restriction
             // Use SameSite=None and Secure for cross-domain cookies
+            
+            // Log for debugging
+            Log::info('Cross-domain login detected', [
+                'origin' => $origin,
+                'is_secure' => $isSecure,
+                'session_domain' => config('session.domain')
+            ]);
+            
             $response = response()->json($payload);
             
             // Set cross-domain cookies (no domain specified = works cross-domain)
