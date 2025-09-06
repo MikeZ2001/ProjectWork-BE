@@ -6,6 +6,7 @@ use App\Exceptions\ResourceNotFoundException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Modules\OAuth\Exceptions\AuthenticationFailedException;
 use Modules\OAuth\Exceptions\LogoutException;
 use Modules\OAuth\Http\Requests\LoginRequest;
@@ -45,6 +46,8 @@ class OAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $responseContent = $this->authenticationService->authenticate($request->getDTO());
+        Cookie::unqueue('access_token');
+        Cookie::unqueue('refresh_token');
         return response()->json($responseContent)
             ->cookie(
                 'access_token',

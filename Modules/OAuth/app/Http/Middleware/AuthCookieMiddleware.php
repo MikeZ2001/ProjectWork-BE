@@ -2,33 +2,27 @@
 
 namespace Modules\OAuth\Http\Middleware;
 
-use App\Exceptions\ResourceNotFoundException;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Modules\OAuth\Exceptions\AuthenticationFailedException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthCookieMiddleware
 {
-    /**
-     * @throws \Exception
-     */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->hasCookie('access_token') && !$request->headers->has('Authorization')) {
-            $accessToken = $request->cookie('access_token');
-
-            $request->headers->set('Authorization', 'Bearer ' . $accessToken);
-            if (! Auth::guard('api')->check()) {
-                throw new UnauthorizedHttpException('Bearer', 'Token invalid or revoked');
-            }
-        } elseif (env('APP_ENV') === 'testing') {
-            return $next($request);
-        } else {
-            throw new AuthenticationFailedException("Unauthorized: unable to set cookie");
+        // 1) Let CORS preflight through without auth
+        if ($request->isMethod('OPTIONS')) {
+            return response('', 204);
         }
 
+        // 2) If we have the cookie and no Authorization header yet, inject it
+        if ($request->hasCookie('access_token') && !$request->bearerToken()) {
+            $accessToken = (string) $request->cookie('access_token');
+            if ($accessToken !== '') {
+                $request->headers->set('Authorization', 'Bearer '.$accessToken);
+            }
+        }
+
+        // 3) Don't throw here. Route middleware (auth:api) will decide.
         return $next($request);
     }
 }
