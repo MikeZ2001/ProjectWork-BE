@@ -51,25 +51,37 @@ class OAuthController extends Controller
         $isSecure = request()->isSecure() || app()->environment('production');
         $origin = request()->header('Origin');
         
-        // For cross-domain scenarios, don't set domain-specific cookies
-        // Instead, rely on the frontend to handle token storage
-        $response = response()->json($payload);
+        // Check if this is a cross-domain request
+        $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
-        // Add CORS headers for cross-domain support
-        $response->header('Access-Control-Allow-Credentials', 'true')
-                 ->header('Access-Control-Allow-Origin', $origin ?: '*')
-                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                 ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-        
-        // For cross-domain scenarios, include token in response body
-        // Frontend should store these tokens and send them in Authorization header
-        $payload['cookie_fallback'] = [
-            'access_token' => $payload['access_token'],
-            'refresh_token' => $payload['refresh_token'],
-            'note' => 'Store these tokens and use in Authorization header for cross-domain requests'
-        ];
-        
-        return $response;
+        if ($isCrossDomain) {
+            // For cross-domain scenarios, set cookies without domain restriction
+            // Use SameSite=None and Secure for cross-domain cookies
+            $response = response()->json($payload);
+            
+            // Set cross-domain cookies (no domain specified = works cross-domain)
+            $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', null, $isSecure, true, false, 'None')
+                     ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'None');
+            
+            // Add CORS headers for cross-domain support
+            $response->header('Access-Control-Allow-Credentials', 'true')
+                     ->header('Access-Control-Allow-Origin', $origin)
+                     ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                     ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+            
+            return $response;
+        } else {
+            // For same-domain requests, use cookies as before
+            $domain = config('session.domain') ?: null;
+            
+            return response()->json($payload)
+                ->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+                ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+                ->header('Access-Control-Allow-Credentials', 'true')
+                ->header('Access-Control-Allow-Origin', $origin ?: '*')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        }
     }
 
     /**
@@ -93,13 +105,29 @@ class OAuthController extends Controller
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
 
-        // Clear cookies with proper domain
-        $domain = config('session.domain') ?: null;
+        // Clear cookies with proper domain handling for cross-domain
+        $origin = request()->header('Origin');
+        $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ])->withCookie(cookie()->forget('access_token', '/', $domain))
-            ->withCookie(cookie()->forget('refresh_token', '/', $domain));
+        if ($isCrossDomain) {
+            // For cross-domain requests, clear cookies without domain restriction
+            return response()->json([
+                'message' => 'Successfully logged out'
+            ])->withCookie(cookie()->forget('access_token', '/', null))
+                ->withCookie(cookie()->forget('refresh_token', '/', null))
+                ->header('Access-Control-Allow-Credentials', 'true')
+                ->header('Access-Control-Allow-Origin', $origin)
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        } else {
+            // For same-domain requests, use configured domain
+            $domain = config('session.domain') ?: null;
+            
+            return response()->json([
+                'message' => 'Successfully logged out'
+            ])->withCookie(cookie()->forget('access_token', '/', $domain))
+                ->withCookie(cookie()->forget('refresh_token', '/', $domain));
+        }
     }
 
     /**
