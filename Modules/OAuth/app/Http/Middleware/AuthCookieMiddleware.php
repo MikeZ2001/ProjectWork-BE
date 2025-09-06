@@ -4,6 +4,7 @@ namespace Modules\OAuth\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthCookieMiddleware
 {
@@ -22,7 +23,16 @@ class AuthCookieMiddleware
             }
         }
 
-        // 3) Don't throw here. Route middleware (auth:api) will decide.
+        // 3) Log token information for debugging (remove in production)
+        if (app()->environment('local', 'testing') && $request->hasCookie('access_token')) {
+            Log::info('AuthCookieMiddleware: Token found in cookie', [
+                'token_length' => strlen($request->cookie('access_token')),
+                'has_auth_header' => $request->hasHeader('Authorization'),
+                'bearer_token' => $request->bearerToken() ? 'present' : 'missing'
+            ]);
+        }
+
+        // 4) Don't throw here. Route middleware (auth:api) will decide.
         return $next($request);
     }
 }

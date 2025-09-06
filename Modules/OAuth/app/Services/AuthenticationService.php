@@ -69,11 +69,6 @@ readonly class AuthenticationService {
         if ($response !== 1) {
             throw new LogoutException("Refresh token not revoked");
         }
-
-         response()->json(null, Response::HTTP_NO_CONTENT)
-            ->withCookie(Cookie::forget('access_token'))
-            ->withCookie(Cookie::forget('refresh_token'));
-
     }
     
     

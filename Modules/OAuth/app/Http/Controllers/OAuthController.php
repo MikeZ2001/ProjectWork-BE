@@ -45,12 +45,19 @@ class OAuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
+        // Clear any existing cookies first
         Cookie::unqueue('access_token');
         Cookie::unqueue('refresh_token');
+        
         $payload = $this->authenticationService->authenticate($request->getDTO());
+        
+        // Set secure cookies with proper domain and SameSite policy
+        $isSecure = request()->isSecure() || app()->environment('production');
+        $domain = config('session.domain') ?: null;
+        
         return response()->json($payload)
-            ->cookie('access_token',  $payload['access_token'], 60*24*7, '/', null, true, true, false, 'None')
-            ->cookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, true, true, false, 'None');
+            ->cookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+            ->cookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
     }
 
     /**
@@ -74,10 +81,13 @@ class OAuthController extends Controller
         $accessTokenId = $user->token()->id;
         $this->authenticationService->logout($accessTokenId);
 
+        // Clear cookies with proper domain
+        $domain = config('session.domain') ?: null;
+        
         return response()->json([
             'message' => 'Successfully logged out'
-        ])->withCookie(cookie()->forget('access_token'))
-            ->withCookie(cookie()->forget('refresh_token'));
+        ])->withCookie(cookie()->forget('access_token', '/', $domain))
+            ->withCookie(cookie()->forget('refresh_token', '/', $domain));
     }
 
     /**
