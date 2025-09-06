@@ -5,6 +5,7 @@ namespace Modules\OAuth\Services;
 use App\Exceptions\ResourceNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 use Laravel\Passport\RefreshTokenRepository;
@@ -50,16 +51,39 @@ readonly class AuthenticationService {
         $response = Route::dispatch($tokenRequest);
         LoginSuccess::dispatch($response);
         
+        $tokenData = $this->processOAuthTokenResponse($response);
+        
         // Log authentication details for debugging in production
         if (app()->environment('production')) {
-            \Log::info('Authentication successful', [
+            $tokenId = $this->getTokenId($tokenData['access_token'] ?? '');
+            Log::info('Authentication successful', [
                 'client_id' => $client->id,
                 'response_status' => $response->getStatusCode(),
-                'has_access_token' => !empty($this->processOAuthTokenResponse($response)['access_token'] ?? null)
+                'has_access_token' => !empty($tokenData['access_token'] ?? null),
+                'token_id' => $tokenId,
+                'token_stored_in_db' => $tokenId ? \Laravel\Passport\Token::where('id', $tokenId)->exists() : false
             ]);
         }
         
-        return $this->processOAuthTokenResponse($response);
+        return $tokenData;
+    }
+
+    /**
+     * Extract token ID from JWT token
+     */
+    private function getTokenId(string $token): ?string
+    {
+        try {
+            $parts = explode('.', $token);
+            if (count($parts) !== 3) {
+                return null;
+            }
+            
+            $payload = json_decode(base64_decode($parts[1]), true);
+            return $payload['jti'] ?? null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
     
     /**

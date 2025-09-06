@@ -47,7 +47,7 @@ class OAuthController extends Controller
     {
         $payload = $this->authenticationService->authenticate($request->getDTO());
         
-        // Set secure cookies with proper domain and SameSite policy
+        // For cross-domain requests, we need to handle cookies differently
         $isSecure = request()->isSecure() || app()->environment('production');
         $domain = config('session.domain') ?: null;
         
@@ -62,11 +62,31 @@ class OAuthController extends Controller
                  ->withCookie(cookie()->forget('access_token', '/', '.onrender.com'))
                  ->withCookie(cookie()->forget('refresh_token', '/', '.onrender.com'));
         
-        // Set new cookies
+        // Set new cookies with proper cross-domain configuration
         $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
                  ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
         
-        return $response;
+        // Add CORS headers for cross-domain cookie support
+        $response->header('Access-Control-Allow-Credentials', 'true')
+                 ->header('Access-Control-Allow-Origin', request()->header('Origin', '*'))
+                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                 ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        
+        // For cross-domain scenarios, also include token in response body
+        // Frontend can use this as fallback if cookies don't work
+        $payload['cookie_fallback'] = [
+            'access_token' => $payload['access_token'],
+            'refresh_token' => $payload['refresh_token'],
+            'note' => 'Use these tokens in Authorization header if cookies fail'
+        ];
+        
+        return response()->json($payload)
+            ->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+            ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+            ->header('Access-Control-Allow-Credentials', 'true')
+            ->header('Access-Control-Allow-Origin', request()->header('Origin', '*'))
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     }
 
     /**
@@ -181,6 +201,48 @@ class OAuthController extends Controller
                 'public' => file_exists(storage_path('oauth-public.key'))
             ]
         ]);
+    }
+
+    /**
+     * Manual login endpoint that creates tokens directly in database
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function loginManual(LoginRequest $request): JsonResponse
+    {
+        try {
+            $dto = $request->getDTO();
+            
+            // Find user by email and password
+            $user = \Modules\User\Models\User::where('email', $dto->getEmail())->first();
+            
+            if (!$user || !\Hash::check($dto->getPassword(), $user->password)) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+            
+            // Get or create password client
+            $client = \Laravel\Passport\Client::where('password_client', 1)->first();
+            if (!$client) {
+                return response()->json(['error' => 'OAuth client not found'], 500);
+            }
+            
+            // Create token manually
+            $tokenService = new \App\Services\CustomTokenService();
+            $tokenData = $tokenService->createTokenForUser($user, $client);
+            
+            // Set secure cookies
+            $isSecure = request()->isSecure() || app()->environment('production');
+            $domain = config('session.domain') ?: null;
+            
+            return response()->json($tokenData)
+                ->withCookie('access_token', $tokenData['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+                ->withCookie('refresh_token', $tokenData['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
+                
+        } catch (\Exception $e) {
+            \Log::error('Manual login failed', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Login failed'], 500);
+        }
     }
 
     /**

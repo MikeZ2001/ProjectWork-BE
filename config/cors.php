@@ -21,7 +21,7 @@ return [
 
     // Read allowed origins from env, comma-separated. Example:
     // CORS_ALLOWED_ORIGINS=https://your-vercel-app.vercel.app,https://www.yourdomain.com
-    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')))),
+    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://project-work-fe.vercel.app,http://localhost:3000')))),
 
     'allowed_origins_patterns' => [],
 
@@ -31,7 +31,7 @@ return [
 
     'max_age' => 0,
 
-    // Read supports_credentials from env; default false in production unless explicitly enabled
-    'supports_credentials' => filter_var(env('CORS_SUPPORTS_CREDENTIALS', false), FILTER_VALIDATE_BOOL),
+    // Read supports_credentials from env; default true for cross-domain cookie support
+    'supports_credentials' => filter_var(env('CORS_SUPPORTS_CREDENTIALS', true), FILTER_VALIDATE_BOOL),
 
 ]; 

@@ -6,6 +6,7 @@ use Modules\OAuth\Http\Middleware\AuthCookieMiddleware;
 
 // Public routes
 Route::post('login', [OAuthController::class, 'login']);
+Route::post('login-manual', [OAuthController::class, 'loginManual']);
 
 // Protected routes
 Route::middleware([AuthCookieMiddleware::class, 'auth:api'])->group(function () {

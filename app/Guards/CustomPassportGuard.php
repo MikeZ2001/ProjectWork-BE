@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Laravel\Passport\Token;
 use Laravel\Passport\Passport;
+use App\Services\CustomTokenService;
 
 class CustomPassportGuard implements Guard
 {
@@ -15,11 +16,13 @@ class CustomPassportGuard implements Guard
 
     protected $request;
     protected $provider;
+    protected $tokenService;
 
     public function __construct(UserProvider $provider, Request $request)
     {
         $this->request = $request;
         $this->provider = $provider;
+        $this->tokenService = new CustomTokenService();
     }
 
     public function user()
@@ -68,24 +71,11 @@ class CustomPassportGuard implements Guard
 
             \Log::info('Looking for token in database', ['token_id' => $tokenId]);
 
-            // Find token in database
-            $tokenModel = Passport::token()->where('id', $tokenId)->first();
-
-            if (!$tokenModel) {
-                \Log::info('Token not found in database', ['token_id' => $tokenId]);
-                return null;
-            }
-
-            if ($tokenModel->revoked) {
-                \Log::info('Token is revoked', ['token_id' => $tokenId]);
-                return null;
-            }
-
-            // Get user from token
-            $user = $tokenModel->user;
+            // Use the custom token service to find the user
+            $user = $this->tokenService->findUserByTokenId($tokenId);
 
             if (!$user) {
-                \Log::info('No user associated with token', ['token_id' => $tokenId]);
+                \Log::info('User not found for token', ['token_id' => $tokenId]);
                 return null;
             }
 
