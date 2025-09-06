@@ -45,32 +45,12 @@ class OAuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $responseContent = $this->authenticationService->authenticate($request->getDTO());
         Cookie::unqueue('access_token');
         Cookie::unqueue('refresh_token');
-        return response()->json($responseContent)
-            ->cookie(
-                'access_token',
-                $responseContent['access_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                null,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            )
-            ->cookie(
-                'refresh_token',
-                $responseContent['refresh_token'],
-                60 * 24 * 7, // 7 days
-                '/',
-                null,
-                true, // secure (only HTTPS)
-                true, // HttpOnly
-                false,
-                'None'
-            );
+        $payload = $this->authenticationService->authenticate($request->getDTO());
+        return response()->json($payload)
+            ->cookie('access_token',  $payload['access_token'], 60*24*7, '/', null, true, true, false, 'None')
+            ->cookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, true, true, false, 'None');
     }
 
     /**
