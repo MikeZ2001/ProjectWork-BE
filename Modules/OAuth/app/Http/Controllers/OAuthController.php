@@ -45,19 +45,28 @@ class OAuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        // Clear any existing cookies first
-        Cookie::unqueue('access_token');
-        Cookie::unqueue('refresh_token');
-        
         $payload = $this->authenticationService->authenticate($request->getDTO());
         
         // Set secure cookies with proper domain and SameSite policy
         $isSecure = request()->isSecure() || app()->environment('production');
         $domain = config('session.domain') ?: null;
         
-        return response()->json($payload)
-            ->cookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
-            ->cookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
+        // Create response with new cookies and clear old ones
+        $response = response()->json($payload);
+        
+        // Clear old cookies first (with different domain combinations to ensure cleanup)
+        $response->withCookie(cookie()->forget('access_token', '/', null))
+                 ->withCookie(cookie()->forget('refresh_token', '/', null))
+                 ->withCookie(cookie()->forget('access_token', '/', $domain))
+                 ->withCookie(cookie()->forget('refresh_token', '/', $domain))
+                 ->withCookie(cookie()->forget('access_token', '/', '.onrender.com'))
+                 ->withCookie(cookie()->forget('refresh_token', '/', '.onrender.com'));
+        
+        // Set new cookies
+        $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
+                 ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
+        
+        return $response;
     }
 
     /**
