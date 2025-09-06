@@ -55,22 +55,27 @@ class OAuthController extends Controller
         // Check if this is a cross-domain request
         $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
-        if (true) {
-            // For cross-domain scenarios, set cookies without domain restriction
-            // Use SameSite=None and Secure for cross-domain cookies
+        if ($isCrossDomain) {
+            // For cross-domain scenarios, set cookies with Safari compatibility
+            // Safari requires specific handling for cross-domain cookies
             
             // Log for debugging
             Log::info('Cross-domain login detected', [
                 'origin' => $origin,
                 'is_secure' => $isSecure,
-                'session_domain' => config('session.domain')
+                'session_domain' => config('session.domain'),
+                'user_agent' => request()->header('User-Agent')
             ]);
             
             $response = response()->json($payload);
             
-            // Set cross-domain cookies (no domain specified = works cross-domain)
+            // For Safari compatibility, we need to set cookies with explicit domain handling
+            // Try multiple cookie configurations to ensure Safari compatibility
             $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', null, $isSecure, true, false, 'None')
-                     ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'None');
+                     ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'None')
+                     // Also set cookies with explicit domain for Safari
+                     ->withCookie('access_token_safari', $payload['access_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None')
+                     ->withCookie('refresh_token_safari', $payload['refresh_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None');
             
             // Add CORS headers for cross-domain support
             $response->header('Access-Control-Allow-Credentials', 'true')
@@ -120,10 +125,13 @@ class OAuthController extends Controller
         
         if ($isCrossDomain) {
             // For cross-domain requests, clear cookies without domain restriction
+            // Clear both regular and Safari-specific cookies
             return response()->json([
                 'message' => 'Successfully logged out'
             ])->withCookie(cookie()->forget('access_token', '/', null))
                 ->withCookie(cookie()->forget('refresh_token', '/', null))
+                ->withCookie(cookie()->forget('access_token_safari', '/', '.onrender.com'))
+                ->withCookie(cookie()->forget('refresh_token_safari', '/', '.onrender.com'))
                 ->header('Access-Control-Allow-Credentials', 'true')
                 ->header('Access-Control-Allow-Origin', $origin)
                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
