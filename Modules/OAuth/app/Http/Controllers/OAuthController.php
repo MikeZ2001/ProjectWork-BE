@@ -49,44 +49,27 @@ class OAuthController extends Controller
         
         // For cross-domain requests, we need to handle cookies differently
         $isSecure = request()->isSecure() || app()->environment('production');
-        $domain = config('session.domain') ?: null;
+        $origin = request()->header('Origin');
         
-        // Create response with new cookies and clear old ones
+        // For cross-domain scenarios, don't set domain-specific cookies
+        // Instead, rely on the frontend to handle token storage
         $response = response()->json($payload);
         
-        // Clear old cookies first (with different domain combinations to ensure cleanup)
-        $response->withCookie(cookie()->forget('access_token', '/', null))
-                 ->withCookie(cookie()->forget('refresh_token', '/', null))
-                 ->withCookie(cookie()->forget('access_token', '/', $domain))
-                 ->withCookie(cookie()->forget('refresh_token', '/', $domain))
-                 ->withCookie(cookie()->forget('access_token', '/', '.onrender.com'))
-                 ->withCookie(cookie()->forget('refresh_token', '/', '.onrender.com'));
-        
-        // Set new cookies with proper cross-domain configuration
-        $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
-                 ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax');
-        
-        // Add CORS headers for cross-domain cookie support
+        // Add CORS headers for cross-domain support
         $response->header('Access-Control-Allow-Credentials', 'true')
-                 ->header('Access-Control-Allow-Origin', request()->header('Origin', '*'))
+                 ->header('Access-Control-Allow-Origin', $origin ?: '*')
                  ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                  ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
         
-        // For cross-domain scenarios, also include token in response body
-        // Frontend can use this as fallback if cookies don't work
+        // For cross-domain scenarios, include token in response body
+        // Frontend should store these tokens and send them in Authorization header
         $payload['cookie_fallback'] = [
             'access_token' => $payload['access_token'],
             'refresh_token' => $payload['refresh_token'],
-            'note' => 'Use these tokens in Authorization header if cookies fail'
+            'note' => 'Store these tokens and use in Authorization header for cross-domain requests'
         ];
         
-        return response()->json($payload)
-            ->withCookie('access_token', $payload['access_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
-            ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', $domain, $isSecure, true, false, $isSecure ? 'None' : 'Lax')
-            ->header('Access-Control-Allow-Credentials', 'true')
-            ->header('Access-Control-Allow-Origin', request()->header('Origin', '*'))
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        return $response;
     }
 
     /**

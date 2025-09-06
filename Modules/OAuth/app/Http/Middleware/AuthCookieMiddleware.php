@@ -17,7 +17,8 @@ class AuthCookieMiddleware
             return response('', 204);
         }
 
-        // 2) If we have the cookie and no Authorization header yet, inject it
+        // 2) For cross-domain requests, prioritize Authorization header over cookies
+        // If we have the cookie and no Authorization header yet, inject it
         if ($request->hasCookie('access_token') && !$request->bearerToken()) {
             $accessToken = $this->getValidAccessToken($request);
             if ($accessToken !== '') {
@@ -26,11 +27,12 @@ class AuthCookieMiddleware
         }
 
         // 3) Log token information for debugging
-        if (app()->environment('production') && $request->hasCookie('access_token')) {
+        if (app()->environment('production')) {
             Log::info('AuthCookieMiddleware: Token processing', [
-                'token_length' => strlen($this->getValidAccessToken($request)),
                 'has_auth_header' => $request->hasHeader('Authorization'),
-                'bearer_token' => $request->bearerToken() ? 'present' : 'missing'
+                'has_cookie_token' => $request->hasCookie('access_token'),
+                'bearer_token' => $request->bearerToken() ? 'present' : 'missing',
+                'origin' => $request->header('Origin')
             ]);
         }
 
