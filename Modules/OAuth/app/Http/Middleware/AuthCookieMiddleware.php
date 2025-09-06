@@ -5,6 +5,8 @@ namespace Modules\OAuth\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Passport\Token;
+use Laravel\Passport\Passport;
 
 class AuthCookieMiddleware
 {
@@ -23,9 +25,9 @@ class AuthCookieMiddleware
             }
         }
 
-        // 3) Log token information for debugging (remove in production)
-        if (app()->environment('local', 'testing') && $request->hasCookie('access_token')) {
-            Log::info('AuthCookieMiddleware: Token found in cookie', [
+        // 3) Log token information for debugging
+        if (app()->environment('production') && $request->hasCookie('access_token')) {
+            Log::info('AuthCookieMiddleware: Token processing', [
                 'token_length' => strlen($this->getValidAccessToken($request)),
                 'has_auth_header' => $request->hasHeader('Authorization'),
                 'bearer_token' => $request->bearerToken() ? 'present' : 'missing'
@@ -55,14 +57,48 @@ class AuthCookieMiddleware
             }
         }
         
-        // If we have multiple tokens, try to find the most recent one
+        // If we have multiple tokens, validate each one and return the first valid one
         if (count($accessTokens) > 1) {
-            // Sort by token length (newer tokens tend to be longer due to different JWT structure)
-            usort($accessTokens, function($a, $b) {
-                return strlen($b) - strlen($a);
-            });
+            foreach ($accessTokens as $token) {
+                if ($this->isValidToken($token)) {
+                    return $token;
+                }
+            }
         }
         
         return $accessTokens[0] ?? '';
+    }
+
+    /**
+     * Check if a token is valid by trying to find it in the database
+     */
+    private function isValidToken(string $token): bool
+    {
+        try {
+            // Try to find the token in the database
+            $tokenModel = Passport::token()->where('id', $this->getTokenId($token))->first();
+            return $tokenModel && !$tokenModel->revoked;
+        } catch (\Exception $e) {
+            // If there's any error, assume token is invalid
+            return false;
+        }
+    }
+
+    /**
+     * Extract token ID from JWT token
+     */
+    private function getTokenId(string $token): ?string
+    {
+        try {
+            $parts = explode('.', $token);
+            if (count($parts) !== 3) {
+                return null;
+            }
+            
+            $payload = json_decode(base64_decode($parts[1]), true);
+            return $payload['jti'] ?? null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

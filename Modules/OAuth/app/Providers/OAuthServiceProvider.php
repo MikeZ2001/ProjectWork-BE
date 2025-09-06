@@ -25,10 +25,13 @@ class OAuthServiceProvider extends ServiceProvider
         $this->registerCommandSchedules();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
         
-        Passport::tokensExpireIn(now()->addDays(15));
-        Passport::refreshTokensExpireIn(now()->addDays(30));
-        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
-        Passport::enablePasswordGrant();
+        // Only configure Passport if not already configured in main AppServiceProvider
+        if (!config('passport.tokens_expire_in')) {
+            Passport::tokensExpireIn(now()->addDays(15));
+            Passport::refreshTokensExpireIn(now()->addDays(30));
+            Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+            Passport::enablePasswordGrant();
+        }
     }
 
     /**

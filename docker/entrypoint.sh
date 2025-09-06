@@ -22,14 +22,26 @@ done
 if [ ! -f "storage/oauth-private.key" ] || [ ! -f "storage/oauth-public.key" ]; then
     echo "Creating Passport keys..."
     php artisan passport:keys --force
+    echo "Passport keys created successfully"
 else
     echo "Passport keys already exist, skipping generation"
+fi
+
+# Verify keys exist and are readable
+if [ -f "storage/oauth-private.key" ] && [ -f "storage/oauth-public.key" ]; then
+    echo "Passport keys verification: OK"
+else
+    echo "ERROR: Passport keys are missing after generation attempt"
+    exit 1
 fi
 
 # Ensure password client exists
 php artisan oauth:ensure-password-client --no-interaction || true
 
-# Cache config AFTER all environment variables are set
+# Clear any existing config cache before regenerating
+php artisan config:clear || true
+
+# Cache config AFTER all environment variables are set and Passport is configured
 php artisan config:cache || true
 
 exec "$@"

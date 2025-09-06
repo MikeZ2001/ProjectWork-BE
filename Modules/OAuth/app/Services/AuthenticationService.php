@@ -49,6 +49,16 @@ readonly class AuthenticationService {
         $tokenRequest = Request::create('/oauth/token', 'POST');
         $response = Route::dispatch($tokenRequest);
         LoginSuccess::dispatch($response);
+        
+        // Log authentication details for debugging in production
+        if (app()->environment('production')) {
+            \Log::info('Authentication successful', [
+                'client_id' => $client->id,
+                'response_status' => $response->getStatusCode(),
+                'has_access_token' => !empty($this->processOAuthTokenResponse($response)['access_token'] ?? null)
+            ]);
+        }
+        
         return $this->processOAuthTokenResponse($response);
     }
     

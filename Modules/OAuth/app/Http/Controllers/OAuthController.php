@@ -111,4 +111,82 @@ class OAuthController extends Controller
     {
         return new UserResource($request->user());
     }
+
+    /**
+     * Debug endpoint to check token information
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function debug(Request $request): JsonResponse
+    {
+        $token = $request->bearerToken();
+        $cookieToken = $request->cookie('access_token');
+        
+        return response()->json([
+            'has_bearer_token' => !empty($token),
+            'has_cookie_token' => !empty($cookieToken),
+            'bearer_token_length' => $token ? strlen($token) : 0,
+            'cookie_token_length' => $cookieToken ? strlen($cookieToken) : 0,
+            'tokens_match' => $token === $cookieToken,
+            'user_authenticated' => $request->user() ? true : false,
+            'user_id' => $request->user()?->id,
+        ]);
+    }
+
+    /**
+     * Test authentication endpoint - bypasses auth middleware
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function testAuth(Request $request): JsonResponse
+    {
+        $token = $request->bearerToken();
+        $cookieToken = $request->cookie('access_token');
+        
+        // Try to manually authenticate the user
+        $user = null;
+        if ($token) {
+            try {
+                $user = \Laravel\Passport\Token::where('id', $this->getTokenId($token))->first()?->user;
+            } catch (\Exception $e) {
+                // Ignore errors
+            }
+        }
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Test endpoint working',
+            'has_bearer_token' => !empty($token),
+            'has_cookie_token' => !empty($cookieToken),
+            'bearer_token_length' => $token ? strlen($token) : 0,
+            'cookie_token_length' => $cookieToken ? strlen($cookieToken) : 0,
+            'tokens_match' => $token === $cookieToken,
+            'user_found' => $user ? true : false,
+            'user_id' => $user?->id,
+            'passport_keys_exist' => [
+                'private' => file_exists(storage_path('oauth-private.key')),
+                'public' => file_exists(storage_path('oauth-public.key'))
+            ]
+        ]);
+    }
+
+    /**
+     * Extract token ID from JWT token
+     */
+    private function getTokenId(string $token): ?string
+    {
+        try {
+            $parts = explode('.', $token);
+            if (count($parts) !== 3) {
+                return null;
+            }
+            
+            $payload = json_decode(base64_decode($parts[1]), true);
+            return $payload['jti'] ?? null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }

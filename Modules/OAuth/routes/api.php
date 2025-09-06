@@ -12,3 +12,9 @@ Route::middleware([AuthCookieMiddleware::class, 'auth:api'])->group(function () 
     Route::post('logout', [OAuthController::class, 'logout']);
     Route::get('user', [OAuthController::class, 'user']);
 });
+
+// Debug routes (remove in production)
+Route::middleware([AuthCookieMiddleware::class])->group(function () {
+    Route::get('debug', [OAuthController::class, 'debug']);
+    Route::get('test-auth', [OAuthController::class, 'testAuth']);
+});
