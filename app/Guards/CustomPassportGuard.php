@@ -62,13 +62,22 @@ class CustomPassportGuard implements Guard
             $tokenId = $this->getTokenId($token);
             
             if (!$tokenId) {
+                \Log::info('No token ID found in JWT');
                 return null;
             }
+
+            \Log::info('Looking for token in database', ['token_id' => $tokenId]);
 
             // Find token in database
             $tokenModel = Passport::token()->where('id', $tokenId)->first();
 
-            if (!$tokenModel || $tokenModel->revoked) {
+            if (!$tokenModel) {
+                \Log::info('Token not found in database', ['token_id' => $tokenId]);
+                return null;
+            }
+
+            if ($tokenModel->revoked) {
+                \Log::info('Token is revoked', ['token_id' => $tokenId]);
                 return null;
             }
 
@@ -76,9 +85,11 @@ class CustomPassportGuard implements Guard
             $user = $tokenModel->user;
 
             if (!$user) {
+                \Log::info('No user associated with token', ['token_id' => $tokenId]);
                 return null;
             }
 
+            \Log::info('User found via token', ['user_id' => $user->id, 'token_id' => $tokenId]);
             return $user;
 
         } catch (\Exception $e) {

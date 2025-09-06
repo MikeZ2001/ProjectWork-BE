@@ -147,11 +147,19 @@ class OAuthController extends Controller
         
         // Try to manually authenticate the user
         $user = null;
+        $tokenId = null;
+        $tokenModel = null;
+        
         if ($token) {
             try {
-                $user = \Laravel\Passport\Token::where('id', $this->getTokenId($token))->first()?->user;
+                $tokenId = $this->getTokenId($token);
+                if ($tokenId) {
+                    $tokenModel = \Laravel\Passport\Token::where('id', $tokenId)->first();
+                    $user = $tokenModel?->user;
+                }
             } catch (\Exception $e) {
-                // Ignore errors
+                // Log the error
+                \Log::error('Test auth error', ['error' => $e->getMessage()]);
             }
         }
         
@@ -163,12 +171,32 @@ class OAuthController extends Controller
             'bearer_token_length' => $token ? strlen($token) : 0,
             'cookie_token_length' => $cookieToken ? strlen($cookieToken) : 0,
             'tokens_match' => $token === $cookieToken,
+            'token_id' => $tokenId,
+            'token_found_in_db' => $tokenModel ? true : false,
+            'token_revoked' => $tokenModel?->revoked ?? null,
             'user_found' => $user ? true : false,
             'user_id' => $user?->id,
             'passport_keys_exist' => [
                 'private' => file_exists(storage_path('oauth-private.key')),
                 'public' => file_exists(storage_path('oauth-public.key'))
             ]
+        ]);
+    }
+
+    /**
+     * Test user endpoint - uses auth middleware
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function testUser(Request $request): JsonResponse
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User endpoint working',
+            'user_authenticated' => $request->user() ? true : false,
+            'user_id' => $request->user()?->id,
+            'user_email' => $request->user()?->email,
         ]);
     }
 

@@ -17,4 +17,5 @@ Route::middleware([AuthCookieMiddleware::class, 'auth:api'])->group(function () 
 Route::middleware([AuthCookieMiddleware::class])->group(function () {
     Route::get('debug', [OAuthController::class, 'debug']);
     Route::get('test-auth', [OAuthController::class, 'testAuth']);
+    Route::get('test-user', [OAuthController::class, 'testUser']);
 });
