@@ -17,9 +17,8 @@ class AuthCookieMiddleware
             return response('', 204);
         }
 
-        // 2) For cross-domain requests, prioritize Authorization header over cookies
-        // If we have the cookie and no Authorization header yet, inject it
-        if ($request->hasCookie('access_token') && !$request->bearerToken()) {
+        // 2) Check for any valid access token cookie and inject Authorization header
+        if (!$request->bearerToken()) {
             $accessToken = $this->getValidAccessToken($request);
             if ($accessToken !== '') {
                 $request->headers->set('Authorization', 'Bearer '.$accessToken);
@@ -30,9 +29,12 @@ class AuthCookieMiddleware
         if (app()->environment('production')) {
             Log::info('AuthCookieMiddleware: Token processing', [
                 'has_auth_header' => $request->hasHeader('Authorization'),
-                'has_cookie_token' => $request->hasCookie('access_token'),
+                'has_primary_cookie' => $request->hasCookie('access_token'),
+                'has_safari_cookie' => $request->hasCookie('access_token_safari'),
+                'has_domain_cookie' => $request->hasCookie('access_token_domain'),
                 'bearer_token' => $request->bearerToken() ? 'present' : 'missing',
-                'origin' => $request->header('Origin')
+                'origin' => $request->header('Origin'),
+                'user_agent' => $request->header('User-Agent')
             ]);
         }
 
@@ -42,33 +44,27 @@ class AuthCookieMiddleware
 
     /**
      * Get the most recent valid access token from cookies
+     * Checks multiple cookie strategies for cross-browser compatibility
      */
     private function getValidAccessToken(Request $request): string
     {
-        $cookies = $request->cookies->all();
-        $accessTokens = [];
+        // Priority order: primary cookies first, then fallbacks
+        $cookieNames = [
+            'access_token',           // Primary universal cookie
+            'access_token_safari',    // Safari fallback
+            'access_token_domain'     // Domain-specific fallback
+        ];
         
-        // Collect all access_token cookies
-        foreach ($cookies as $name => $value) {
-            if ($name === 'access_token') {
-                if (is_array($value)) {
-                    $accessTokens = array_merge($accessTokens, $value);
-                } else {
-                    $accessTokens[] = $value;
-                }
-            }
-        }
-        
-        // If we have multiple tokens, validate each one and return the first valid one
-        if (count($accessTokens) > 1) {
-            foreach ($accessTokens as $token) {
-                if ($this->isValidToken($token)) {
+        foreach ($cookieNames as $cookieName) {
+            if ($request->hasCookie($cookieName)) {
+                $token = $request->cookie($cookieName);
+                if ($token && $this->isValidToken($token)) {
                     return $token;
                 }
             }
         }
         
-        return $accessTokens[0] ?? '';
+        return '';
     }
 
     /**

@@ -56,31 +56,21 @@ class OAuthController extends Controller
         $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
         if ($isCrossDomain) {
-            // For cross-domain scenarios, set cookies with browser compatibility
-            // Chrome works with domain=null, Safari needs domain=.onrender.com
-            
-            // Log for debugging
-            Log::info('Cross-domain login detected', [
-                'origin' => $origin,
-                'is_secure' => $isSecure,
-                'session_domain' => config('session.domain'),
-                'user_agent' => request()->header('User-Agent')
-            ]);
-            
+            // For cross-domain scenarios, implement multiple cookie strategies
             $response = response()->json($payload);
             
-            // Detect browser from User-Agent
-            $userAgent = request()->header('User-Agent', '');
-            $isSafari = preg_match('/^((?!chrome|android).)*safari/i', $userAgent);
+            // Strategy 1: Universal cookies with SameSite=None; Secure (works for Chrome, Edge, Firefox)
+            $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', null, $isSecure, true, false, 'None')
+                     ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'None');
             
-            if ($isSafari) {
-                // Safari needs explicit domain
-                $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None')
-                         ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None');
-            } else {
-                // Chrome and other browsers work with domain=null
-                $response->withCookie('access_token', $payload['access_token'], 60*24*7, '/', null, $isSecure, true, false, 'None')
-                         ->withCookie('refresh_token', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'None');
+            // Strategy 2: Safari-compatible cookies with SameSite=Lax (fallback for Safari)
+            $response->withCookie('access_token_safari', $payload['access_token'], 60*24*7, '/', null, $isSecure, true, false, 'Lax')
+                     ->withCookie('refresh_token_safari', $payload['refresh_token'], 60*24*7, '/', null, $isSecure, true, false, 'Lax');
+            
+            // Strategy 3: Domain-specific cookies for better Safari compatibility
+            if ($isSecure) {
+                $response->withCookie('access_token_domain', $payload['access_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None')
+                         ->withCookie('refresh_token_domain', $payload['refresh_token'], 60*24*7, '/', '.onrender.com', $isSecure, true, false, 'None');
             }
             
             // Add CORS headers for cross-domain support
@@ -130,20 +120,26 @@ class OAuthController extends Controller
         $isCrossDomain = $origin && !str_contains($origin, 'onrender.com');
         
         if ($isCrossDomain) {
-            // For cross-domain requests, clear cookies with browser-specific domain
-            $userAgent = request()->header('User-Agent', '');
-            $isSafari = preg_match('/^((?!chrome|android).)*safari/i', $userAgent);
-            
-            $domain = $isSafari ? '.onrender.com' : null;
-            
-            return response()->json([
+            // For cross-domain requests, clear all cookie strategies
+            $response = response()->json([
                 'message' => 'Successfully logged out'
-            ])->withCookie(cookie()->forget('access_token', '/', $domain))
-                ->withCookie(cookie()->forget('refresh_token', '/', $domain))
-                ->header('Access-Control-Allow-Credentials', 'true')
-                ->header('Access-Control-Allow-Origin', $origin)
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+            ]);
+            
+            // Clear all cookie variations
+            $response->withCookie(cookie()->forget('access_token', '/', null))
+                     ->withCookie(cookie()->forget('refresh_token', '/', null))
+                     ->withCookie(cookie()->forget('access_token_safari', '/', null))
+                     ->withCookie(cookie()->forget('refresh_token_safari', '/', null))
+                     ->withCookie(cookie()->forget('access_token_domain', '/', '.onrender.com'))
+                     ->withCookie(cookie()->forget('refresh_token_domain', '/', '.onrender.com'));
+            
+            // Add CORS headers
+            $response->header('Access-Control-Allow-Credentials', 'true')
+                     ->header('Access-Control-Allow-Origin', $origin)
+                     ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                     ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+            
+            return $response;
         } else {
             // For same-domain requests, use configured domain
             $domain = config('session.domain') ?: null;
