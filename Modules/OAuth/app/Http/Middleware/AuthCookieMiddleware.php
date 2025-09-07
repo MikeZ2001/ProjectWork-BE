@@ -19,9 +19,7 @@ class AuthCookieMiddleware
 
         // 2) For cross-domain requests, prioritize Authorization header over cookies
         // If we have the cookie and no Authorization header yet, inject it
-        // Check both regular and Safari-specific cookies
-        if ((!$request->bearerToken()) && 
-            ($request->hasCookie('access_token') || $request->hasCookie('access_token_safari'))) {
+        if ($request->hasCookie('access_token') && !$request->bearerToken()) {
             $accessToken = $this->getValidAccessToken($request);
             if ($accessToken !== '') {
                 $request->headers->set('Authorization', 'Bearer '.$accessToken);
@@ -50,9 +48,9 @@ class AuthCookieMiddleware
         $cookies = $request->cookies->all();
         $accessTokens = [];
         
-        // Collect all access_token cookies (both regular and Safari-specific)
+        // Collect all access_token cookies
         foreach ($cookies as $name => $value) {
-            if ($name === 'access_token' || $name === 'access_token_safari') {
+            if ($name === 'access_token') {
                 if (is_array($value)) {
                     $accessTokens = array_merge($accessTokens, $value);
                 } else {
