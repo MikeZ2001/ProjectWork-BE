@@ -21,7 +21,7 @@ return [
 
     // Read allowed origins from env, comma-separated. Example:
     // CORS_ALLOWED_ORIGINS=https://your-vercel-app.vercel.app,https://www.yourdomain.com
-    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://project-work-fe.vercel.app,http://localhost:3000')))),
+    'allowed_origins' => array_filter(array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://project-work-fe.vercel.app,https://project-work-fe-git-prod-michelezurlo75s-projects.vercel.app,http://localhost:3000')))),
 
     'allowed_origins_patterns' => [],
 
